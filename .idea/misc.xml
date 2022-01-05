@@ -7,6 +7,7 @@
         <entry key="app/src/main/res/layout/content_main.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/fragment_first.xml" value="0.20260416666666667" />
         <entry key="app/src/main/res/layout/fragment_second.xml" value="0.20260416666666667" />
+        <entry key="app/src/main/res/xml/nfc_tech_filter.xml" value="0.1743659420289855" />
       </map>
     </option>
   </component>

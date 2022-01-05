@@ -1,57 +1,15 @@
 package org.sportiduino.app;
 
 import android.annotation.SuppressLint;
-
 import androidx.annotation.NonNull;
+import java.util.ArrayList;
 
 public class Sportiduino {
-    private static final int START_BYTE = 0xFE;
 
     private static final int START_STATION  = 240;
     private static final int FINISH_STATION = 245;
     private static final int CHECK_STATION  = 248;
     private static final int CLEAR_STATION  = 249;
-
-    // Protocol commands
-    private static final int CMD_INIT_TIME_CARD     = 0x41;
-    private static final int CMD_INIT_CP_NUM_CARD   = 0x42;
-    private static final int CMD_INIT_PASSWORD_CARD = 0x43;  // deprecated
-    private static final int CMD_INIT_CARD          = 0x44;
-    private static final int CMD_WRITE_PAGES6_7     = 0x45;
-    private static final int CMD_READ_VERSION       = 0x46;
-    private static final int CMD_INIT_BACKUP_READER = 0x47;
-    private static final int CMD_READ_BACKUP_READER = 0x48;
-    private static final int CMD_SET_READ_MODE     = 0x49;  // deprecated
-    private static final int CMD_WRITE_SETTINGS    = 0x4a;
-    private static final int CMD_READ_CARD         = 0x4b;
-    private static final int CMD_READ_RAW          = 0x4c;
-    private static final int CMD_READ_SETTINGS     = 0x4d;
-    private static final int CMD_INIT_SLEEP_CARD   = 0x4e;
-    private static final int CMD_APPLY_PWD         = 0x4f;
-    private static final int CMD_INIT_STATE_CARD   = 0x50;
-    private static final int CMD_READ_CARD_TYPE    = 0x51;
-    private static final int CMD_BEEP_ERROR        = 0x58;
-    private static final int CMD_BEEP_OK           = 0x59;
-    private static final int CMD_INIT_CONFIG_CARD  = 0x5a;
-
-    // Protocol responses
-    private static final int RESP_BACKUP         = 0x61;
-    private static final int RESP_CARD_DATA      = 0x63;
-    private static final int RESP_CARD_RAW       = 0x65;
-    private static final int RESP_VERSION        = 0x66;
-    private static final int RESP_SETTINGS       = 0x67;
-    private static final int RESP_MODE           = 0x69;  // deprecated
-    private static final int RESP_CARD_TYPE      = 0x70;
-    private static final int RESP_ERROR          = 0x78;
-    private static final int RESP_OK             = 0x79;
-
-    // Protocol error codes
-    private static final int ERR_COM             = 0x01;
-    private static final int ERR_WRITE_CARD      = 0x02;
-    private static final int ERR_READ_CARD       = 0x03;
-    private static final int ERR_READ_EEPROM     = 0x04;
-    private static final int ERR_CARD_NOT_FOUND  = 0x05;
-    private static final int ERR_UNKNOWN_CMD     = 0x06;
 
     private static final int MASTER_CARD_GET_STATE    = 0xF9;
     private static final int MASTER_CARD_SET_TIME     = 0xFA;
@@ -59,6 +17,10 @@ public class Sportiduino {
     private static final int MASTER_CARD_SLEEP        = 0xFC;
     private static final int MASTER_CARD_READ_BACKUP  = 0xFD;
     private static final int MASTER_CARD_SET_PASS     = 0xFE;
+
+    private static final int MODE_ACTIVE = 0;
+    private static final int MODE_WAIT = 1;
+    private static final int MODE_SLEEP = 2;
 
     private static class Version {
         // Sportiduino version.
@@ -98,6 +60,101 @@ public class Sportiduino {
             }
             return String.format("v%d.%d.%s", this.major, this.minor, suffix);
         }
+    }
+
+    private static class Battery {
+        private float voltage;
+        private boolean status;
+
+        public Battery(byte batteryByte) {
+            if (batteryByte == 0 || batteryByte == 1) {
+                // Old firmware
+                status = (batteryByte > 0);
+            } else {
+                voltage = (float) (batteryByte) / 50.f;
+                status = (voltage > 3.6f);
+            }
+        }
+
+        public boolean isOk() {
+            return status;
+        }
+
+        public float voltage() {
+            return voltage;
+        }
+    }
+
+    private static class Config {
+        private static final int ANTENNA_GAIN_18DB = 0x02;
+        private static final int ANTENNA_GAIN_23DB = 0x03;
+        private static final int ANTENNA_GAIN_33DB = 0x04;
+        private static final int ANTENNA_GAIN_38DB = 0x05;
+        private static final int ANTENNA_GAIN_43DB = 0x06;
+        private static final int ANTENNA_GAIN_48DB = 0x07;
+
+        private int num = 0;
+        private int activeModeDuration = 2;  // hours
+        private boolean checkStartFinish = false;
+        private boolean checkCardInitTime = false;
+        private boolean autoSleep = false;
+        private boolean fastPunch = false;
+        private int antennaGain = ANTENNA_GAIN_33DB;
+        private int[] password;
+
+        public Config() {
+            password = new int[]{0, 0, 0};
+        }
+
+        public static Config unpack(byte[] configData) {
+            Config config = new Config();
+            config.num = configData[0];
+
+            config.activeModeDuration = configData[1] & 0x7;
+
+            config.checkStartFinish = (configData[1] & 0x08) > 0;
+            config.checkCardInitTime = (configData[1] & 0x10) > 0;
+            config.autoSleep = (configData[1] & 0x20) > 0;
+            config.fastPunch = (configData[1] & 0x40) > 0;
+
+            config.antennaGain = configData[2];
+            return config;
+        }
+
+        public Byte[] pack() {
+            ArrayList<Byte> configData = new ArrayList<>();
+            configData.add((byte) num);
+
+            byte flags = (byte) activeModeDuration;
+
+            if (checkStartFinish) {
+                flags |= 0x08;
+            }
+            if (checkCardInitTime) {
+                flags |= 0x10;
+            }
+            if (autoSleep) {
+                flags |= 0x20;
+            }
+            if (fastPunch) {
+                flags |= 0x40;
+            }
+            configData.add(flags);
+            configData.add((byte) antennaGain);
+            configData.add((byte) password[0]);
+            configData.add((byte) password[1]);
+            configData.add((byte) password[2]);
+
+            return (Byte[]) configData.toArray();
+        }
+    }
+
+    private static class State {
+        private Version version = new Version(0, 0, 0);
+        private Config config = new Config();
+        private int mode = MODE_ACTIVE;
+        private Battery battery = new Battery((byte) 0);
+        private int timestamp = 0;
     }
 }
 
