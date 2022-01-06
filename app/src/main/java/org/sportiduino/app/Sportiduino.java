@@ -22,7 +22,7 @@ public class Sportiduino {
     private static final int MODE_WAIT = 1;
     private static final int MODE_SLEEP = 2;
 
-    private static class Version {
+    public static class Version {
         // Sportiduino version.
         private final int major;
         private final int minor;
@@ -62,8 +62,8 @@ public class Sportiduino {
         }
     }
 
-    private static class Battery {
-        private float voltage;
+    public static class Battery {
+        private float voltage = 0;
         private boolean status;
 
         public Battery(byte batteryByte) {
@@ -83,9 +83,21 @@ public class Sportiduino {
         public float voltage() {
             return voltage;
         }
+
+        public String toString() {
+            String voltageText = "";
+            if (voltage > 0) {
+                voltageText = String.format(" ({%.2f} V)", voltage);
+            }
+
+            if (isOk()) {
+                return "Battery: OK" + voltageText;
+            }
+            return "Battery: Low" + voltageText;
+        }
     }
 
-    private static class Config {
+    public static class Config {
         private static final int ANTENNA_GAIN_18DB = 0x02;
         private static final int ANTENNA_GAIN_23DB = 0x03;
         private static final int ANTENNA_GAIN_33DB = 0x04;
@@ -149,12 +161,19 @@ public class Sportiduino {
         }
     }
 
-    private static class State {
-        private Version version = new Version(0, 0, 0);
-        private Config config = new Config();
-        private int mode = MODE_ACTIVE;
-        private Battery battery = new Battery((byte) 0);
-        private int timestamp = 0;
+    public static class State {
+        Version version;
+        Config config;
+        int mode = MODE_ACTIVE;
+        Battery battery;
+        int timestamp = 0;
+
+        public String toString() {
+            String stringState = "Version: " + version.toString();
+            //stringState += "\nConfig: " + config.toString();
+            stringState += "\nBattery: " + battery.toString();
+            return stringState;
+        }
     }
 }
 

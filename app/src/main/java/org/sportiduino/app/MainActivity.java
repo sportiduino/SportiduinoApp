@@ -1,35 +1,25 @@
 package org.sportiduino.app;
 
+import static org.sportiduino.app.MainActivity.CardType.MASTER_GET_STATE;
+import static org.sportiduino.app.MainActivity.CardType.UNKNOWN;
+
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-//import com.google.android.material.snackbar.Snackbar;
-
-import androidx.appcompat.app.AppCompatActivity;
-
-//import android.view.View;
-//
-//import androidx.navigation.NavController;
-//import androidx.navigation.Navigation;
-//import androidx.navigation.ui.AppBarConfiguration;
-//import androidx.navigation.ui.NavigationUI;
-//
-//import org.sportiduino.app.databinding.ActivityMainBinding;
-//
-//import android.view.Menu;
-//import android.view.MenuItem;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.io.IOException;
+
 public class MainActivity extends AppCompatActivity {
 
-    //private AppBarConfiguration appBarConfiguration;
-    //private ActivityMainBinding binding;
     private NfcAdapter nfcAdapter;
     TextView textViewInfo, textViewTagInfo;
     PendingIntent pendingIntent;
@@ -38,23 +28,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-        //binding = ActivityMainBinding.inflate(getLayoutInflater());
-        //setContentView(binding.getRoot());
-
-        //setSupportActionBar(binding.toolbar);
-
-        //NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-        //appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
-        //NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
-
-        //binding.fab.setOnClickListener(new View.OnClickListener() {
-        //    @Override
-        //    public void onClick(View view) {
-        //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        //                .setAction("Action", null).show();
-        //    }
-        //});
 
         setContentView(R.layout.activity_main);
         textViewInfo = (TextView) findViewById(R.id.info);
@@ -84,48 +57,6 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this,
                     "onResume()",
                     Toast.LENGTH_SHORT).show();
-        /*
-        Intent intent = getIntent();
-        String action = intent.getAction();
-
-        if (NfcAdapter.ACTION_TECH_DISCOVERED.equals(action)) {
-            Toast.makeText(this,
-                    "onResume() - ACTION_TECH_DISCOVERED",
-                    Toast.LENGTH_SHORT).show();
-
-            Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-            if(tag == null){
-                textViewInfo.setText("tag == null");
-            }else{
-                String tagInfo = tag.toString() + "\n";
-
-                tagInfo += "\nTag Id: \n";
-                byte[] tagId = tag.getId();
-                tagInfo += "length = " + tagId.length +"\n";
-                for(int i=0; i<tagId.length; i++){
-                    tagInfo += Integer.toHexString(tagId[i] & 0xFF) + " ";
-                }
-                tagInfo += "\n";
-
-                String[] techList = tag.getTechList();
-                tagInfo += "\nTech List\n";
-                tagInfo += "length = " + techList.length +"\n";
-                for(int i=0; i<techList.length; i++){
-                    tagInfo += techList[i] + "\n ";
-                }
-
-                textViewInfo.setText(tagInfo);
-
-                //Only android.nfc.tech.MifareClassic specified in nfc_tech_filter.xml,
-                //so must be MifareClassic
-                readMifareClassic(tag);
-            }
-        }else{
-            Toast.makeText(this,
-                    "onResume() : " + action,
-                    Toast.LENGTH_SHORT).show();
-        }
-        */
     }
 
     @Override
@@ -138,28 +69,15 @@ public class MainActivity extends AppCompatActivity {
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        if (tag == null) {
-            textViewInfo.setText("tag == null");
-        } else {
-            String tagInfo = tag.toString() + "\n";
-
-            tagInfo += "\nTag Id: \n";
+        if (tag != null) {
+            String tagInfo = "Tag Id: ";
             byte[] tagId = tag.getId();
-            tagInfo += "length = " + tagId.length + "\n";
             for (byte b : tagId) {
                 tagInfo += Integer.toHexString(b & 0xFF) + " ";
             }
-            tagInfo += "\n";
-
-            String[] techList = tag.getTechList();
-            tagInfo += "\nTech List\n";
-            tagInfo += "length = " + techList.length + "\n";
-            for (String s : techList) {
-                tagInfo += s + "\n ";
-            }
-
             textViewInfo.setText(tagInfo);
 
+            String[] techList = tag.getTechList();
             for (String s : techList) {
                 if (s.equals(MifareClassic.class.getName())) {
                     readMifareClassic(tag);
@@ -226,34 +144,164 @@ public class MainActivity extends AppCompatActivity {
         int sectorCount = mifareClassicTag.getSectorCount();
         typeInfoString += "SectorCount \t= " + sectorCount + "\n";
 
-        textViewTagInfo.setText(typeInfoString);
+        //textViewInfo.setText(typeInfoString);
+        
+        new ReadMifareClassicTask(mifareClassicTag).execute();
     }
-    //@Override
-    //public boolean onCreateOptionsMenu(Menu menu) {
-    //    // Inflate the menu; this adds items to the action bar if it is present.
-    //    getMenuInflater().inflate(R.menu.menu_main, menu);
-    //    return true;
-    //}
 
-    //@Override
-    //public boolean onOptionsItemSelected(MenuItem item) {
-    //    // Handle action bar item clicks here. The action bar will
-    //    // automatically handle clicks on the Home/Up button, so long
-    //    // as you specify a parent activity in AndroidManifest.xml.
-    //    int id = item.getItemId();
-
-    //    //noinspection SimplifiableIfStatement
-    //    if (id == R.id.action_settings) {
-    //        return true;
+    //public static byte[] readPage(MifareClassic tag, int page) {
+    //    byte[] pageData = new byte[MifareClassic.BLOCK_SIZE];
+    //    if (page > 0) {
+    //        int sector = page/4;
+    //        pageData = tag.readBlock(page);
+    //        return pageData;
     //    }
-
-    //    return super.onOptionsItemSelected(item);
+    //    return new byte[0];
     //}
 
-    //@Override
-    //public boolean onSupportNavigateUp() {
-    //    NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
-    //    return NavigationUI.navigateUp(navController, appBarConfiguration)
-    //            || super.onSupportNavigateUp();
-    //}
+    enum CardType {
+        UNKNOWN,
+        MASTER_GET_STATE,
+    }
+
+    private class ReadMifareClassicTask extends AsyncTask<Void, Void, Void> {
+        static final int CARD_PAGE_INIT = 4;
+        static final int CARD_PAGE_INIT_TIME = 5;
+        static final int CARD_PAGE_LAST_RECORD_INFO = 6;
+        static final int CARD_PAGE_INFO1 = 6;
+        static final int CARD_PAGE_INFO2 = 7;
+        static final int CARD_PAGE_START = 8;
+        static final int CARD_PAGE_PASS = 5;
+        static final int CARD_PAGE_DATE = 6;
+        static final int CARD_PAGE_TIME = 7;
+        static final int CARD_PAGE_STATION_NUM = 6;
+        static final int CARD_PAGE_BACKUP_START = 6;
+
+        static final int MASTER_CARD_SIGN         = 0xFF;
+        static final int MASTER_CARD_GET_STATE    = 0xF9;
+        static final int MASTER_CARD_SET_TIME     = 0xFA;
+        static final int MASTER_CARD_SET_NUMBER   = 0xFB;
+        static final int MASTER_CARD_SLEEP        = 0xFC;
+        static final int MASTER_CARD_READ_BACKUP  = 0xFD;
+        static final int MASTER_CARD_SET_PASS     = 0xFE;
+
+        MifareClassic taskTag;
+        boolean success;
+        final int numOfSector = 16;
+        final int numOfBlockInSector = 4;
+        byte[][] buffer = new byte[numOfSector*numOfBlockInSector][MifareClassic.BLOCK_SIZE];
+        CardType cardType = UNKNOWN;
+
+        ReadMifareClassicTask(MifareClassic tag){
+            taskTag = tag;
+            success = false;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            textViewTagInfo.setText("Reading Tag, don't remove it!");
+        }
+
+        protected byte[][] readBlocks(int firstBlockIndex, int count) {
+            byte[][] blockData = new byte[count][MifareClassic.BLOCK_SIZE];
+            try {
+                if (!taskTag.isConnected()) {
+                    taskTag.connect();
+                }
+                int lastSector = -1;
+                int i = 0;
+                for (int b = firstBlockIndex; b < (firstBlockIndex + count); ++b) {
+                    int sector = taskTag.blockToSector(b);
+                    if (sector != lastSector) {
+                        lastSector = sector;
+                        if (!taskTag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
+                            return new byte[0][0];
+                        }
+                    }
+                    blockData[i++] = taskTag.readBlock(b);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            return blockData;
+        }
+
+        @Override
+        protected Void doInBackground(Void... params) {
+
+            byte[] data = readBlocks(CARD_PAGE_INIT, 1)[0];
+            if (data[2] == MASTER_CARD_SIGN && data[1] == MASTER_CARD_GET_STATE) {
+                cardType = MASTER_GET_STATE;
+                buffer = readBlocks(0, 12);
+            }
+            if(taskTag != null && taskTag.isConnected()){
+                try {
+                    taskTag.close();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+            
+            //try {
+            //    taskTag.connect();
+
+            //    for(int s=0; s<numOfSector; s++){
+            //        if(taskTag.authenticateSectorWithKeyA(s, MifareClassic.KEY_DEFAULT)) {
+            //            for(int b=0; b<numOfBlockInSector; b++){
+            //                int blockIndex = (s * numOfBlockInSector) + b;
+            //                buffer[blockIndex] = taskTag.readBlock(blockIndex);
+            //            }
+            //        }
+            //    }
+
+            //    success = true;
+            //} catch (IOException e) {
+            //    e.printStackTrace();
+            //} finally{
+            //    if(taskTag!=null){
+            //        try {
+            //            taskTag.close();
+            //        } catch (IOException e) {
+            //            e.printStackTrace();
+            //        }
+            //    }
+            //}
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            switch(cardType) {
+                case MASTER_GET_STATE:
+                    Sportiduino.State state = new Sportiduino.State();
+                    state.version = new Sportiduino.Version(buffer[8][0], buffer[8][1], buffer[8][2]);
+                    state.config = Sportiduino.Config.unpack(buffer[9]);
+                    state.battery = new Sportiduino.Battery(buffer[10][0]);
+                    state.mode = buffer[10][1];
+
+                    textViewTagInfo.setText(state.toString());
+                    break;
+                default:
+                    textViewTagInfo.setText("Fail to read card!!!");
+                    break;
+            }
+            //if(success){
+            //    String stringBlock = "";
+            //    for(int i=0; i<numOfSector; i++){
+            //        stringBlock += i + " :\n";
+            //        for(int j=0; j<numOfBlockInSector; j++){
+            //            for(int k=0; k<MifareClassic.BLOCK_SIZE; k++){
+            //                stringBlock += String.format("%02X", buffer[i][j][k] & 0xff) + " ";
+            //            }
+            //            stringBlock += "\n";
+            //        }
+            //        stringBlock += "\n";
+            //    }
+            //    textViewTagInfo.setText(stringBlock);
+            //}else{
+            //    textViewTagInfo.setText("Fail to read Blocks!!!");
+            //}
+        }
+    }
 }
