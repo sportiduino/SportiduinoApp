@@ -11,10 +11,13 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+
+import org.sportiduino.app.sportiduino.State;
 
 import java.io.IOException;
 
@@ -177,13 +180,13 @@ public class MainActivity extends AppCompatActivity {
         static final int CARD_PAGE_STATION_NUM = 6;
         static final int CARD_PAGE_BACKUP_START = 6;
 
-        static final int MASTER_CARD_SIGN         = 0xFF;
-        static final int MASTER_CARD_GET_STATE    = 0xF9;
-        static final int MASTER_CARD_SET_TIME     = 0xFA;
-        static final int MASTER_CARD_SET_NUMBER   = 0xFB;
-        static final int MASTER_CARD_SLEEP        = 0xFC;
-        static final int MASTER_CARD_READ_BACKUP  = 0xFD;
-        static final int MASTER_CARD_SET_PASS     = 0xFE;
+        static final byte MASTER_CARD_SIGN        = (byte) 0xFF;
+        static final byte MASTER_CARD_GET_STATE   = (byte) 0xF9;
+        static final byte MASTER_CARD_SET_TIME    = (byte) 0xFA;
+        static final byte MASTER_CARD_SET_NUMBER  = (byte) 0xFB;
+        static final byte MASTER_CARD_SLEEP       = (byte) 0xFC;
+        static final byte MASTER_CARD_READ_BACKUP = (byte) 0xFD;
+        static final byte MASTER_CARD_SET_PASS    = (byte) 0xFE;
 
         MifareClassic taskTag;
         boolean success;
@@ -202,7 +205,7 @@ public class MainActivity extends AppCompatActivity {
             textViewTagInfo.setText("Reading Tag, don't remove it!");
         }
 
-        protected byte[][] readBlocks(int firstBlockIndex, int count) {
+        protected byte[][] readPages(int firstPageIndex, int count) {
             byte[][] blockData = new byte[count][MifareClassic.BLOCK_SIZE];
             try {
                 if (!taskTag.isConnected()) {
@@ -210,15 +213,19 @@ public class MainActivity extends AppCompatActivity {
                 }
                 int lastSector = -1;
                 int i = 0;
-                for (int b = firstBlockIndex; b < (firstBlockIndex + count); ++b) {
-                    int sector = taskTag.blockToSector(b);
+                int firstBlockIndex = firstPageIndex-3 + ((firstPageIndex-3)/3);
+                for (int blockIndex = firstBlockIndex; i < count; ++blockIndex) {
+                    if ((blockIndex + 1)%numOfBlockInSector == 0) {
+                        continue;
+                    }
+                    int sector = taskTag.blockToSector(blockIndex);
                     if (sector != lastSector) {
                         lastSector = sector;
                         if (!taskTag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
                             return new byte[0][0];
                         }
                     }
-                    blockData[i++] = taskTag.readBlock(b);
+                    blockData[i++] = taskTag.readBlock(blockIndex);
                 }
             } catch (IOException e) {
                 e.printStackTrace();
@@ -229,10 +236,15 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(Void... params) {
 
-            byte[] data = readBlocks(CARD_PAGE_INIT, 1)[0];
+            byte[] data = readPages(CARD_PAGE_INIT, 1)[0];
+            String str = Integer.toHexString(data[0] & 0xFF) + " "
+            + Integer.toHexString(data[1] & 0xFF) + " "
+            + Integer.toHexString(data[2] & 0xFF);
+            Log.i("Tag", str);
+
             if (data[2] == MASTER_CARD_SIGN && data[1] == MASTER_CARD_GET_STATE) {
                 cardType = MASTER_GET_STATE;
-                buffer = readBlocks(0, 12);
+                buffer = readPages(8, 12);
             }
             if(taskTag != null && taskTag.isConnected()){
                 try {
@@ -274,13 +286,16 @@ public class MainActivity extends AppCompatActivity {
         protected void onPostExecute(Void aVoid) {
             switch(cardType) {
                 case MASTER_GET_STATE:
-                    Sportiduino.State state = new Sportiduino.State();
-                    state.version = new Sportiduino.Version(buffer[8][0], buffer[8][1], buffer[8][2]);
-                    state.config = Sportiduino.Config.unpack(buffer[9]);
-                    state.battery = new Sportiduino.Battery(buffer[10][0]);
-                    state.mode = buffer[10][1];
-
+                    State state = new State(buffer);
                     textViewTagInfo.setText(state.toString());
+                    //String stringBlock = "";
+                    //for(int j=0; j<4; j++){
+                    //    for(int k=0; k<MifareClassic.BLOCK_SIZE; k++){
+                    //        stringBlock += String.format("%02X", buffer[j][k] & 0xff) + " ";
+                    //    }
+                    //    stringBlock += "\n";
+                    //}
+                    //textViewTagInfo.setText(stringBlock);
                     break;
                 default:
                     textViewTagInfo.setText("Fail to read card!!!");
