@@ -1,8 +1,5 @@
 package org.sportiduino.app;
 
-import static org.sportiduino.app.MainActivity.CardType.MASTER_GET_STATE;
-import static org.sportiduino.app.MainActivity.CardType.UNKNOWN;
-
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.nfc.NfcAdapter;
@@ -20,6 +17,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import org.sportiduino.app.sportiduino.State;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -163,8 +162,36 @@ public class MainActivity extends AppCompatActivity {
     //}
 
     enum CardType {
-        UNKNOWN,
-        MASTER_GET_STATE,
+        UNKNOWN            (),
+        ORDINARY           (),
+        MASTER_GET_STATE   ((byte) 0xF9),
+        MASTER_SET_TIME    ((byte) 0xFA),
+        MASTER_SET_NUMBER  ((byte) 0xFB),
+        MASTER_SLEEP       ((byte) 0xFC),
+        MASTER_READ_BACKUP ((byte) 0xFD),
+        MASTER_SET_PASS    ((byte) 0xFE);
+
+        private static final Map<Byte, CardType> BY_VALUE = new HashMap<>();
+
+        static {
+            for (CardType ct : values()) {
+                BY_VALUE.put(ct.value, ct);
+            }
+        }
+
+        final byte value;
+
+        private CardType(byte value) {
+            this.value = value;
+        }
+
+        private CardType() {
+            this((byte) 0);
+        }
+
+        public static CardType byValue(byte value) {
+            return BY_VALUE.get(value);
+        }
     }
 
     private class ReadMifareClassicTask extends AsyncTask<Void, Void, Void> {
@@ -179,21 +206,14 @@ public class MainActivity extends AppCompatActivity {
         static final int CARD_PAGE_TIME = 7;
         static final int CARD_PAGE_STATION_NUM = 6;
         static final int CARD_PAGE_BACKUP_START = 6;
-
-        static final byte MASTER_CARD_SIGN        = (byte) 0xFF;
-        static final byte MASTER_CARD_GET_STATE   = (byte) 0xF9;
-        static final byte MASTER_CARD_SET_TIME    = (byte) 0xFA;
-        static final byte MASTER_CARD_SET_NUMBER  = (byte) 0xFB;
-        static final byte MASTER_CARD_SLEEP       = (byte) 0xFC;
-        static final byte MASTER_CARD_READ_BACKUP = (byte) 0xFD;
-        static final byte MASTER_CARD_SET_PASS    = (byte) 0xFE;
+        static final byte MASTER_CARD_SIGN = (byte) 0xFF;
 
         MifareClassic taskTag;
         boolean success;
         final int numOfSector = 16;
         final int numOfBlockInSector = 4;
         byte[][] buffer = new byte[numOfSector*numOfBlockInSector][MifareClassic.BLOCK_SIZE];
-        CardType cardType = UNKNOWN;
+        CardType cardType = CardType.UNKNOWN;
 
         ReadMifareClassicTask(MifareClassic tag){
             taskTag = tag;
@@ -242,9 +262,13 @@ public class MainActivity extends AppCompatActivity {
             + Integer.toHexString(data[2] & 0xFF);
             Log.i("Tag", str);
 
-            if (data[2] == MASTER_CARD_SIGN && data[1] == MASTER_CARD_GET_STATE) {
-                cardType = MASTER_GET_STATE;
-                buffer = readPages(8, 12);
+            if (data[2] == MASTER_CARD_SIGN) {
+                cardType = CardType.byValue(data[1]);
+                if (data[1] == CardType.MASTER_GET_STATE.value) {
+                    buffer = readPages(8, 12);
+                } else {
+                    cardType = CardType.UNKNOWN;
+                }
             }
             if(taskTag != null && taskTag.isConnected()){
                 try {
@@ -285,6 +309,17 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Void aVoid) {
             switch(cardType) {
+                case UNKNOWN:
+                    break;
+                case ORDINARY:
+                    textViewTagInfo.setText("Participant card");
+                    break;
+                case MASTER_SET_TIME:
+                    textViewTagInfo.setText("Time Master card");
+                    break;
+                case MASTER_SET_NUMBER:
+                    textViewTagInfo.setText("Number Master card");
+                    break;
                 case MASTER_GET_STATE:
                     State state = new State(buffer);
                     textViewTagInfo.setText(state.toString());
@@ -296,6 +331,14 @@ public class MainActivity extends AppCompatActivity {
                     //    stringBlock += "\n";
                     //}
                     //textViewTagInfo.setText(stringBlock);
+                    break;
+                case MASTER_SLEEP:
+                    textViewTagInfo.setText("Sleep Master card");
+                    break;
+                case MASTER_READ_BACKUP:
+                    textViewTagInfo.setText("Backup Master card");
+                    break;
+                case MASTER_SET_PASS:
                     break;
                 default:
                     textViewTagInfo.setText("Fail to read card!!!");

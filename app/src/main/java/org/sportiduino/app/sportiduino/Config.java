@@ -1,6 +1,8 @@
 package org.sportiduino.app.sportiduino;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Config {
     private static final int START_STATION  = 240;
@@ -8,20 +10,42 @@ public class Config {
     private static final int CHECK_STATION  = 248;
     private static final int CLEAR_STATION  = 249;
 
-    private static final int ANTENNA_GAIN_18DB = 0x02;
-    private static final int ANTENNA_GAIN_23DB = 0x03;
-    private static final int ANTENNA_GAIN_33DB = 0x04;
-    private static final int ANTENNA_GAIN_38DB = 0x05;
-    private static final int ANTENNA_GAIN_43DB = 0x06;
-    private static final int ANTENNA_GAIN_48DB = 0x07;
+    private enum AntennaGain {
+        ANTENNA_GAIN_18DB("18 dB", 0x02),
+        ANTENNA_GAIN_23DB("23 dB", 0x03),
+        ANTENNA_GAIN_33DB("33 dB", 0x04),
+        ANTENNA_GAIN_38DB("38 dB", 0x05),
+        ANTENNA_GAIN_43DB("43 dB", 0x06),
+        ANTENNA_GAIN_48DB("48 dB", 0x07);
+
+        private static final Map<Integer, AntennaGain> BY_VALUE = new HashMap<>();
+
+        static {
+            for (AntennaGain ag : values()) {
+                BY_VALUE.put(ag.value, ag);
+            }
+        }
+
+        public final String label;
+        public final int value;
+
+        private AntennaGain(String label, int value) {
+            this.label = label;
+            this.value = value;
+        }
+
+        public static AntennaGain byValue(int value) {
+            return BY_VALUE.get(value);
+        }
+    }
 
     private int stationCode = 0;
-    private int activeModeDuration = 2;  // hours
+    private int activeModeDuration = 1;
     private boolean checkStartFinish = false;
     private boolean checkCardInitTime = false;
     private boolean autoSleep = false;
     private boolean fastPunch = false;
-    private int antennaGain = ANTENNA_GAIN_33DB;
+    private AntennaGain antennaGain = AntennaGain.ANTENNA_GAIN_33DB;
     private int[] password;
 
     public Config() {
@@ -32,15 +56,14 @@ public class Config {
         Config config = new Config();
         config.stationCode = configData[0] & 0xFF;
 
-        int activeModeBits = configData[1] & 0x7;
-        config.activeModeDuration = 1 << activeModeBits;
+        config.activeModeDuration = configData[1] & 0x7;
 
         config.checkStartFinish = (configData[1] & 0x08) > 0;
         config.checkCardInitTime = (configData[1] & 0x10) > 0;
         config.autoSleep = (configData[1] & 0x20) > 0;
         config.fastPunch = (configData[1] & 0x40) > 0;
 
-        config.antennaGain = configData[2];
+        config.antennaGain = AntennaGain.byValue(configData[2] & 0xFF);
         return config;
     }
 
@@ -48,7 +71,7 @@ public class Config {
         ArrayList<Byte> configData = new ArrayList<>();
         configData.add((byte) stationCode);
 
-        byte flags = (byte) activeModeDuration; // FIXME
+        byte flags = (byte) activeModeDuration;
 
         if (checkStartFinish) {
             flags |= 0x08;
@@ -63,7 +86,7 @@ public class Config {
             flags |= 0x40;
         }
         configData.add(flags);
-        configData.add((byte) antennaGain);
+        configData.add((byte) antennaGain.value);
         configData.add((byte) password[0]);
         configData.add((byte) password[1]);
         configData.add((byte) password[2]);
@@ -87,7 +110,7 @@ public class Config {
                 str += " (Clear)";
                 break;
         }
-        String activeModeString = activeModeDuration + " h";
+        String activeModeString = (1 << activeModeDuration) + " h";
         if (activeModeDuration == 64) {
             activeModeString = "always Active";
         } else if (activeModeDuration == 128) {
@@ -107,7 +130,7 @@ public class Config {
         if (fastPunch) {
             str += "\n\t\tFast punch flag";
         }
-        str += "\n\tAntenna Gain: " + antennaGain;
+        str += "\n\tAntenna Gain: " + antennaGain.label;
         return str;
     }
 }
