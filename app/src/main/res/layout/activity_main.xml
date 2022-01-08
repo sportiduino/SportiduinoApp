@@ -27,6 +27,7 @@
         android:id="@+id/taginfo"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="bold"/>
+        android:fontFamily="monospace"
+        android:textStyle="bold" />
 
 </LinearLayout>

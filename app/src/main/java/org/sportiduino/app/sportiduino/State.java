@@ -4,6 +4,8 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 
+import java.util.Date;
+
 
 //private static final int MASTER_CARD_GET_STATE    = 0xF9;
 //private static final int MASTER_CARD_SET_TIME     = 0xFA;
@@ -15,9 +17,11 @@ import androidx.annotation.NonNull;
 
 public class State {
 
-    private static final int MODE_ACTIVE = 0;
-    private static final int MODE_WAIT = 1;
-    private static final int MODE_SLEEP = 2;
+    enum Mode {
+        ACTIVE,
+        WAIT,
+        SLEEP
+    }
 
     public static class Version {
         // Sportiduino version.
@@ -44,6 +48,10 @@ public class State {
             this.major = major;
             this.minor = minor;
             this.patch = patch;
+        }
+
+        public Version(byte major, byte minor, byte patch) {
+            this(Util.byteToUint(major), Util.byteToUint(minor), Util.byteToUint(patch));
         }
 
         @SuppressLint("DefaultLocale")
@@ -96,21 +104,27 @@ public class State {
 
     Version version;
     Config config;
-    int mode = MODE_ACTIVE;
+    Mode mode = Mode.ACTIVE;
     Battery battery;
-    int timestamp = 0;
+    long timestamp;
+    long wakeupTimestamp;
 
     public State(byte[][] data) {
         version = new Version(data[0][0], data[0][1], data[0][2]);
         config = Config.unpack(data[1]);
         battery = new Battery(data[2][0] & 0xFF);
-        mode = data[2][1];
+        mode = Mode.values()[data[2][1]];
+        timestamp = Util.toUint32(data[3]);
+        wakeupTimestamp = Util.toUint32(data[4]);
     }
 
     public String toString() {
         String stringState = "Version: " + version.toString();
         stringState += "\nConfig:\n" + config.toString();
         stringState += "\nBattery: " + battery.toString();
+        stringState += "\nMode: " + Util.capitalize(mode.name());
+        stringState += "\nClock: " + Util.dformat.format(new Date(timestamp*1000));
+        stringState += "\nAlarm: " + Util.dformat.format(new Date(wakeupTimestamp*1000));
         return stringState;
     }
 }

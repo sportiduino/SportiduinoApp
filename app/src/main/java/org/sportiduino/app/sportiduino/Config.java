@@ -5,10 +5,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Config {
-    private static final int START_STATION  = 240;
-    private static final int FINISH_STATION = 245;
-    private static final int CHECK_STATION  = 248;
-    private static final int CLEAR_STATION  = 249;
+    public static final int START_STATION  = 240;
+    public static final int FINISH_STATION = 245;
+    public static final int CHECK_STATION  = 248;
+    public static final int CLEAR_STATION  = 249;
 
     private enum AntennaGain {
         ANTENNA_GAIN_18DB("18 dB", 0x02),
