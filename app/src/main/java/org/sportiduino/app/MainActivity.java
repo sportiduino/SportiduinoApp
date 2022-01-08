@@ -1,90 +1,88 @@
 package org.sportiduino.app;
 
-import android.app.PendingIntent;
 import android.content.Intent;
-import android.nfc.NfcAdapter;
-import android.nfc.Tag;
-import android.nfc.tech.MifareClassic;
-import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.navigation.NavController;
+import androidx.navigation.Navigation;
+import androidx.navigation.ui.AppBarConfiguration;
+import androidx.navigation.ui.NavigationUI;
 
-import org.sportiduino.app.sportiduino.Card;
-import org.sportiduino.app.sportiduino.CardMifareClassic;
-import org.sportiduino.app.sportiduino.CardMifareUltralight;
+import org.sportiduino.app.databinding.ActivityMainBinding;
+
+interface IntentReceiver {
+    void onNewIntent(Intent intent);
+}
 
 public class MainActivity extends AppCompatActivity {
 
-    private NfcAdapter nfcAdapter;
-    TextView textViewInfo, textViewTagInfo;
-    PendingIntent pendingIntent;
-    String[][] techList;
+    private AppBarConfiguration appBarConfiguration;
+    private ActivityMainBinding binding;
+    private IntentReceiver intentReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
-        textViewInfo = (TextView) findViewById(R.id.info);
-        textViewTagInfo = (TextView) findViewById(R.id.taginfo);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        nfcAdapter = NfcAdapter.getDefaultAdapter(this);
-        if (nfcAdapter == null) {
-            Toast.makeText(this,
-                    "NFC NOT supported on this devices!",
-                    Toast.LENGTH_LONG).show();
-            finish();
-        } else if (!nfcAdapter.isEnabled()) {
-            Toast.makeText(this,
-                    "NFC NOT Enabled!",
-                    Toast.LENGTH_LONG).show();
-            finish();
+        setSupportActionBar(binding.toolbar);
+
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        appBarConfiguration = new AppBarConfiguration.Builder(navController.getGraph()).build();
+        NavigationUI.setupActionBarWithNavController(this, navController, appBarConfiguration);
+
+        //binding.fab.setOnClickListener(new View.OnClickListener() {
+        //    @Override
+        //    public void onClick(View view) {
+        //        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+        //                .setAction("Action", null).show();
+        //    }
+        //});
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
-        textViewInfo.setText("Bring card...");
-        pendingIntent = PendingIntent.getActivity(this, 0, new Intent(this,
-        getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
-        techList = new String[][] {new String[] {MifareClassic.class.getName()}};
+
+        return super.onOptionsItemSelected(item);
     }
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        nfcAdapter.enableForegroundDispatch(this, pendingIntent, null, null);
-    }
-
-    @Override
-    public void onPause() {
-        super.onPause();
-        nfcAdapter.disableForegroundDispatch(this);
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment_content_main);
+        return NavigationUI.navigateUp(navController, appBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 
     @Override
     public void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
-        Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        if (tag != null) {
-            String tagInfo = "Tag ID: ";
-            byte[] tagId = tag.getId();
-            for (byte b : tagId) {
-                tagInfo += Integer.toHexString(b & 0xFF) + " ";
-            }
-            textViewInfo.setText(tagInfo);
-
-            String[] techList = tag.getTechList();
-            for (String s : techList) {
-                if (s.equals(MifareClassic.class.getName())) {
-                    CardMifareClassic cardMifareClassic = new CardMifareClassic(MifareClassic.get(tag));
-                    new ReadCardTask((Card) cardMifareClassic, setText).execute();
-                } else if (s.equals(MifareUltralight.class.getName())) {
-                    CardMifareUltralight cardMifareUltralight = new CardMifareUltralight(MifareUltralight.get(tag));
-                    new ReadCardTask(cardMifareUltralight, setText).execute();
-                }
-            }
+        if (intentReceiver != null) {
+            intentReceiver.onNewIntent(intent);
         }
     }
 
-    public ReadCardTask.Callback setText = (str) -> { textViewTagInfo.setText(str); };
+    public void setIntentReceiver(IntentReceiver intentReceiver) {
+        this.intentReceiver = intentReceiver;
+    }
 }

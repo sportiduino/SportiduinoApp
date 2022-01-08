@@ -12,17 +12,13 @@
         tools:layout="@layout/fragment_first">
 
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_FirstFragment_to_FragmentReadCard"
+            app:destination="@id/FragmentReadCard" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="org.sportiduino.app.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+        android:id="@+id/FragmentReadCard"
+        android:name="org.sportiduino.app.FragmentReadCard"
+        android:label="@string/fragment_read_card_label"
+        tools:layout="@layout/fragment_read_card">
     </fragment>
 </navigation>
