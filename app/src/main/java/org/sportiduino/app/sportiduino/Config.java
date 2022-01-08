@@ -94,6 +94,7 @@ public class Config {
         return (Byte[]) configData.toArray();
     }
 
+    @Override
     public String toString() {
         String str = "\tStation No: " + stationCode;
         switch (stationCode) {
