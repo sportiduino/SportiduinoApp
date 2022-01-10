@@ -4,6 +4,7 @@ import android.nfc.tech.MifareClassic;
 import android.util.Log;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class CardMifareClassic extends Card {
     private final MifareClassic tag;
@@ -87,8 +88,12 @@ public class CardMifareClassic extends Card {
                     throw new WriteCardException();
                 }
             }
+            byte[] pageData = data[i++];
+            if (pageData.length < MifareClassic.BLOCK_SIZE) {
+                pageData = Arrays.copyOf(pageData, MifareClassic.BLOCK_SIZE);
+            }
             try {
-                tag.writeBlock(blockIndex, data[i++]);
+                tag.writeBlock(blockIndex, pageData);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new WriteCardException();

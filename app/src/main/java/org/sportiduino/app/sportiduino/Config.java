@@ -11,6 +11,7 @@ public class Config {
     public static final int CLEAR_STATION  = 249;
 
     private enum AntennaGain {
+        ANTENNA_GAIN_UNKNOWN("unknown", 0),
         ANTENNA_GAIN_18DB("18 dB", 0x02),
         ANTENNA_GAIN_23DB("23 dB", 0x03),
         ANTENNA_GAIN_33DB("33 dB", 0x04),

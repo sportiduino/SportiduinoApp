@@ -7,14 +7,6 @@ import androidx.annotation.NonNull;
 import java.util.Date;
 
 
-//private static final int MASTER_CARD_GET_STATE    = 0xF9;
-//private static final int MASTER_CARD_SET_TIME     = 0xFA;
-//private static final int MASTER_CARD_SET_NUMBER   = 0xFB;
-//private static final int MASTER_CARD_SLEEP        = 0xFC;
-//private static final int MASTER_CARD_READ_BACKUP  = 0xFD;
-//private static final int MASTER_CARD_SET_PASS     = 0xFE;
-
-
 public class State {
 
     enum Mode {
@@ -108,8 +100,12 @@ public class State {
     Battery battery;
     long timestamp;
     long wakeupTimestamp;
+    boolean isEmpty = false;
 
     public State(byte[][] data) {
+        if (data[0][0] == 0) {
+            isEmpty = true;
+        }
         version = new Version(data[0][0], data[0][1], data[0][2]);
         config = Config.unpack(data[1]);
         battery = new Battery(data[2][0] & 0xFF);
@@ -119,6 +115,9 @@ public class State {
     }
 
     public String toString() {
+        if (isEmpty) {
+            return "Empty";
+        }
         String stringState = "Version: " + version.toString();
         stringState += "\nConfig:\n" + config.toString();
         stringState += "\nBattery: " + battery.toString();

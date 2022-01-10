@@ -1,7 +1,6 @@
 <resources>
     <string name="app_name">Sportiduino App</string>
     <string name="action_settings">Settings</string>
-    <string name="first_fragment_label">First Fragment</string>
     <string name="fragment_read_card_label">Read Card</string>
     <string name="fragment_write_card_label">Write Card</string>
     <string name="read_card">Read card</string>

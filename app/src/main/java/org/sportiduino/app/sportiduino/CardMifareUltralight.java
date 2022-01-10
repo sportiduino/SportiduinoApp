@@ -4,6 +4,7 @@ import android.nfc.tech.MifareUltralight;
 import android.nfc.tech.TagTechnology;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 public class CardMifareUltralight extends Card {
     private final MifareUltralight tag;
@@ -58,8 +59,12 @@ public class CardMifareUltralight extends Card {
     public void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException {
         int pageIndex = firstPageIndex;
         for (int i = 0; i < count; ++i) {
+            byte[] pageData = data[i];
+            if (pageData.length < MifareUltralight.PAGE_SIZE) {
+                pageData = Arrays.copyOf(pageData, MifareUltralight.PAGE_SIZE);
+            }
             try {
-                tag.writePage(pageIndex++, data[i]);
+                tag.writePage(pageIndex++, pageData);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new WriteCardException();

@@ -14,6 +14,7 @@ import org.sportiduino.app.databinding.FragmentWriteCardBinding;
 import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
+import org.sportiduino.app.sportiduino.CardType;
 import org.sportiduino.app.sportiduino.Util;
 
 public class FragmentWriteCard extends NfcFragment {
@@ -46,6 +47,7 @@ public class FragmentWriteCard extends NfcFragment {
                 card = new CardMifareUltralight(MifareUltralight.get(tag));
             }
             if (card != null) {
+                card.type = CardType.MASTER_GET_STATE;
                 new WriteCardTask(card, setText, new byte[] {0,0,0}).execute();
                 break;
             }

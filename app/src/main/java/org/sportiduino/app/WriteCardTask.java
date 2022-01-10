@@ -5,6 +5,7 @@ import static org.sportiduino.app.sportiduino.Constants.FW_PROTO_VERSION;
 import static org.sportiduino.app.sportiduino.Constants.MASTER_CARD_SIGN;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardType;
@@ -40,13 +41,14 @@ public class WriteCardTask extends AsyncTask<Void, Void, Void> {
                 case ORDINARY:
                     break;
                 case MASTER_GET_STATE:
-                    byte[][] data = new byte[][]{
-                            {0, (byte) CardType.MASTER_GET_STATE.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
-                            {password[0], password[1], password[3], 0}
+                    final byte[][] data = {
+                        {0, (byte) CardType.MASTER_GET_STATE.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                        {password[0], password[1], password[2], 0}
                     };
                     card.writePages(CARD_PAGE_INIT, data, 2);
                     break;
             }
+            showText.call("Data written to card successfully");
         } catch (WriteCardException e) {
             showText.call("Writing card failed!");
         }
