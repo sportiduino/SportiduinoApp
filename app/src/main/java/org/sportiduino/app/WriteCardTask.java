@@ -40,12 +40,36 @@ public class WriteCardTask extends AsyncTask<Void, Void, Void> {
             switch (card.type) {
                 case ORDINARY:
                     break;
+                case MASTER_SET_NUMBER:
+                    final byte[][] data = {
+                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                        {password[0], password[1], password[2], 0},
+                        {1, 0, 0, 0} // FIXME
+                    };
+                    card.writePages(CARD_PAGE_INIT, data, data.length);
+                    break;
+                case MASTER_SLEEP:
+                    final byte[][] data = {
+                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                        {password[0], password[1], password[2], 0}
+                        // TODO: add wakeup time
+                    };
+                    card.writePages(CARD_PAGE_INIT, data, data.length);
+                    break;
+                case MASTER_SET_TIME:
+                    final byte[][] data = {
+                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                        {password[0], password[1], password[2], 0}
+                        // FIXME: add time
+                    };
+                    card.writePages(CARD_PAGE_INIT, data, data.length);
+                    break;
                 case MASTER_GET_STATE:
                     final byte[][] data = {
-                        {0, (byte) CardType.MASTER_GET_STATE.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
                         {password[0], password[1], password[2], 0}
                     };
-                    card.writePages(CARD_PAGE_INIT, data, 2);
+                    card.writePages(CARD_PAGE_INIT, data, data.length);
                     break;
             }
             showText.call("Data written to card successfully");
