@@ -33,8 +33,8 @@ public class CardMifareClassic extends Card {
     public byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull) {
         byte[][] blockData = new byte[count][MifareClassic.BLOCK_SIZE];
         int lastSector = -1;
+        int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
-        int firstBlockIndex = firstPageIndex - 3 + ((firstPageIndex - 3) / 3);
         for (int blockIndex = firstBlockIndex; i < count; ++blockIndex) {
             if ((blockIndex + 1) % numOfBlockInSector == 0) {
                 continue;
@@ -67,4 +67,34 @@ public class CardMifareClassic extends Card {
         }
         return blockData;
     }
+
+    public void writePages(int firstPageIndex, byte[][] data, int count) {
+        int lastSector = -1;
+        int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
+        int i = 0;
+        for (int blockIndex = firstBlockIndex; i < count; ++blockIndex) {
+            if ((blockIndex + 1) % numOfBlockInSector == 0) {
+                continue;
+            }
+            int sector = tag.blockToSector(blockIndex);
+            if (sector != lastSector) {
+                lastSector = sector;
+                try {
+                    if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
+                        throw new WriteCardException();
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    throw new WriteCardException();
+                }
+            }
+            try {
+                tag.writeBlock(blockIndex, data[i++]);
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new WriteCardException();
+            }
+        }
+    }
+
 }

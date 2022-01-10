@@ -14,11 +14,21 @@
         <action
             android:id="@+id/action_FirstFragment_to_FragmentReadCard"
             app:destination="@id/FragmentReadCard" />
+
+        <action
+            android:id="@+id/action_FirstFragment_to_FragmentWriteCard"
+            app:destination="@id/FragmentWriteCard" />
     </fragment>
     <fragment
         android:id="@+id/FragmentReadCard"
         android:name="org.sportiduino.app.FragmentReadCard"
         android:label="@string/fragment_read_card_label"
         tools:layout="@layout/fragment_read_card">
+    </fragment>
+    <fragment
+        android:id="@+id/FragmentWriteCard"
+        android:name="org.sportiduino.app.FragmentWriteCard"
+        android:label="@string/fragment_write_card_label"
+        tools:layout="@layout/fragment_write_card">
     </fragment>
 </navigation>

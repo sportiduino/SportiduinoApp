@@ -1,5 +1,10 @@
 package org.sportiduino.app;
 
+import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INIT;
+import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INIT_TIME;
+import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_START;
+import static org.sportiduino.app.sportiduino.Constants.MASTER_CARD_SIGN;
+
 import android.nfc.tech.MifareClassic;
 import android.os.AsyncTask;
 
@@ -12,33 +17,17 @@ import org.sportiduino.app.sportiduino.Util;
 import java.util.Date;
 
 class ReadCardTask extends AsyncTask<Void, Void, Void> {
-    static final int CARD_PAGE_INIT = 4;
-    static final int CARD_PAGE_INIT_TIME = 5;
-    static final int CARD_PAGE_LAST_RECORD_INFO = 6;
-    static final int CARD_PAGE_INFO1 = 6;
-    static final int CARD_PAGE_INFO2 = 7;
-    static final int CARD_PAGE_START = 8;
-    static final int CARD_PAGE_PASS = 5;
-    static final int CARD_PAGE_DATE = 6;
-    static final int CARD_PAGE_TIME = 7;
-    static final int CARD_PAGE_STATION_NUM = 6;
-    static final int CARD_PAGE_BACKUP_START = 6;
-    static final byte MASTER_CARD_SIGN = (byte) 0xFF;
-
-    public interface Callback {
-        void call(String str);
-    }
     Card card;
     int cardNumber;
     long cardInitTimestamp;
-    Callback showText;
-    Callback setTagType;
+    Util.Callback showText;
+    Util.Callback setTagType;
 
     final int numOfSector = 16;
     final int numOfBlockInSector = 4;
     byte[][] buffer = new byte[numOfSector * numOfBlockInSector][MifareClassic.BLOCK_SIZE];
 
-    ReadCardTask(Card card, Callback showText, Callback setTagType) {
+    ReadCardTask(Card card, Util.Callback showText, Util.Callback setTagType) {
         this.card = card;
         this.showText = showText;
         this.setTagType = setTagType;
@@ -142,3 +131,4 @@ class ReadCardTask extends AsyncTask<Void, Void, Void> {
         }
     }
 }
+

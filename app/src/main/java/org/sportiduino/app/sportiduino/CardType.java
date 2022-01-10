@@ -21,7 +21,7 @@ public enum CardType {
         }
     }
 
-    final int value;
+    public final int value;
 
     private CardType(int value) {
         this.value = value;

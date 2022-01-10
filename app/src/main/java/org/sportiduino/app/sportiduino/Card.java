@@ -44,6 +44,12 @@ public abstract class Card {
         return readPages(firstPageIndex, 1)[0];
     }
 
+    public abstract void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException;
+
+    public void writePage(int firstPageIndex, byte[][] data) {
+        writePages(firstPageIndex, data, 1);
+    }
+
     public int getMaxPage() {
         switch(tagType) {
             case MIFARE_MINI:
@@ -62,6 +68,16 @@ public abstract class Card {
             default:
                 return 0;
         }
+    }
+}
+
+public class WriteCardException extends Exception {
+    public WriteCardException(String errorMsg) {
+        super(errorMsg);
+    }
+
+    public WriteCardException() {
+        super();
     }
 }
 
