@@ -10,13 +10,13 @@
     tools:context=".FragmentReadCard">
 
     <TextView
-        android:id="@+id/info"
+        android:id="@+id/text_view_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:textStyle="italic"/>
 
     <TextView
-        android:id="@+id/taginfo"
+        android:id="@+id/text_view_tag_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"/>

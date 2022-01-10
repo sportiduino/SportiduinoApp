@@ -32,6 +32,9 @@ public enum CardType {
     }
 
     public static CardType byValue(int value) {
+        if (!BY_VALUE.containsKey(value)) {
+            return UNKNOWN;
+        }
         return BY_VALUE.get(value);
     }
 }

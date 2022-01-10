@@ -12,7 +12,7 @@ import androidx.navigation.fragment.NavHostFragment;
 import org.sportiduino.app.databinding.FragmentFirstBinding;
 
 public class FirstFragment extends Fragment {
-     private FragmentFirstBinding binding;
+    private FragmentFirstBinding binding;
 
     @Override
     public View onCreateView(

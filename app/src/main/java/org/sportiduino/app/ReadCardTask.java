@@ -31,20 +31,22 @@ class ReadCardTask extends AsyncTask<Void, Void, Void> {
     Card card;
     int cardNumber;
     long cardInitTimestamp;
-    Callback callback;
+    Callback showText;
+    Callback setTagType;
 
     final int numOfSector = 16;
     final int numOfBlockInSector = 4;
     byte[][] buffer = new byte[numOfSector * numOfBlockInSector][MifareClassic.BLOCK_SIZE];
 
-    ReadCardTask(Card card, Callback callback) {
+    ReadCardTask(Card card, Callback showText, Callback setTagType) {
         this.card = card;
-        this.callback = callback;
+        this.showText = showText;
+        this.setTagType = setTagType;
     }
 
     @Override
     protected void onPreExecute() {
-        callback.call("Reading Tag, don't remove it!");
+        showText.call("Reading card, don't remove it!");
     }
 
     @Override
@@ -60,17 +62,19 @@ class ReadCardTask extends AsyncTask<Void, Void, Void> {
                 case MASTER_GET_STATE:
                     buffer = card.readPages(8, 12);
                     break;
-                default:
-                    card.type = CardType.UNKNOWN;
             }
         } else {
             card.type = CardType.ORDINARY;
             cardNumber = data[0] & 0xFF;
             cardNumber <<= 8;
             cardNumber |= data[1] & 0xFF;
-            data = card.readPage(CARD_PAGE_INIT_TIME);
-            cardInitTimestamp = Util.toUint32(data);
-            buffer = card.readPages(CARD_PAGE_START, card.getMaxPage(), true);
+            if (cardNumber == 0) {
+                card.type = CardType.UNKNOWN;
+            } else {
+                data = card.readPage(CARD_PAGE_INIT_TIME);
+                cardInitTimestamp = Util.toUint32(data);
+                buffer = card.readPages(CARD_PAGE_START, card.getMaxPage(), true);
+            }
         }
 
         card.close();
@@ -80,16 +84,15 @@ class ReadCardTask extends AsyncTask<Void, Void, Void> {
 
     @Override
     protected void onPostExecute(Void aVoid) {
-        //setText(textViewInfo.getText().toString() + "\n" + card.tagType.name());
+        setTagType.call(card.tagType.name());
         switch (card.type) {
             case UNKNOWN:
-                callback.call("Unknown card type");
+                showText.call("Unknown card type");
                 break;
             case ORDINARY:
                 String str = "Participant card No: " + cardNumber;
                 str += "\nClear time: " + Util.dformat.format(new Date(cardInitTimestamp * 1000));
                 long timeHighPart = cardInitTimestamp & 0xFF000000;
-                //Log.i("timeHighPart", Long.toHexString(timeHighPart));
                 for (int i = 0; i < card.getMaxPage(); ++i) {
                     int cp = buffer[i][0] & 0xFF;
                     if (cp == 0) {
@@ -112,29 +115,29 @@ class ReadCardTask extends AsyncTask<Void, Void, Void> {
                     str += String.format("%1$6s", cpStr);
                     str += " - " + Util.dformat.format(new Date(punchTimestamp * 1000));
                 }
-                callback.call(str);
+                showText.call(str);
                 break;
             case MASTER_SET_TIME:
-                callback.call("Time Master card");
+                showText.call("Time Master card");
                 break;
             case MASTER_SET_NUMBER:
-                callback.call("Number Master card");
+                showText.call("Number Master card");
                 break;
             case MASTER_GET_STATE:
                 State state = new State(buffer);
-                callback.call(state.toString());
+                showText.call("State Master card\n" + state.toString());
                 break;
             case MASTER_SLEEP:
-                callback.call("Sleep Master card");
+                showText.call("Sleep Master card");
                 break;
             case MASTER_READ_BACKUP:
-                callback.call("Backup Master card");
+                showText.call("Backup Master card");
                 break;
             case MASTER_SET_PASS:
-                callback.call("Password Master card");
+                showText.call("Password Master card");
                 break;
             default:
-                callback.call("Fail to read card!!!");
+                showText.call("Fail to read card!!!");
                 break;
         }
     }

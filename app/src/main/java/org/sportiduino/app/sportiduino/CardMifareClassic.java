@@ -2,6 +2,7 @@ package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.TagTechnology;
+import android.util.Log;
 
 import java.io.IOException;
 
@@ -15,10 +16,7 @@ public class CardMifareClassic extends Card {
         int size = tag.getSize();
         switch (size) {
             case MifareClassic.SIZE_1K:
-                tagType = TagType.MIFARE_1K;
-                break;
-            case MifareClassic.SIZE_2K:
-                // FIXME
+            case MifareClassic.SIZE_2K: // FIXME
                 tagType = TagType.MIFARE_1K;
                 break;
             case MifareClassic.SIZE_4K:
@@ -53,7 +51,13 @@ public class CardMifareClassic extends Card {
                 }
             }
             try {
-                blockData[i++] = tag.readBlock(blockIndex);
+                blockData[i] = tag.readBlock(blockIndex);
+                Log.d("Log", (firstBlockIndex + i) + ": "
+                + Integer.toHexString(blockData[i][0] & 0xFF) + " "
+                + Integer.toHexString(blockData[i][1] & 0xFF) + " "
+                + Integer.toHexString(blockData[i][2] & 0xFF) + " "
+                + Integer.toHexString(blockData[i][3] & 0xFF));
+                ++i;
             } catch (IOException e) {
                 e.printStackTrace();
             }

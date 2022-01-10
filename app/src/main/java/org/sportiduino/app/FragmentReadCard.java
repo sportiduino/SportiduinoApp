@@ -8,30 +8,38 @@ import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.TextView;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import org.sportiduino.app.databinding.FragmentReadCardBinding;
 import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
 
 public class FragmentReadCard extends Fragment implements IntentReceiver {
+    private FragmentReadCardBinding binding;
     private NfcAdapter nfcAdapter;
-    TextView textViewInfo, textViewTagInfo;
     PendingIntent pendingIntent;
     String[][] techList;
+
+    @Override
+    public View onCreateView(
+            LayoutInflater inflater, ViewGroup container,
+            Bundle savedInstanceState
+    ) {
+        binding = FragmentReadCardBinding.inflate(inflater, container, false);
+        return binding.getRoot();
+    }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        textViewInfo = (TextView) view.findViewById(R.id.info);
-        textViewTagInfo = (TextView) view.findViewById(R.id.taginfo);
-
-        textViewInfo.setText("Bring card...");
+        binding.textViewInfo.setText("Bring card...");
         Activity activity = getActivity();
         nfcAdapter = NfcAdapter.getDefaultAdapter(activity);
         pendingIntent = PendingIntent.getActivity(activity, 0,
@@ -64,20 +72,23 @@ public class FragmentReadCard extends Fragment implements IntentReceiver {
             for (byte b : tagId) {
                 tagInfo += Integer.toHexString(b & 0xFF) + " ";
             }
-            textViewInfo.setText(tagInfo);
+            binding.textViewInfo.setText(tagInfo);
 
             String[] techList = tag.getTechList();
             for (String s : techList) {
                 if (s.equals(MifareClassic.class.getName())) {
                     CardMifareClassic cardMifareClassic = new CardMifareClassic(MifareClassic.get(tag));
-                    new ReadCardTask((Card) cardMifareClassic, setText).execute();
+                    new ReadCardTask((Card) cardMifareClassic, setText, setTagType).execute();
                 } else if (s.equals(MifareUltralight.class.getName())) {
                     CardMifareUltralight cardMifareUltralight = new CardMifareUltralight(MifareUltralight.get(tag));
-                    new ReadCardTask(cardMifareUltralight, setText).execute();
+                    new ReadCardTask(cardMifareUltralight, setText, setTagType).execute();
                 }
             }
         }
     }
 
-    public ReadCardTask.Callback setText = (str) -> { textViewTagInfo.setText(str); };
+    public ReadCardTask.Callback setText = (str) -> { binding.textViewTagInfo.setText(str); };
+    public ReadCardTask.Callback setTagType = (str) -> {
+        binding.textViewInfo.setText(binding.textViewInfo.getText() + " " + str);
+    };
 }
