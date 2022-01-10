@@ -55,11 +55,11 @@ public class CardMifareUltralight extends Card {
         return blockData;
     }
 
-    public void writePages(int firstPageIndex, byte[][] data, int count) {
+    public void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException {
         int pageIndex = firstPageIndex;
         for (int i = 0; i < count; ++i) {
             try {
-                tag.writePages(pageIndex++, data[i]);
+                tag.writePage(pageIndex++, data[i]);
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new WriteCardException();

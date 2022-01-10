@@ -46,7 +46,7 @@ public abstract class Card {
 
     public abstract void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException;
 
-    public void writePage(int firstPageIndex, byte[][] data) {
+    public void writePage(int firstPageIndex, byte[][] data) throws WriteCardException {
         writePages(firstPageIndex, data, 1);
     }
 
@@ -68,16 +68,6 @@ public abstract class Card {
             default:
                 return 0;
         }
-    }
-}
-
-public class WriteCardException extends Exception {
-    public WriteCardException(String errorMsg) {
-        super(errorMsg);
-    }
-
-    public WriteCardException() {
-        super();
     }
 }
 

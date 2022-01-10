@@ -1,7 +1,6 @@
 package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
-import android.nfc.tech.TagTechnology;
 import android.util.Log;
 
 import java.io.IOException;
@@ -11,7 +10,7 @@ public class CardMifareClassic extends Card {
     final int numOfBlockInSector = 4;
 
     public CardMifareClassic(MifareClassic tag) {
-        super((TagTechnology) tag);
+        super(tag);
         this.tag = tag;
         int size = tag.getSize();
         switch (size) {
@@ -68,7 +67,7 @@ public class CardMifareClassic extends Card {
         return blockData;
     }
 
-    public void writePages(int firstPageIndex, byte[][] data, int count) {
+    public void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException {
         int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
