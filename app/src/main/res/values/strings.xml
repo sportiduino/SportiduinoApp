@@ -5,4 +5,7 @@
     <string name="fragment_write_card_label">Write Card</string>
     <string name="read_card">Read card</string>
     <string name="write_card">Write card</string>
+    <string name="night_mode">Night mode</string>
+    <string name="settings_label">Settings</string>
+    <string name="password">Password</string>
 </resources>

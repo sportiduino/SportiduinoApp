@@ -5,10 +5,8 @@ import static org.sportiduino.app.sportiduino.Constants.FW_PROTO_VERSION;
 import static org.sportiduino.app.sportiduino.Constants.MASTER_CARD_SIGN;
 
 import android.os.AsyncTask;
-import android.util.Log;
 
 import org.sportiduino.app.sportiduino.Card;
-import org.sportiduino.app.sportiduino.CardType;
 import org.sportiduino.app.sportiduino.Util;
 import org.sportiduino.app.sportiduino.WriteCardException;
 
@@ -40,37 +38,41 @@ public class WriteCardTask extends AsyncTask<Void, Void, Void> {
             switch (card.type) {
                 case ORDINARY:
                     break;
-                case MASTER_SET_NUMBER:
+                case MASTER_SET_NUMBER: {
                     final byte[][] data = {
-                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
-                        {password[0], password[1], password[2], 0},
-                        {1, 0, 0, 0} // FIXME
+                            {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                            {password[0], password[1], password[2], 0},
+                            {1, 0, 0, 0} // FIXME
                     };
                     card.writePages(CARD_PAGE_INIT, data, data.length);
                     break;
-                case MASTER_SLEEP:
+                }
+                case MASTER_SLEEP: {
                     final byte[][] data = {
-                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
-                        {password[0], password[1], password[2], 0}
-                        // TODO: add wakeup time
+                            {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                            {password[0], password[1], password[2], 0}
+                            // TODO: add wakeup time
                     };
                     card.writePages(CARD_PAGE_INIT, data, data.length);
                     break;
-                case MASTER_SET_TIME:
+                }
+                case MASTER_SET_TIME: {
                     final byte[][] data = {
-                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
-                        {password[0], password[1], password[2], 0}
-                        // FIXME: add time
+                            {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                            {password[0], password[1], password[2], 0}
+                            // FIXME: add time
                     };
                     card.writePages(CARD_PAGE_INIT, data, data.length);
                     break;
-                case MASTER_GET_STATE:
+                }
+                case MASTER_GET_STATE: {
                     final byte[][] data = {
-                        {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
-                        {password[0], password[1], password[2], 0}
+                            {0, (byte) card.type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+                            {password[0], password[1], password[2], 0}
                     };
                     card.writePages(CARD_PAGE_INIT, data, data.length);
                     break;
+                }
             }
             showText.call("Data written to card successfully");
         } catch (WriteCardException e) {
