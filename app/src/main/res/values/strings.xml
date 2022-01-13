@@ -8,4 +8,9 @@
     <string name="night_mode">Night mode</string>
     <string name="settings_label">Settings</string>
     <string name="password">Password</string>
+    <string name="station_settings">Station settings</string>
+    <string name="fragment_station_settings_label">Station settings</string>
+    <string name="bring_card">Bring card...</string>
+    <string name="tag_id_s">Tag ID: %s</string>
+    <string name="tag_id_s_type_s">Tag ID: %s, type: %s</string>
 </resources>

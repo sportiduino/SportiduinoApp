@@ -1,5 +1,6 @@
 package org.sportiduino.app;
 
+import android.content.SharedPreferences;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
@@ -9,23 +10,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
+import androidx.preference.PreferenceManager;
 
-import org.sportiduino.app.databinding.FragmentReadCardBinding;
+import org.sportiduino.app.databinding.FragmentStationSettingsBinding;
 import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
+import org.sportiduino.app.sportiduino.CardType;
 import org.sportiduino.app.sportiduino.Util;
 
-public class FragmentReadCard extends NfcFragment implements IntentReceiver {
-    private FragmentReadCardBinding binding;
-    private String tagIdStr;
+public class FragmentStationSettings extends NfcFragment {
+    private FragmentStationSettingsBinding binding;
+    private Password password = Password.defaultPassword();
 
     @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
     ) {
-        binding = FragmentReadCardBinding.inflate(inflater, container, false);
+        binding = FragmentStationSettingsBinding.inflate(inflater, container, false);
         return binding.getRoot();
     }
 
@@ -33,19 +36,14 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.textViewInfo.setText(R.string.bring_card);
+        binding.textViewInfo1.setText(R.string.bring_card);
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireActivity());
+        String passwordStr = sharedPref.getString("password", Password.defaultPassword().toString());
+        this.password = Password.fromString(passwordStr);
     }
 
     @Override
     public void onNewTagDetected(Tag tag) {
-        StringBuilder tagInfo = new StringBuilder();
-        byte[] tagId = tag.getId();
-        for (byte b : tagId) {
-            tagInfo.append(Integer.toHexString(b & 0xFF)).append(" ");
-        }
-        tagIdStr = tagInfo.toString();
-        binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s), tagIdStr));
-
         String[] techList = tag.getTechList();
         Card card = null;
         for (String s : techList) {
@@ -55,14 +53,12 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
                 card = new CardMifareUltralight(MifareUltralight.get(tag));
             }
             if (card != null) {
-                new ReadCardTask(card, setText, setTagType).execute();
+                card.type = CardType.MASTER_GET_STATE;
+                new WriteCardTask(card, setText, password).execute();
                 break;
             }
         }
     }
 
-    public Util.Callback setText = (str) -> binding.textViewTagInfo.setText(str);
-    public Util.Callback setTagType = (str) -> {
-        binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s_type_s), tagIdStr, str));
-    };
+    public Util.Callback setText = (str) -> binding.textViewInfo1.setText(str);
 }

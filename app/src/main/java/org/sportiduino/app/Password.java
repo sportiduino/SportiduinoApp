@@ -15,8 +15,8 @@ public class Password {
         passwordArray = new int[]{pass1, pass2, pass3};
     }
 
-    public Password() {
-        this(0, 0, 0);
+    public static Password defaultPassword() {
+        return new Password(0, 0, 0);
     }
 
     @Override
@@ -29,6 +29,13 @@ public class Password {
             str += String.valueOf(passwordArray[i]);
         }
         return str;
+    }
+
+    public byte[] toByteArray() {
+        return new byte[] {
+            (byte) passwordArray[2],
+            (byte) passwordArray[1],
+            (byte) passwordArray[0]};
     }
 
     public static Password fromString(String str) {

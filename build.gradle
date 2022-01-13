@@ -14,16 +14,7 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
-/*
-allprojects {
-    repositories {
-        mavenCentral()
-        maven {
-            url 'https://maven.google.com/'
-            name 'Google'
-        }
-    }
-}*/
+
 task clean(type: Delete) {
     delete rootProject.buildDir
 }

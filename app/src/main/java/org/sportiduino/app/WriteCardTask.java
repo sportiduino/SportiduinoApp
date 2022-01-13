@@ -18,10 +18,14 @@ public class WriteCardTask extends AsyncTask<Void, Void, Void> {
     //final int numOfBlockInSector = 4;
     //byte[][] buffer = new byte[numOfSector * numOfBlockInSector][MifareClassic.BLOCK_SIZE];
 
-    WriteCardTask(Card card, Util.Callback showText, byte[] password) {
+    WriteCardTask(Card card, Util.Callback showText, Password password) {
         this.card = card;
         this.showText = showText;
-        this.password = password;
+        this.password = password.toByteArray();
+    }
+
+    WriteCardTask(Card card, Util.Callback showText) {
+        this(card, showText, Password.defaultPassword());
     }
 
     @Override

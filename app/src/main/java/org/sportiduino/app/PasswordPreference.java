@@ -21,7 +21,7 @@ public class PasswordPreference extends DialogPreference {
     }
 
     public Password getPersistedPassword() {
-        return Password.fromString(getPersistedString(new Password().toString()));
+        return Password.fromString(getPersistedString(Password.defaultPassword().toString()));
     }
 
     @Override
