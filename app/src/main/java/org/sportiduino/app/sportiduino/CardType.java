@@ -11,7 +11,7 @@ public enum CardType {
     MASTER_SET_NUMBER(0xFB),
     MASTER_SLEEP(0xFC),
     MASTER_READ_BACKUP(0xFD),
-    MASTER_SET_PASS(0xFE);
+    MASTER_CONFIG(0xFE);
 
     private static final Map<Integer, CardType> BY_VALUE = new HashMap<>();
 

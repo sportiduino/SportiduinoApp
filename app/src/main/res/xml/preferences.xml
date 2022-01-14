@@ -8,8 +8,10 @@
         android:title="Password"
         android:summary="" />
 
+    <!--
     <SwitchPreferenceCompat
         android:defaultValue="false"
         android:key="night_mode"
         android:title="@string/night_mode" />
+        -->
 </androidx.preference.PreferenceScreen>

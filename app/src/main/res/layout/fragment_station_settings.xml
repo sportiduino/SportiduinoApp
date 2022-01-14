@@ -9,9 +9,75 @@
     android:orientation="vertical"
     tools:context=".FragmentStationSettings">
 
+    <RadioGroup
+        android:id="@+id/radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" >
+
+        <RadioButton
+            android:id="@+id/radio_button_master_get_state"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/state_master_card" />
+
+        <RadioButton
+            android:id="@+id/radio_button_master_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/time_master_card" />
+
+        <RadioButton
+            android:id="@+id/radio_button_master_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/number_master_card" />
+
+        <LinearLayout
+            android:id="@+id/layout_station_number"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/station_no"/>
+
+            <EditText
+                android:id="@+id/edit_text_station_number"
+                android:defaultValue="0"
+                android:inputType="number"
+                android:max="255"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:ignore="TextFields" />
+        </LinearLayout>
+
+        <RadioButton
+            android:id="@+id/radio_button_master_sleep"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/sleep_master_card" />
+
+        <RadioButton
+            android:id="@+id/radio_button_master_backup"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/backup_master_card" />
+
+        <RadioButton
+            android:id="@+id/radio_button_master_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/config_master_card" />
+
+    </RadioGroup>
+
     <TextView
         android:id="@+id/text_view_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAlignment="center"/>
 
 </LinearLayout>

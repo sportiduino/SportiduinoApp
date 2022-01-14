@@ -6,8 +6,13 @@ import static org.sportiduino.app.sportiduino.Constants.MASTER_CARD_SIGN;
 
 import org.sportiduino.app.Password;
 
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
+
 public class MasterCard extends Card {
     final private byte[] password;
+    public byte[][] dataForWriting = null;
 
     public MasterCard(CardAdapter adapter, CardType type, Password password) {
         super(adapter);
@@ -40,8 +45,8 @@ public class MasterCard extends Card {
                 return "Sleep Master card";
             case MASTER_READ_BACKUP:
                 return "Backup Master card";
-            case MASTER_SET_PASS:
-                return "Password Master card";
+            case MASTER_CONFIG:
+                return "Config Master card";
             default:
                 return "Unknown card type";
         }
@@ -54,24 +59,26 @@ public class MasterCard extends Card {
                 {password[0], password[1], password[2], 0}
         };
         adapter.writePages(CARD_PAGE_INIT, header, header.length);
-        switch (type) {
-            case MASTER_SET_NUMBER: {
-                final byte[] data = {1, 0, 0, 0}; // FIXME
-                adapter.writePage(6, data);
-                break;
-            }
-            case MASTER_SLEEP: {
-                // TODO: add wakeup time
-                final byte[] data = {0, 0, 0, 0}; // FIXME
-                adapter.writePage(6, data);
-                break;
-            }
-            case MASTER_SET_TIME: {
-                // FIXME: add time
-                final byte[] data = {0, 0, 0, 0}; // FIXME
-                adapter.writePage(6, data);
-                break;
-            }
+        if (dataForWriting != null && dataForWriting.length > 0) {
+            adapter.writePages(6, dataForWriting, dataForWriting.length);
         }
     }
+
+    public static byte[][] packStationNumber(int stationNumber) {
+        return new byte[][] { {(byte) stationNumber, 0, 0, 0} };
+    }
+
+    public static byte[][] packTime(Calendar calendar) {
+        int year = calendar.get(Calendar.YEAR) - 2000;
+        int month = calendar.get(Calendar.MONTH) + 1;
+        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        int hour = calendar.get(Calendar.HOUR_OF_DAY);
+        int minute = calendar.get(Calendar.MINUTE);
+        int second = calendar.get(Calendar.SECOND);
+        return new byte[][] {
+            {(byte) month, (byte) year, (byte) day, 0},
+            {(byte) hour, (byte) minute, (byte) second, 0}
+        };
+    }
 }
+

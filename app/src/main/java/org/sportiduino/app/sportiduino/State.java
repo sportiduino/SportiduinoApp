@@ -103,7 +103,7 @@ public class State {
     boolean isEmpty = false;
 
     public State(byte[][] data) {
-        if (data[0][0] == 0) {
+        if (data == null || data.length == 0 || data[0][0] == 0) {
             isEmpty = true;
         }
         version = new Version(data[0][0], data[0][1], data[0][2]);

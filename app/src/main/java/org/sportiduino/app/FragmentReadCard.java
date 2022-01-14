@@ -3,6 +3,7 @@ package org.sportiduino.app;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +12,11 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import org.sportiduino.app.databinding.FragmentReadCardBinding;
+import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardAdapter;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
+import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
 public class FragmentReadCard extends NfcFragment implements IntentReceiver {
@@ -55,14 +58,49 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
                 adapter = new CardMifareUltralight(MifareUltralight.get(tag));
             }
             if (adapter != null) {
-                new ReadCardTask(adapter, setText, setTagType).execute();
+                new ReadCardTask(adapter).execute();
                 break;
             }
         }
     }
 
-    public Util.Callback setText = (str) -> binding.textViewTagInfo.setText(str);
-    public Util.Callback setTagType = (str) -> {
-        binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s_type_s), tagIdStr, str));
-    };
+    class ReadCardTask extends AsyncTask<Void, Void, Boolean> {
+        CardAdapter cardAdapter;
+        Card card;
+        byte[][] buffer;
+
+        ReadCardTask(CardAdapter adapter) {
+            this.cardAdapter = adapter;
+        }
+
+        @Override
+        protected void onPreExecute() {
+            binding.textViewTagInfo.setText("Reading card, don't remove it!");
+        }
+
+        @Override
+        protected Boolean doInBackground(Void... params) {
+            boolean status = true;
+            try {
+                cardAdapter.connect();
+                card = Card.detectCard(cardAdapter);
+                buffer = card.read();
+            } catch (ReadWriteCardException e) {
+                status = false;
+            } finally {
+                cardAdapter.close();
+            }
+            return status;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean result) {
+            if (result && buffer != null) {
+                binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s_type_s), tagIdStr, card.adapter.tagType.name()));
+                binding.textViewTagInfo.setText(card.parseData(buffer));
+            } else {
+                binding.textViewTagInfo.setText(Util.error("Reading card failed!"));
+            }
+        }
+    }
 }

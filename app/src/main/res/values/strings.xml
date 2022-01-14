@@ -15,4 +15,11 @@
     <string name="tag_id_s_type_s">Tag ID: %s, type: %s</string>
     <string name="card_no">Card No</string>
     <string name="auto_increment">Auto +1</string>
+    <string name="state_master_card">State Master Card</string>
+    <string name="time_master_card">Time Master Card</string>
+    <string name="number_master_card">Number Master Card</string>
+    <string name="sleep_master_card">Sleep Master Card</string>
+    <string name="config_master_card">Config Master Card</string>
+    <string name="backup_master_card">Backup Master Card</string>
+    <string name="station_no">Station No</string>
 </resources>
