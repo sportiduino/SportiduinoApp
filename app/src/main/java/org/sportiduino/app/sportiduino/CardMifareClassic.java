@@ -1,12 +1,11 @@
 package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
-import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
 
-public class CardMifareClassic extends Card {
+public class CardMifareClassic extends CardAdapter {
     private final MifareClassic tag;
     final int numOfBlockInSector = 4;
 
@@ -30,7 +29,7 @@ public class CardMifareClassic extends Card {
         }
     }
 
-    public byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull) {
+    public byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull) throws ReadWriteCardException {
         byte[][] blockData = new byte[count][MifareClassic.BLOCK_SIZE];
         int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
@@ -48,18 +47,14 @@ public class CardMifareClassic extends Card {
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
+                    throw new ReadWriteCardException();
                 }
             }
             try {
-                blockData[i] = tag.readBlock(blockIndex);
-                Log.d("Log", (firstBlockIndex + i) + ": "
-                + Integer.toHexString(blockData[i][0] & 0xFF) + " "
-                + Integer.toHexString(blockData[i][1] & 0xFF) + " "
-                + Integer.toHexString(blockData[i][2] & 0xFF) + " "
-                + Integer.toHexString(blockData[i][3] & 0xFF));
-                ++i;
+                blockData[i++] = tag.readBlock(blockIndex);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw new ReadWriteCardException();
             }
             if (stopIfPageNull && blockData[i][0] == 0) {
                 break;
@@ -68,7 +63,7 @@ public class CardMifareClassic extends Card {
         return blockData;
     }
 
-    public void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException {
+    public void writePages(int firstPageIndex, byte[][] data, int count) throws ReadWriteCardException {
         int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
@@ -81,11 +76,11 @@ public class CardMifareClassic extends Card {
                 lastSector = sector;
                 try {
                     if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
-                        throw new WriteCardException();
+                        throw new ReadWriteCardException();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
-                    throw new WriteCardException();
+                    throw new ReadWriteCardException();
                 }
             }
             byte[] pageData = data[i++];
@@ -96,7 +91,7 @@ public class CardMifareClassic extends Card {
                 tag.writeBlock(blockIndex, pageData);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new WriteCardException();
+                throw new ReadWriteCardException();
             }
         }
     }

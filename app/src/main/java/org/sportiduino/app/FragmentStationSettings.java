@@ -13,10 +13,11 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceManager;
 
 import org.sportiduino.app.databinding.FragmentStationSettingsBinding;
-import org.sportiduino.app.sportiduino.Card;
+import org.sportiduino.app.sportiduino.CardAdapter;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
 import org.sportiduino.app.sportiduino.CardType;
+import org.sportiduino.app.sportiduino.MasterCard;
 import org.sportiduino.app.sportiduino.Util;
 
 public class FragmentStationSettings extends NfcFragment {
@@ -45,16 +46,16 @@ public class FragmentStationSettings extends NfcFragment {
     @Override
     public void onNewTagDetected(Tag tag) {
         String[] techList = tag.getTechList();
-        Card card = null;
+        CardAdapter adapter = null;
         for (String s : techList) {
             if (s.equals(MifareClassic.class.getName())) {
-                card = new CardMifareClassic(MifareClassic.get(tag));
+                adapter = new CardMifareClassic(MifareClassic.get(tag));
             } else if (s.equals(MifareUltralight.class.getName())) {
-                card = new CardMifareUltralight(MifareUltralight.get(tag));
+                adapter = new CardMifareUltralight(MifareUltralight.get(tag));
             }
-            if (card != null) {
-                card.type = CardType.MASTER_GET_STATE;
-                new WriteCardTask(card, setText, password).execute();
+            if (adapter != null) {
+                MasterCard masterCard = new MasterCard(adapter, CardType.MASTER_GET_STATE, password);
+                new WriteCardTask(masterCard, setText).execute();
                 break;
             }
         }

@@ -1,73 +1,52 @@
 package org.sportiduino.app.sportiduino;
 
-import android.nfc.tech.TagTechnology;
+import static org.sportiduino.app.sportiduino.Constants.*;
 
-import java.io.IOException;
+import org.sportiduino.app.Password;
+
+import java.util.Date;
 
 
 public abstract class Card {
-    protected TagTechnology tagTech;
-    public TagType tagType = TagType.UNKNOWN;
     public CardType type = CardType.UNKNOWN;
+    public CardAdapter adapter;
 
-    public Card(TagTechnology tagTech) {
-        this.tagTech = tagTech;
+    public Card(CardAdapter adapter) {
+        this.adapter = adapter;
     }
 
-    public void connect() {
+    public abstract byte[][] read() throws ReadWriteCardException;
+    public abstract String parseData(byte[][] data);
+
+    protected abstract void writeImpl() throws ReadWriteCardException;
+
+    public void write() throws ReadWriteCardException {
+        adapter.connect();
         try {
-            if (!tagTech.isConnected()) {
-                tagTech.connect();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
+            writeImpl();
+        } catch (ReadWriteCardException e) {
+            throw e;
+        } finally {
+            adapter.close();
         }
     }
 
-    public void close() {
-        if(tagTech != null && tagTech.isConnected()){
-            try {
-                tagTech.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+    public static Card detectCard(CardAdapter adapter) throws ReadWriteCardException {
+        byte[] data = adapter.readPage(CARD_PAGE_INIT);
+
+        if (data[2] == MASTER_CARD_SIGN) {
+            CardType type = CardType.byValue(Util.byteToUint(data[1]));
+            return new MasterCard(adapter, type, Password.defaultPassword());
+        } else {
+            CardType type = CardType.ORDINARY;
+            int cardNumber = data[0] & 0xFF;
+            cardNumber <<= 8;
+            cardNumber |= data[1] & 0xFF;
+            data = adapter.readPage(CARD_PAGE_INIT_TIME);
+            long cardInitTimestamp = Util.toUint32(data);
+            return new ParticipantCard(adapter, cardNumber, cardInitTimestamp);
         }
-    }
-
-    public abstract byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull);
-
-    public byte[][] readPages(int firstPageIndex, int count) {
-        return readPages(firstPageIndex, count, false);
-    }
-
-    public byte[] readPage(int firstPageIndex) {
-        return readPages(firstPageIndex, 1)[0];
-    }
-
-    public abstract void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException;
-
-    public void writePage(int firstPageIndex, byte[][] data) throws WriteCardException {
-        writePages(firstPageIndex, data, 1);
-    }
-
-    public int getMaxPage() {
-        switch(tagType) {
-            case MIFARE_MINI:
-                return 17;
-            case MIFARE_1K:
-                return 50;
-            case MIFARE_4K:
-                return 98;
-            case MIFARE_UL:
-            case NTAG213:
-                return 39;
-            case NTAG215:
-                return 129;
-            case NTAG216:
-                return 225;
-            default:
-                return 0;
-        }
+         
     }
 }
 

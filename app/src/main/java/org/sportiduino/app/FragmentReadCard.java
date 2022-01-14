@@ -11,7 +11,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import org.sportiduino.app.databinding.FragmentReadCardBinding;
-import org.sportiduino.app.sportiduino.Card;
+import org.sportiduino.app.sportiduino.CardAdapter;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
 import org.sportiduino.app.sportiduino.Util;
@@ -47,15 +47,15 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s), tagIdStr));
 
         String[] techList = tag.getTechList();
-        Card card = null;
+        CardAdapter adapter = null;
         for (String s : techList) {
             if (s.equals(MifareClassic.class.getName())) {
-                card = new CardMifareClassic(MifareClassic.get(tag));
+                adapter = new CardMifareClassic(MifareClassic.get(tag));
             } else if (s.equals(MifareUltralight.class.getName())) {
-                card = new CardMifareUltralight(MifareUltralight.get(tag));
+                adapter = new CardMifareUltralight(MifareUltralight.get(tag));
             }
-            if (card != null) {
-                new ReadCardTask(card, setText, setTagType).execute();
+            if (adapter != null) {
+                new ReadCardTask(adapter, setText, setTagType).execute();
                 break;
             }
         }

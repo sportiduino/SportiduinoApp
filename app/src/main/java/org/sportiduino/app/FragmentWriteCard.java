@@ -11,10 +11,10 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 
 import org.sportiduino.app.databinding.FragmentWriteCardBinding;
-import org.sportiduino.app.sportiduino.Card;
+import org.sportiduino.app.sportiduino.CardAdapter;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
-import org.sportiduino.app.sportiduino.CardType;
+import org.sportiduino.app.sportiduino.ParticipantCard;
 import org.sportiduino.app.sportiduino.Util;
 
 public class FragmentWriteCard extends NfcFragment {
@@ -39,15 +39,16 @@ public class FragmentWriteCard extends NfcFragment {
     @Override
     public void onNewTagDetected(Tag tag) {
         String[] techList = tag.getTechList();
-        Card card = null;
+        CardAdapter adapter = null;
         for (String s : techList) {
             if (s.equals(MifareClassic.class.getName())) {
-                card = new CardMifareClassic(MifareClassic.get(tag));
+                adapter = new CardMifareClassic(MifareClassic.get(tag));
             } else if (s.equals(MifareUltralight.class.getName())) {
-                card = new CardMifareUltralight(MifareUltralight.get(tag));
+                adapter = new CardMifareUltralight(MifareUltralight.get(tag));
             }
-            if (card != null) {
-                card.type = CardType.ORDINARY;
+            if (adapter != null) {
+                int cardNumber = 777;
+                ParticipantCard card = new ParticipantCard(adapter, cardNumber);
                 new WriteCardTask(card, setText).execute();
                 break;
             }

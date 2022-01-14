@@ -6,7 +6,7 @@ import android.nfc.tech.TagTechnology;
 import java.io.IOException;
 import java.util.Arrays;
 
-public class CardMifareUltralight extends Card {
+public class CardMifareUltralight extends CardAdapter {
     private final MifareUltralight tag;
 
     public CardMifareUltralight(MifareUltralight tag) {
@@ -15,7 +15,7 @@ public class CardMifareUltralight extends Card {
     }
 
     @Override
-    public void connect() {
+    public void connect() throws ReadWriteCardException {
         super.connect();
 
         byte[] pageData = readPage(3);
@@ -35,7 +35,7 @@ public class CardMifareUltralight extends Card {
         }
     }
 
-    public byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull) {
+    public byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull) throws ReadWriteCardException {
         byte[][] blockData = new byte[count][16];
         int pageIndex = firstPageIndex;
         for (int i = 0; i < count; ++i) {
@@ -43,12 +43,8 @@ public class CardMifareUltralight extends Card {
                 blockData[i] = tag.readPages(pageIndex++);
             } catch (IOException e) {
                 e.printStackTrace();
+                throw new ReadWriteCardException();
             }
-            //Log.d("Log", i + ": "
-            //+ Integer.toHexString(blockData[i][0] & 0xFF) + " "
-            //+ Integer.toHexString(blockData[i][1] & 0xFF) + " "
-            //+ Integer.toHexString(blockData[i][2] & 0xFF) + " "
-            //+ Integer.toHexString(blockData[i][3] & 0xFF));
             if (stopIfPageNull && blockData[i][0] == 0) {
                 break;
             }
@@ -56,7 +52,7 @@ public class CardMifareUltralight extends Card {
         return blockData;
     }
 
-    public void writePages(int firstPageIndex, byte[][] data, int count) throws WriteCardException {
+    public void writePages(int firstPageIndex, byte[][] data, int count) throws ReadWriteCardException {
         int pageIndex = firstPageIndex;
         for (int i = 0; i < count; ++i) {
             byte[] pageData = data[i];
@@ -67,7 +63,7 @@ public class CardMifareUltralight extends Card {
                 tag.writePage(pageIndex++, pageData);
             } catch (IOException e) {
                 e.printStackTrace();
-                throw new WriteCardException();
+                throw new ReadWriteCardException();
             }
         }
     }
