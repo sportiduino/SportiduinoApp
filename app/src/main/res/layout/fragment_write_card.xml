@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,9 +8,44 @@
     android:orientation="vertical"
     tools:context=".FragmentWriteCard">
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_weight="1"
+            android:text="@string/card_no"
+            android:textAlignment="textEnd" />
+
+        <EditText
+            android:id="@+id/edit_text_card_number"
+            android:defaultValue="0"
+            android:inputType="number"
+            android:max="65000"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:textAlignment="center"
+            tools:ignore="TextFields" />
+
+        <CheckBox
+            android:id="@+id/check_box_auto_increment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/auto_increment" />
+
+    </LinearLayout>
+
     <TextView
         android:id="@+id/text_view_info"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:textAlignment="center"/>
 
 </LinearLayout>

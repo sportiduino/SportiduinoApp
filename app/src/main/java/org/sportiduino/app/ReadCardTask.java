@@ -32,7 +32,7 @@ class ReadCardTask extends AsyncTask<Void, Void, Void> {
             card = Card.detectCard(cardAdapter);
             buffer = card.read();
         } catch (ReadWriteCardException e) {
-            showText.call("Reading card failed!");
+            showText.call(Util.error("Reading card failed!"));
         } finally {
             cardAdapter.close();
         }

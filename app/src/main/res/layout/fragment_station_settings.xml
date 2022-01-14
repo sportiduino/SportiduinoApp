@@ -10,7 +10,7 @@
     tools:context=".FragmentStationSettings">
 
     <TextView
-        android:id="@+id/text_view_info1"
+        android:id="@+id/text_view_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 

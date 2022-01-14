@@ -72,7 +72,8 @@ public class ParticipantCard extends Card {
         adapter.clear(CARD_PAGE_INFO1, adapter.getMaxPage());
         long currentTimestamp = System.currentTimeMillis() / 1000;
         adapter.writePage(CARD_PAGE_INIT_TIME, Util.fromUint32(currentTimestamp));
-        final byte[] dataPageInit = {0, 1, 0, FW_PROTO_VERSION};
+        final byte[] cardNumberArray = Util.fromUint16(cardNumber);
+        final byte[] dataPageInit = {cardNumberArray[0], cardNumberArray[1], 0, FW_PROTO_VERSION};
         adapter.writePage(CARD_PAGE_INIT, dataPageInit);
     }
 }
