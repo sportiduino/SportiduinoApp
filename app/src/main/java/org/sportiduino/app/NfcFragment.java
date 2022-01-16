@@ -30,12 +30,13 @@ public abstract class NfcFragment extends Fragment implements IntentReceiver {
                 new String[]{MifareClassic.class.getName()},
                 new String[]{MifareUltralight.class.getName()}
         };
-        ((MainActivity) activity).setIntentReceiver(this);
+        setThisAsIntentReceiver();
     }
 
     @Override
     public void onResume() {
         super.onResume();
+        setThisAsIntentReceiver();
         if (nfcAdapter != null) {
             nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, null);
         }
@@ -46,6 +47,13 @@ public abstract class NfcFragment extends Fragment implements IntentReceiver {
         super.onPause();
         if (nfcAdapter != null) {
             nfcAdapter.disableForegroundDispatch(getActivity());
+        }
+    }
+
+    private void setThisAsIntentReceiver() {
+        MainActivity activity = (MainActivity) getActivity();
+        if (activity != null) {
+            activity.setIntentReceiver(this);
         }
     }
 

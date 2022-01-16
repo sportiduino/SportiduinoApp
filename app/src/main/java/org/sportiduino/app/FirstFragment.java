@@ -49,10 +49,10 @@ public class FirstFragment extends Fragment {
 
 class TabsAdapter extends FragmentStatePagerAdapter {
     private final List<Fragment> fragmentList;
-    private List<String> fragmentTitles;
+    private final List<String> fragmentTitles;
 
     public TabsAdapter(FragmentManager fm){
-        super(fm);
+        super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         fragmentList = new ArrayList<>();
         fragmentTitles = new ArrayList<>();
     }
