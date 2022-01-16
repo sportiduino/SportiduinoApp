@@ -22,4 +22,8 @@
     <string name="config_master_card">Config Master Card</string>
     <string name="backup_master_card">Backup Master Card</string>
     <string name="station_no">Station No</string>
+    <string name="button_start">Start</string>
+    <string name="button_finish">Finish</string>
+    <string name="button_clear">Clear</string>
+    <string name="button_check">Check</string>
 </resources>

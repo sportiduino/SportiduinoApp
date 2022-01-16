@@ -36,22 +36,69 @@
             android:id="@+id/layout_station_number"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2dp"
             android:visibility="gone">
 
-            <TextView
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/station_no"/>
+                android:orientation="horizontal">
 
-            <EditText
-                android:id="@+id/edit_text_station_number"
-                android:defaultValue="0"
-                android:inputType="number"
-                android:max="255"
-                android:layout_width="100dp"
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/station_no"/>
+
+                <EditText
+                    android:id="@+id/edit_text_station_number"
+                    android:defaultValue="0"
+                    android:inputType="number"
+                    android:max="255"
+                    android:layout_width="100dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    tools:ignore="TextFields" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:ignore="TextFields" />
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/button_start"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="1dp"
+                    android:text="@string/button_start" />
+
+                <Button
+                    android:id="@+id/button_finish"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="1dp"
+                    android:text="@string/button_finish" />
+
+                <Button
+                    android:id="@+id/button_check"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="1dp"
+                    android:text="@string/button_check" />
+
+                <Button
+                    android:id="@+id/button_clear"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="1dp"
+                    android:text="@string/button_clear" />
+            </LinearLayout>
         </LinearLayout>
 
         <RadioButton
@@ -108,7 +155,8 @@
         android:id="@+id/text_view_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textAlignment="center"/>
+        android:textAlignment="center"
+        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
 
     <TextView
         android:id="@+id/text_view_timer"
