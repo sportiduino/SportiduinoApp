@@ -36,6 +36,8 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.TimeZone;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class FragmentStationSettings extends NfcFragment {
     private FragmentStationSettingsBinding binding;
@@ -43,6 +45,8 @@ public class FragmentStationSettings extends NfcFragment {
     private ArrayList<RadioButton> listRadioButtons;
     private CardType cardType = CardType.UNKNOWN;
     Calendar wakeupTime = Calendar.getInstance();
+    private int timerCount;
+    private Timer timer;
     //private final DateFormat dateFormat = new SimpleDateFormat();
 
     @Override
@@ -199,7 +203,11 @@ public class FragmentStationSettings extends NfcFragment {
                     }
                     masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
                 } else if (binding.radioButtonMasterTime.isChecked()) {
-                    masterCard.dataForWriting = MasterCard.packTime(Calendar.getInstance());
+                    Calendar c = Calendar.getInstance();
+                    Log.i("current", String.valueOf(c.get(Calendar.SECOND)));
+                    c.add(Calendar.SECOND, 3);
+                    Log.i("tocard", String.valueOf(c.get(Calendar.SECOND)));
+                    masterCard.dataForWriting = MasterCard.packTime(c);
                 } else if (binding.radioButtonMasterSleep.isChecked()) {
                     masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
                 }
@@ -208,6 +216,35 @@ public class FragmentStationSettings extends NfcFragment {
             }
         }
     }
+
+    private void startCountdownTimer() {
+        if (timer != null) {
+            timer.cancel();
+        }
+        timer = new Timer();
+        CountdownTimerTask countdownTimerTask = new CountdownTimerTask();
+        timerCount = 3;
+        timer.scheduleAtFixedRate(countdownTimerTask, 0, 1000);
+    }
+
+    class CountdownTimerTask extends TimerTask {
+
+        @Override
+        public void run() {
+            requireActivity().runOnUiThread(() -> {
+                String timerStr = String.valueOf(timerCount);
+                if (timerCount == 0) {
+                    timerStr = "Beep";
+                } else if (timerCount < 0) {
+                    timerStr = "";
+                    timer.cancel();
+                    timer = null;
+                }
+                binding.textViewTimer.setText(timerStr);
+                --timerCount;
+            });
+        }
+	}
 
     //public static class TimePickerFragment extends DialogFragment
     //        implements TimePickerDialog.OnTimeSetListener {
@@ -260,6 +297,9 @@ public class FragmentStationSettings extends NfcFragment {
         protected void onPostExecute(Boolean result) {
             if (result) {
                 binding.textViewInfo.setText(Util.ok("Data written to card successfully"));
+                if (binding.radioButtonMasterTime.isChecked()) {
+                    startCountdownTimer();
+                }
             } else {
                 binding.textViewInfo.setText(Util.error("Writing card failed!"));
             }
