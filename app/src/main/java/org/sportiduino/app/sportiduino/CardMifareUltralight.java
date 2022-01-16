@@ -45,7 +45,11 @@ public class CardMifareUltralight extends CardAdapter {
                 e.printStackTrace();
                 throw new ReadWriteCardException();
             }
-            if (stopIfPageNull && blockData[i][0] == 0) {
+            if (stopIfPageNull
+                && blockData[i][0] == 0
+                && blockData[i][1] == 0
+                && blockData[i][2] == 0
+                && blockData[i][3] == 0) {
                 break;
             }
         }

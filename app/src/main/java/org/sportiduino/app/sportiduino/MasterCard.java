@@ -1,12 +1,13 @@
 package org.sportiduino.app.sportiduino;
 
-import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INIT;
-import static org.sportiduino.app.sportiduino.Constants.FW_PROTO_VERSION;
-import static org.sportiduino.app.sportiduino.Constants.MASTER_CARD_SIGN;
+import static org.sportiduino.app.sportiduino.Constants.*;
+
+import android.util.Log;
 
 import org.sportiduino.app.Password;
 
 import java.util.Calendar;
+import java.util.Date;
 import java.util.TimeZone;
 
 public class MasterCard extends Card {
@@ -25,6 +26,8 @@ public class MasterCard extends Card {
         switch (type) {
             case MASTER_GET_STATE:
                 return adapter.readPages(8, 12);
+            case MASTER_READ_BACKUP:
+                return adapter.readPages(CARD_PAGE_INFO1, adapter.getMaxPage(), true);
             default:
                 return new byte[0][0];
         }
@@ -43,7 +46,7 @@ public class MasterCard extends Card {
             case MASTER_SLEEP:
                 return "Sleep Master card";
             case MASTER_READ_BACKUP:
-                return "Backup Master card";
+                return parseBackupMaster(data);
             case MASTER_CONFIG:
                 return "Config Master card";
             default:
@@ -61,6 +64,39 @@ public class MasterCard extends Card {
         if (dataForWriting != null && dataForWriting.length > 0) {
             adapter.writePages(6, dataForWriting, dataForWriting.length);
         }
+    }
+
+    private String parseBackupMaster(byte[][] data) {
+        int stationNumber = dataPage4[0] & 0xff;
+        long timeHigh12bits = 0;
+        long initTime = 0;
+        StringBuilder ret = new StringBuilder("Backup Master card");
+        if (dataPage4[3] > 0) { // have timestamp
+            ret.append("\n").append("Station No ").append(stationNumber);
+            for (byte[] datum : data) {
+                if (timeHigh12bits == 0) {
+                    initTime = Util.toUint32(datum);
+                    timeHigh12bits = initTime & 0xfff00000;
+                    continue;
+                }
+
+                int cardNum = (datum[0] & 0xff) << 8;
+                cardNum |= datum[1] & 0xff;
+                cardNum >>= 4;
+
+                if (cardNum == 0) {
+                    continue;
+                }
+
+                long punchTime = Util.toUint32(datum) & 0xfffff | timeHigh12bits;
+                if (punchTime < initTime) {
+                    punchTime += 0x100000;
+                }
+                ret.append(String.format("\n%1$4s", cardNum));
+                ret.append(" - ").append(Util.dformat.format(new Date(punchTime * 1000)));
+            }
+        }
+        return ret.toString();
     }
 
     public static byte[][] packStationNumber(int stationNumber) {

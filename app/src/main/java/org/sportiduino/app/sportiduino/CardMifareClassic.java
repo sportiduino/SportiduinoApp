@@ -1,6 +1,7 @@
 package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
+import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -34,7 +35,7 @@ public class CardMifareClassic extends CardAdapter {
         int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
-        for (int blockIndex = firstBlockIndex; i < count; ++blockIndex) {
+        for (int blockIndex = firstBlockIndex; blockIndex <= tag.getBlockCount(); ++blockIndex) {
             if ((blockIndex + 1) % numOfBlockInSector == 0) {
                 continue;
             }
@@ -43,7 +44,7 @@ public class CardMifareClassic extends CardAdapter {
                 lastSector = sector;
                 try {
                     if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
-                        return new byte[0][0];
+                        throw new ReadWriteCardException();
                     }
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -51,12 +52,25 @@ public class CardMifareClassic extends CardAdapter {
                 }
             }
             try {
-                blockData[i++] = tag.readBlock(blockIndex);
+                blockData[i] = tag.readBlock(blockIndex);
+                //Log.i("CardMifareClassic", String.valueOf(i) + ": " +
+                //    Integer.toHexString(blockData[i][0] & 0xff) + " " +
+                //    Integer.toHexString(blockData[i][1] & 0xff) + " " +
+                //    Integer.toHexString(blockData[i][2] & 0xff) + " " +
+                //    Integer.toHexString(blockData[i][3] & 0xff));
             } catch (IOException e) {
                 e.printStackTrace();
                 throw new ReadWriteCardException();
             }
-            if (stopIfPageNull && blockData[i][0] == 0) {
+            if (stopIfPageNull
+                && blockData[i][0] == 0
+                && blockData[i][1] == 0
+                && blockData[i][2] == 0
+                && blockData[i][3] == 0) {
+                break;
+            }
+            ++i;
+            if (i >= count) {
                 break;
             }
         }

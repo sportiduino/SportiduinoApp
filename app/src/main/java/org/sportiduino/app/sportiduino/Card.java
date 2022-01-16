@@ -4,12 +4,11 @@ import static org.sportiduino.app.sportiduino.Constants.*;
 
 import org.sportiduino.app.Password;
 
-import java.util.Date;
-
 
 public abstract class Card {
     public CardType type = CardType.UNKNOWN;
     public CardAdapter adapter;
+    protected byte[] dataPage4;
 
     public Card(CardAdapter adapter) {
         this.adapter = adapter;
@@ -24,8 +23,6 @@ public abstract class Card {
         adapter.connect();
         try {
             writeImpl();
-        } catch (ReadWriteCardException e) {
-            throw e;
         } finally {
             adapter.close();
         }
@@ -36,9 +33,10 @@ public abstract class Card {
 
         if (data[2] == MASTER_CARD_SIGN) {
             CardType type = CardType.byValue(Util.byteToUint(data[1]));
-            return new MasterCard(adapter, type, Password.defaultPassword());
+            MasterCard masterCard = new MasterCard(adapter, type, Password.defaultPassword());
+            masterCard.dataPage4 = data;
+            return masterCard;
         } else {
-            CardType type = CardType.ORDINARY;
             int cardNumber = data[0] & 0xFF;
             cardNumber <<= 8;
             cardNumber |= data[1] & 0xFF;
