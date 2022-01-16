@@ -7,8 +7,7 @@ import static org.sportiduino.app.sportiduino.Constants.MASTER_CARD_SIGN;
 import org.sportiduino.app.Password;
 
 import java.util.Calendar;
-import java.util.Date;
-import java.util.GregorianCalendar;
+import java.util.TimeZone;
 
 public class MasterCard extends Card {
     final private byte[] password;
@@ -69,6 +68,7 @@ public class MasterCard extends Card {
     }
 
     public static byte[][] packTime(Calendar calendar) {
+        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
         int year = calendar.get(Calendar.YEAR) - 2000;
         int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);

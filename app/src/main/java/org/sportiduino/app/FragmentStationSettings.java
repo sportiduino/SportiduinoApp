@@ -1,17 +1,25 @@
 package org.sportiduino.app;
 
+import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.app.TimePickerDialog;
 import android.content.SharedPreferences;
+import android.graphics.Paint;
 import android.nfc.Tag;
 import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 import android.widget.RadioButton;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
+import androidx.fragment.app.DialogFragment;
 import androidx.preference.PreferenceManager;
 
 import org.sportiduino.app.databinding.FragmentStationSettingsBinding;
@@ -24,9 +32,9 @@ import org.sportiduino.app.sportiduino.MasterCard;
 import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.TimeZone;
 
 public class FragmentStationSettings extends NfcFragment {
@@ -34,6 +42,8 @@ public class FragmentStationSettings extends NfcFragment {
     private Password password = Password.defaultPassword();
     private ArrayList<RadioButton> listRadioButtons;
     private CardType cardType = CardType.UNKNOWN;
+    Calendar wakeupTime = Calendar.getInstance();
+    //private final DateFormat dateFormat = new SimpleDateFormat();
 
     @Override
     public View onCreateView(
@@ -64,6 +74,64 @@ public class FragmentStationSettings extends NfcFragment {
                 rb.setOnClickListener(rbClickListener);
             }
         }
+
+        binding.textViewWakeupDate.setPaintFlags(binding.textViewWakeupDate.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        binding.textViewWakeupDate.setOnClickListener(dateClickListener);
+
+        binding.textViewWakeupTime.setPaintFlags(binding.textViewWakeupTime.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+        binding.textViewWakeupTime.setOnClickListener(timeClickListener);
+
+        updateWakeupTime();
+    }
+
+    View.OnClickListener dateClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            int year = wakeupTime.get(Calendar.YEAR);
+            int month = wakeupTime.get(Calendar.MONTH);
+            int day = wakeupTime.get(Calendar.DAY_OF_MONTH);
+
+            new DatePickerDialog(getActivity(), dateSetListener, year, month, day).show();
+        }
+    };
+
+    View.OnClickListener timeClickListener = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            //DialogFragment newFragment = new TimePickerFragment(this);
+            //newFragment.show(getParentFragmentManager(), "timePicker");
+            int hour = wakeupTime.get(Calendar.HOUR_OF_DAY);
+            int minute = wakeupTime.get(Calendar.MINUTE);
+
+            new TimePickerDialog(getActivity(), timeSetListener, hour, minute,
+                    android.text.format.DateFormat.is24HourFormat(getActivity())).show();
+        }
+    };
+
+    TimePickerDialog.OnTimeSetListener timeSetListener = new TimePickerDialog.OnTimeSetListener() {
+
+        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+            wakeupTime.set(Calendar.HOUR_OF_DAY, hourOfDay);
+            wakeupTime.set(Calendar.MINUTE, minute);
+            wakeupTime.set(Calendar.SECOND, 0);
+            updateWakeupTime();
+        }
+    };
+
+    DatePickerDialog.OnDateSetListener dateSetListener = new DatePickerDialog.OnDateSetListener() {
+
+        public void onDateSet(DatePicker view, int year, int month, int day) {
+            // Do something with the date chosen by the user
+            wakeupTime.set(Calendar.YEAR, year);
+            wakeupTime.set(Calendar.MONTH, month);
+            wakeupTime.set(Calendar.DAY_OF_MONTH, day);
+            updateWakeupTime();
+        }
+    };
+
+    private void updateWakeupTime() {
+        binding.textViewWakeupDate.setText(DateFormat.getDateInstance().format(wakeupTime.getTime()));
+        binding.textViewWakeupTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(wakeupTime.getTime()));
     }
 
     View.OnClickListener rbClickListener = new View.OnClickListener() {
@@ -74,6 +142,7 @@ public class FragmentStationSettings extends NfcFragment {
                 binding.textViewInfo.setText(R.string.bring_card);
             }
             binding.layoutStationNumber.setVisibility(View.GONE);
+            binding.layoutWakeupTime.setVisibility(View.GONE);
             switch (rb.getId()) {
                 case R.id.radio_button_master_get_state:
                     cardType = CardType.MASTER_GET_STATE;
@@ -87,6 +156,7 @@ public class FragmentStationSettings extends NfcFragment {
                     break;
                 case R.id.radio_button_master_sleep:
                     cardType = CardType.MASTER_SLEEP;
+                    binding.layoutWakeupTime.setVisibility(View.VISIBLE);
                     break;
                 case R.id.radio_button_master_config:
                     cardType = CardType.MASTER_CONFIG;
@@ -129,13 +199,40 @@ public class FragmentStationSettings extends NfcFragment {
                     }
                     masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
                 } else if (binding.radioButtonMasterTime.isChecked()) {
-                    masterCard.dataForWriting = MasterCard.packTime(Calendar.getInstance(TimeZone.getTimeZone("UTC")));
+                    masterCard.dataForWriting = MasterCard.packTime(Calendar.getInstance());
+                } else if (binding.radioButtonMasterSleep.isChecked()) {
+                    masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
                 }
                 new WriteCardTask(masterCard).execute();
                 break;
             }
         }
     }
+
+    //public static class TimePickerFragment extends DialogFragment
+    //        implements TimePickerDialog.OnTimeSetListener {
+
+    //    private FragmentStationSettings fragmentStationSettings;
+
+    //    public TimePickerFragment(FragmentStationSettings f) {
+    //        super();
+    //        fragmentStationSettings = f;
+    //    }
+
+    //    @Override
+    //    public Dialog onCreateDialog(Bundle savedInstanceState) {
+    //        int hour = wakeupTime.get(Calendar.HOUR_OF_DAY);
+    //        int minute = wakeupTime.get(Calendar.MINUTE);
+
+    //        return new TimePickerDialog(getActivity(), this, hour, minute,
+    //                android.text.format.DateFormat.is24HourFormat(getActivity()));
+    //    }
+
+    //    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+    //        // Do something with the time chosen by the user
+    //        Log.i("onClick", "time");
+    //    }
+    //}
 
     class WriteCardTask extends AsyncTask<Void, Void, Boolean> {
         final private Card card;
@@ -168,5 +265,5 @@ public class FragmentStationSettings extends NfcFragment {
             }
         }
     }
-
 }
+

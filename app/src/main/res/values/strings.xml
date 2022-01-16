@@ -12,7 +12,7 @@
     <string name="fragment_station_settings_label">Station settings</string>
     <string name="bring_card">Bring card...</string>
     <string name="tag_id_s">Tag ID: %s</string>
-    <string name="tag_id_s_type_s">Tag ID: %s, type: %s</string>
+    <string name="tag_type_s">Tag type: %s</string>
     <string name="card_no">Card No</string>
     <string name="auto_increment">Auto +1</string>
     <string name="state_master_card">State Master Card</string>

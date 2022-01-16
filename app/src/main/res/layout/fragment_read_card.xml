@@ -9,14 +9,29 @@
     android:orientation="vertical"
     tools:context=".FragmentReadCard">
 
-    <TextView
-        android:id="@+id/text_view_info"
+    <LinearLayout
+        android:id="@+id/layout_tag_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textStyle="italic"/>
+        android:orientation="horizontal"
+        android:visibility="gone" >
+
+        <TextView
+            android:id="@+id/text_view_tag_id"
+            android:layout_width="wrap_content"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:id="@+id/text_view_tag_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
+
+    </LinearLayout>
 
     <TextView
-        android:id="@+id/text_view_tag_info"
+        android:id="@+id/text_view_info"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:fontFamily="monospace"/>

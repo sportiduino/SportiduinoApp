@@ -60,6 +60,36 @@
             android:layout_height="wrap_content"
             android:text="@string/sleep_master_card" />
 
+        <LinearLayout
+            android:id="@+id/layout_wakeup_time"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Wakeup time: "/>
+
+            <TextView
+                android:id="@+id/text_view_wakeup_date"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textStyle=""
+                />
+
+            <TextView
+                android:id="@+id/text_view_wakeup_time"
+                android:layout_width="wrap_content"
+                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                />
+
+        </LinearLayout>
+
         <RadioButton
             android:id="@+id/radio_button_master_backup"
             android:layout_width="match_parent"

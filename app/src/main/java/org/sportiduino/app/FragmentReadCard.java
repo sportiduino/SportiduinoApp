@@ -21,7 +21,6 @@ import org.sportiduino.app.sportiduino.Util;
 
 public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     private FragmentReadCardBinding binding;
-    private String tagIdStr;
 
     @Override
     public View onCreateView(
@@ -37,6 +36,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         super.onViewCreated(view, savedInstanceState);
 
         binding.textViewInfo.setText(R.string.bring_card);
+        binding.layoutTagInfo.setVisibility(View.GONE);
     }
 
     @Override
@@ -46,8 +46,9 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         for (byte b : tagId) {
             tagInfo.append(Integer.toHexString(b & 0xFF)).append(" ");
         }
-        tagIdStr = tagInfo.toString();
-        binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s), tagIdStr));
+        String tagIdStr = tagInfo.toString();
+        binding.textViewTagId.setText(String.format(getString(R.string.tag_id_s), tagIdStr));
+        binding.layoutTagInfo.setVisibility(View.VISIBLE);
 
         String[] techList = tag.getTechList();
         CardAdapter adapter = null;
@@ -75,7 +76,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
 
         @Override
         protected void onPreExecute() {
-            binding.textViewTagInfo.setText("Reading card, don't remove it!");
+            binding.textViewInfo.setText("Reading card, don't remove it!");
         }
 
         @Override
@@ -96,10 +97,10 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result && buffer != null) {
-                binding.textViewInfo.setText(String.format(getString(R.string.tag_id_s_type_s), tagIdStr, card.adapter.tagType.name()));
-                binding.textViewTagInfo.setText(card.parseData(buffer));
+                binding.textViewTagType.setText(String.format(getString(R.string.tag_type_s), card.adapter.tagType.name()));
+                binding.textViewInfo.setText(card.parseData(buffer));
             } else {
-                binding.textViewTagInfo.setText(Util.error("Reading card failed!"));
+                binding.textViewInfo.setText(Util.error("Reading card failed!"));
             }
         }
     }
