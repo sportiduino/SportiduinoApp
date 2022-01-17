@@ -51,7 +51,7 @@ public class FragmentWriteCard extends NfcFragment {
             cardNumber = 0;
         }
         if (cardNumber == 0) {
-            binding.textViewInfo.setText("Insert card number.");
+            binding.textViewInfo.setText(R.string.insert_card_number);
             return;
         }
 
@@ -78,7 +78,7 @@ public class FragmentWriteCard extends NfcFragment {
 
         @Override
         protected void onPreExecute() {
-            binding.textViewInfo.setText("Writing card, don't remove it...");
+            binding.textViewInfo.setText(R.string.writing_card_dont_remove_it);
         }
 
         @Override
@@ -94,12 +94,12 @@ public class FragmentWriteCard extends NfcFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                binding.textViewInfo.setText(Util.ok("Data written to card successfully"));
+                binding.textViewInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
                 if (binding.checkBoxAutoIncrement.isChecked()) {
                     binding.editTextCardNumber.setText(String.valueOf(cardNumber + 1));
                 }
             } else {
-                binding.textViewInfo.setText(Util.error("Writing card failed!"));
+                binding.textViewInfo.setText(Util.error(getString(R.string.writing_card_failed)));
             }
         }
     }

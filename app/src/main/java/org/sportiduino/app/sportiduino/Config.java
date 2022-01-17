@@ -1,5 +1,8 @@
 package org.sportiduino.app.sportiduino;
 
+import org.sportiduino.app.App;
+import org.sportiduino.app.R;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -12,12 +15,12 @@ public class Config {
 
     private enum AntennaGain {
         ANTENNA_GAIN_UNKNOWN("unknown", 0),
-        ANTENNA_GAIN_18DB("18 dB", 0x02),
-        ANTENNA_GAIN_23DB("23 dB", 0x03),
-        ANTENNA_GAIN_33DB("33 dB", 0x04),
-        ANTENNA_GAIN_38DB("38 dB", 0x05),
-        ANTENNA_GAIN_43DB("43 dB", 0x06),
-        ANTENNA_GAIN_48DB("48 dB", 0x07);
+        ANTENNA_GAIN_18DB("18 " + "dB", 0x02),
+        ANTENNA_GAIN_23DB("23 " + "dB", 0x03),
+        ANTENNA_GAIN_33DB("33 " + "dB", 0x04),
+        ANTENNA_GAIN_38DB("38 " + "dB", 0x05),
+        ANTENNA_GAIN_43DB("43 " + "dB", 0x06),
+        ANTENNA_GAIN_48DB("48 " + "dB", 0x07);
 
         private static final Map<Integer, AntennaGain> BY_VALUE = new HashMap<>();
 
@@ -97,42 +100,42 @@ public class Config {
 
     @Override
     public String toString() {
-        String str = "\tStation No: " + stationCode;
+        String str = App.ctx().getString(R.string.config_station_no_) + stationCode;
         switch (stationCode) {
             case START_STATION:
-                str += " (Start)";
+                str += App.ctx().getString(R.string.config_start);
                 break;
             case FINISH_STATION:
-                str += " (Finish)";
+                str += App.ctx().getString(R.string.config_finish);
                 break;
             case CHECK_STATION:
-                str += " (Check)";
+                str += App.ctx().getString(R.string.config_check);
                 break;
             case CLEAR_STATION:
-                str += " (Clear)";
+                str += App.ctx().getString(R.string.config_clear);
                 break;
         }
-        String activeModeString = (1 << activeModeDuration) + " h";
+        String activeModeString = (1 << activeModeDuration) + App.ctx().getString(R.string.config_hour);
         if (activeModeDuration == 64) {
-            activeModeString = "always Active";
+            activeModeString = App.ctx().getString(R.string.config_always_active);
         } else if (activeModeDuration == 128) {
-            activeModeString = "always in Wait";
+            activeModeString = App.ctx().getString(R.string.config_always_in_wait);
         }
-        str += "\n\tActive time: " + activeModeString;
-        str += "\n\tFlags: ";
+        str += App.ctx().getString(R.string.config_active_time) + activeModeString;
+        str += App.ctx().getString(R.string.config_flags);
         if (checkStartFinish) {
-            str += "\n\t\tCheck start/finish";
+            str += App.ctx().getString(R.string.config_check_start_finish);
         }
         if (checkCardInitTime) {
-            str += "\n\t\tCheck card init time flag";
+            str += App.ctx().getString(R.string.config_check_init_time);
         }
         if (autoSleep) {
-            str += "\n\t\tAutosleep flag";
+            str += App.ctx().getString(R.string.config_auto_sleep_flag);
         }
         if (fastPunch) {
-            str += "\n\t\tFast punch flag";
+            str += App.ctx().getString(R.string.config_fast_punch_flag);
         }
-        str += "\n\tAntenna Gain: " + antennaGain.label;
+        str += App.ctx().getString(R.string.config_antenna_gain_) + antennaGain.label;
         return str;
     }
 }

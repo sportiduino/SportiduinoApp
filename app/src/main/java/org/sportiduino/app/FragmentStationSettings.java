@@ -211,7 +211,7 @@ public class FragmentStationSettings extends NfcFragment {
                         stationNumber = 0;
                     }
                     if (stationNumber == 0) {
-                        binding.textViewInfo.setText("Insert station number.");
+                        binding.textViewInfo.setText(R.string.insert_station_number);
                         return;
                     }
                     masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
@@ -266,7 +266,7 @@ public class FragmentStationSettings extends NfcFragment {
 
         @Override
         protected void onPreExecute() {
-            binding.textViewInfo.setText("Writing card, don't remove it...");
+            binding.textViewInfo.setText(R.string.writing_card_dont_remove_it);
         }
 
         @Override
@@ -282,12 +282,12 @@ public class FragmentStationSettings extends NfcFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                binding.textViewInfo.setText(Util.ok("Data written to card successfully"));
+                binding.textViewInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
                 if (binding.radioButtonMasterTime.isChecked()) {
                     startCountdownTimer();
                 }
             } else {
-                binding.textViewInfo.setText(Util.error("Writing card failed!"));
+                binding.textViewInfo.setText(Util.error(getString(R.string.writing_card_failed)));
             }
         }
     }

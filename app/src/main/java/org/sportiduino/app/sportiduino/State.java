@@ -4,6 +4,9 @@ import android.annotation.SuppressLint;
 
 import androidx.annotation.NonNull;
 
+import org.sportiduino.app.App;
+import org.sportiduino.app.R;
+
 import java.util.Date;
 
 
@@ -61,7 +64,7 @@ public class State {
 
     public static class Battery {
         private float voltage = 0;
-        private boolean status;
+        private final boolean status;
 
         public Battery(int batteryByte) {
             if (batteryByte == 0 || batteryByte == 1) {
@@ -77,26 +80,24 @@ public class State {
             return status;
         }
 
-        public float voltage() {
-            return voltage;
-        }
-
+        @NonNull
+        @Override
         public String toString() {
             String voltageText = "";
             if (voltage > 0) {
-                voltageText = String.format(" (%.2f V)", voltage);
+                voltageText = String.format(App.ctx().getString(R.string.battery_volts), voltage);
             }
 
             if (isOk()) {
-                return "OK" + voltageText;
+                return App.ctx().getString(R.string.battery_ok) + voltageText;
             }
-            return "Low" + voltageText;
+            return App.ctx().getString(R.string.battery_low) + voltageText;
         }
     }
 
     Version version;
     Config config;
-    Mode mode = Mode.ACTIVE;
+    Mode mode;
     Battery battery;
     long timestamp;
     long wakeupTimestamp;
@@ -105,6 +106,7 @@ public class State {
     public State(byte[][] data) {
         if (data == null || data.length == 0 || data[0][0] == 0) {
             isEmpty = true;
+            return;
         }
         version = new Version(data[0][0], data[0][1], data[0][2]);
         config = Config.unpack(data[1]);
@@ -114,16 +116,18 @@ public class State {
         wakeupTimestamp = Util.toUint32(data[4]);
     }
 
+    @NonNull
+    @Override
     public String toString() {
         if (isEmpty) {
             return "Empty";
         }
-        String stringState = "Version: " + version.toString();
-        stringState += "\nConfig:\n" + config.toString();
-        stringState += "\nBattery: " + battery.toString();
-        stringState += "\nMode: " + Util.capitalize(mode.name());
-        stringState += "\nClock: " + Util.dformat.format(new Date(timestamp*1000));
-        stringState += "\nAlarm: " + Util.dformat.format(new Date(wakeupTimestamp*1000));
+        String stringState = App.ctx().getString(R.string.version_) + version.toString();
+        stringState += App.ctx().getString(R.string.state_config_) + config.toString();
+        stringState += App.ctx().getString(R.string.state_battery_) + battery.toString();
+        stringState += App.ctx().getString(R.string.state_mode_) + Util.capitalize(mode.name());
+        stringState += App.ctx().getString(R.string.state_clock_) + Util.dformat.format(new Date(timestamp*1000));
+        stringState += App.ctx().getString(R.string.state_alarm_) + Util.dformat.format(new Date(wakeupTimestamp*1000));
         return stringState;
     }
 }

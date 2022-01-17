@@ -25,7 +25,7 @@ public class SettingsFragment extends PreferenceFragmentCompat {
         // If it was one of our custom Preferences, show its dialog
         if (dialogFragment != null) {
             dialogFragment.setTargetFragment(this, 0);
-            dialogFragment.show(this.getFragmentManager(),
+            dialogFragment.show(this.getParentFragmentManager(),
                     "androidx.preference" +
                     ".PreferenceFragment.DIALOG");
         }

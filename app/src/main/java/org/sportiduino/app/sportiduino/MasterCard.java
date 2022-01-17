@@ -2,8 +2,6 @@ package org.sportiduino.app.sportiduino;
 
 import static org.sportiduino.app.sportiduino.Constants.*;
 
-import android.util.Log;
-
 import org.sportiduino.app.Password;
 
 import java.util.Calendar;

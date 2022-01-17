@@ -26,7 +26,6 @@ public class PasswordPreference extends DialogPreference {
 
     @Override
     public int getDialogLayoutResource() {
-        Log.i("PasswordPreference", "getDialogLayoutResource");
         return R.layout.preference_password;
     }
 
