@@ -2,5 +2,7 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="text_size_small">10sp</dimen>
     <dimen name="text_size_medium">16sp</dimen>
+    <dimen name="text_size_large">18sp</dimen>
     <dimen name="text_size_timer">56sp</dimen>
+    <dimen name="text_size_title">32sp</dimen>
 </resources>

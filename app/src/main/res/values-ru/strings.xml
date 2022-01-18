@@ -65,5 +65,14 @@
     <string name="start">Старт</string>
     <string name="finish">Финиш</string>
     <string name="write">Записать:</string>
-
+    <string name="action_about">О приложении</string>
+    <string name="version_s">Версия %s</string>
+    <string name="app_description">
+        Приложение для чтения и записи чипов системы отметки <b><a href="https://github.com/sportiduino/sportiduino">Sportiduino</a></b>.
+        Поддерживаются чипы NTAG213/215/216 и Mifare Classic 1K/4K.
+    </string>
+    <string name="github_title">Репозиторий на Github</string>
+    <string name="about_copyleft">Copyleft © 2022 Семён Якимов</string>
+    <string name="about_license"><a href="https://www.gnu.org/licenses/gpl-3.0.html">Лицензия GPLv3</a></string>
+    <string name="beep">Пи-и-п</string>
 </resources>

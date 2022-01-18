@@ -4,6 +4,9 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 
+import org.sportiduino.app.App;
+import org.sportiduino.app.R;
+
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -48,11 +51,11 @@ public class Util {
     }
 
     public static SpannableString error(String s) {
-        return colorString(s, 0xfff092b0);
+        return colorString(s, App.color(R.color.error_text_bg));
     }
 
     public static SpannableString ok(String s) {
-        return colorString(s, 0xff32cd32);
+        return colorString(s, App.color(R.color.ok_text_bg));
     }
 }
 

@@ -9,21 +9,28 @@
         android:required="true" />
 
     <application
+        android:name=".App"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:name=".App"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.SportiduinoApp">
         <activity
+            android:name=".AboutActivity"
+            android:label="@string/action_about"
+            android:exported="false"
+            android:parentActivityName=".MainActivity" />
+        <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:label="@string/settings_label"
-            android:parentActivityName=".MainActivity"/>
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity"/>
+            android:label="@string/action_settings"
+            android:parentActivityName=".MainActivity" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value=".MainActivity" />
+
         <activity
             android:name=".MainActivity"
             android:exported="true"

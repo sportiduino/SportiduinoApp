@@ -245,7 +245,7 @@ public class FragmentStationSettings extends NfcFragment {
             requireActivity().runOnUiThread(() -> {
                 String timerStr = String.valueOf(timerCount);
                 if (timerCount == 0) {
-                    timerStr = "Beep";
+                    timerStr = getString(R.string.beep);
                 } else if (timerCount < 0) {
                     timerStr = "";
                     timer.cancel();

@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".AboutActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            style="@style/TextViewAbout"
+            android:textSize="@dimen/text_size_title"
+            android:textStyle="bold"
+            android:textAlignment="textStart"
+            android:text="@string/app_name"
+            app:drawableStartCompat="@drawable/ic_launcher_foreground" />
+
+        <TextView
+            android:id="@+id/text_view_version"
+            style="@style/TextViewAbout"
+            android:textStyle="bold"
+            android:text="Version"
+            android:textSize="@dimen/text_size_large"/>
+
+        <TextView
+            android:id="@+id/text_view_description"
+            style="@style/TextViewAbout"
+            android:textSize="@dimen/text_size_large"
+            android:text="@string/app_description"/>
+
+        <TextView
+            android:id="@+id/text_view_github"
+            style="@style/TextViewAbout"
+            android:text="@string/github_title"
+            android:textAlignment="textStart"
+            android:textSize="@dimen/text_size_medium"
+            app:drawableStartCompat="@drawable/about_icon_github" />
+
+        <TextView
+            style="@style/TextViewAbout"
+            android:textSize="@dimen/text_size_medium"
+            android:text="@string/about_copyleft"/>
+
+        <TextView
+            android:id="@+id/text_view_license"
+            style="@style/TextViewAbout"
+            android:textSize="@dimen/text_size_medium"
+            android:text="@string/about_license"/>
+
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

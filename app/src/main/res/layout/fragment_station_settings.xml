@@ -168,7 +168,6 @@
         android:id="@+id/text_view_timer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
         android:textAlignment="center"
         android:textSize="@dimen/text_size_timer" />
 
