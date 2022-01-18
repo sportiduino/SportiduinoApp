@@ -36,7 +36,7 @@ public class FragmentWriteCard extends NfcFragment {
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        binding.textViewInfo.setText(R.string.bring_card);
+        binding.textViewNfcInfo.setText(R.string.bring_card);
     }
 
     @Override
@@ -51,7 +51,7 @@ public class FragmentWriteCard extends NfcFragment {
             cardNumber = 0;
         }
         if (cardNumber == 0) {
-            binding.textViewInfo.setText(R.string.insert_card_number);
+            binding.textViewNfcInfo.setText(R.string.insert_card_number);
             return;
         }
 
@@ -78,7 +78,7 @@ public class FragmentWriteCard extends NfcFragment {
 
         @Override
         protected void onPreExecute() {
-            binding.textViewInfo.setText(R.string.writing_card_dont_remove_it);
+            binding.textViewNfcInfo.setText(R.string.writing_card_dont_remove_it);
         }
 
         @Override
@@ -94,12 +94,12 @@ public class FragmentWriteCard extends NfcFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                binding.textViewInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
+                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
                 if (binding.checkBoxAutoIncrement.isChecked()) {
                     binding.editTextCardNumber.setText(String.valueOf(cardNumber + 1));
                 }
             } else {
-                binding.textViewInfo.setText(Util.error(getString(R.string.writing_card_failed)));
+                binding.textViewNfcInfo.setText(Util.error(getString(R.string.writing_card_failed)));
             }
         }
     }

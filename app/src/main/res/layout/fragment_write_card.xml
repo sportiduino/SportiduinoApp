@@ -21,7 +21,6 @@
             android:layout_marginRight="10dp"
             android:layout_weight="1"
             android:text="@string/card_no"
-            android:textAppearance="@style/TextAppearance.AppCompat.Medium"
             android:textAlignment="textEnd" />
 
         <EditText
@@ -44,10 +43,7 @@
     </LinearLayout>
 
     <TextView
-        android:id="@+id/text_view_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large"
-        android:textAlignment="center"/>
+        android:id="@+id/text_view_nfc_info"
+        style="@style/TextViewNfcInfo"/>
 
 </LinearLayout>

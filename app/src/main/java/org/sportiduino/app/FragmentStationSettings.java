@@ -135,7 +135,7 @@ public class FragmentStationSettings extends NfcFragment {
         public void onClick(View v) {
             RadioButton rb = (RadioButton) v;
             if (listRadioButtons.contains(rb)) {
-                binding.textViewInfo.setText(R.string.bring_card);
+                binding.textViewNfcInfo.setText(R.string.bring_card);
             }
             binding.layoutStationNumber.setVisibility(View.GONE);
             binding.layoutWakeupTime.setVisibility(View.GONE);
@@ -211,7 +211,7 @@ public class FragmentStationSettings extends NfcFragment {
                         stationNumber = 0;
                     }
                     if (stationNumber == 0) {
-                        binding.textViewInfo.setText(R.string.insert_station_number);
+                        binding.textViewNfcInfo.setText(R.string.insert_station_number);
                         return;
                     }
                     masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
@@ -266,7 +266,7 @@ public class FragmentStationSettings extends NfcFragment {
 
         @Override
         protected void onPreExecute() {
-            binding.textViewInfo.setText(R.string.writing_card_dont_remove_it);
+            binding.textViewNfcInfo.setText(R.string.writing_card_dont_remove_it);
         }
 
         @Override
@@ -282,12 +282,12 @@ public class FragmentStationSettings extends NfcFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                binding.textViewInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
+                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
                 if (binding.radioButtonMasterTime.isChecked()) {
                     startCountdownTimer();
                 }
             } else {
-                binding.textViewInfo.setText(Util.error(getString(R.string.writing_card_failed)));
+                binding.textViewNfcInfo.setText(Util.error(getString(R.string.writing_card_failed)));
             }
         }
     }

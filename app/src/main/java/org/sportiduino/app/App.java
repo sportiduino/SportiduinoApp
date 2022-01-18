@@ -14,7 +14,7 @@ public class App extends Application {
         context = this;
     }
 
-    public static Context ctx() {
-        return context;
+    public static String str(int id) {
+        return context.getString(id);
     }
 }

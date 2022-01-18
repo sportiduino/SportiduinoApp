@@ -6,6 +6,9 @@ import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INIT_TIME;
 import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_START;
 import static org.sportiduino.app.sportiduino.Constants.FW_PROTO_VERSION;
 
+import org.sportiduino.app.App;
+import org.sportiduino.app.R;
+
 import java.util.Date;
 
 public class ParticipantCard extends Card {
@@ -36,11 +39,11 @@ public class ParticipantCard extends Card {
     @Override
     public String parseData(byte[][] data) {
         if (type == CardType.UNKNOWN) {
-            return "Unknown card type";
+            return App.str(R.string.unknown_card_type);
         }
 
-        String str = "Participant card No: " + cardNumber;
-        str += "\nClear time: " + Util.dformat.format(new Date(cardInitTimestamp * 1000));
+        String str = App.str(R.string.participant_card_no_) + cardNumber;
+        str += App.str(R.string.clear_time_) + Util.dformat.format(new Date(cardInitTimestamp * 1000));
         long timeHighPart = cardInitTimestamp & 0xFF000000;
         for (byte[] datum : data) {
             int cp = datum[0] & 0xFF;
@@ -55,10 +58,10 @@ public class ParticipantCard extends Card {
             String cpStr = String.valueOf(cp);
             switch (cp) {
                 case Config.START_STATION:
-                    cpStr = "Start";
+                    cpStr = App.str(R.string.start);
                     break;
                 case Config.FINISH_STATION:
-                    cpStr = "Finish";
+                    cpStr = App.str(R.string.finish);
                     break;
             }
             str += String.format("%1$6s", cpStr);

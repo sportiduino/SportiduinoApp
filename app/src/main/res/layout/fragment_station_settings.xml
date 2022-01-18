@@ -9,6 +9,11 @@
     android:orientation="vertical"
     tools:context=".FragmentStationSettings">
 
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/write"/>
+
     <RadioGroup
         android:id="@+id/radio_group"
         android:layout_width="match_parent"
@@ -73,15 +78,17 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="1dp"
+                    android:textSize="@dimen/text_size_small"
                     android:text="@string/button_start" />
 
                 <Button
                     android:id="@+id/button_finish"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_margin="1dp"
-                    android:text="@string/button_finish" />
+                    android:layout_weight="1"
+                    android:text="@string/button_finish"
+                    android:textSize="@dimen/text_size_small" />
 
                 <Button
                     android:id="@+id/button_check"
@@ -89,7 +96,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="1dp"
-                    android:text="@string/button_check" />
+                    android:text="@string/button_check"
+                    android:textSize="@dimen/text_size_small" />
 
                 <Button
                     android:id="@+id/button_clear"
@@ -97,7 +105,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:layout_margin="1dp"
-                    android:text="@string/button_clear" />
+                    android:text="@string/button_clear"
+                    android:textSize="@dimen/text_size_small" />
             </LinearLayout>
         </LinearLayout>
 
@@ -116,7 +125,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Wakeup time: "/>
+                android:text="@string/wakeup_time_"/>
 
             <TextView
                 android:id="@+id/text_view_wakeup_date"
@@ -152,17 +161,15 @@
     </RadioGroup>
 
     <TextView
-        android:id="@+id/text_view_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Large" />
+        android:id="@+id/text_view_nfc_info"
+        style="@style/TextViewNfcInfo"/>
 
     <TextView
         android:id="@+id/text_view_timer"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:gravity="center"
         android:textAlignment="center"
-        android:textAppearance="@style/TextAppearance.AppCompat.Display3" />
+        android:textSize="@dimen/text_size_timer" />
 
 </LinearLayout>

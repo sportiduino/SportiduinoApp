@@ -2,7 +2,9 @@ package org.sportiduino.app.sportiduino;
 
 import static org.sportiduino.app.sportiduino.Constants.*;
 
+import org.sportiduino.app.App;
 import org.sportiduino.app.Password;
+import org.sportiduino.app.R;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -35,20 +37,20 @@ public class MasterCard extends Card {
     public String parseData(byte[][] data) {
         switch (type) {
             case MASTER_SET_TIME:
-                return "Time Master card";
+                return App.str(R.string.time_master_card);
             case MASTER_SET_NUMBER:
-                return "Number Master card";
+                return App.str(R.string.number_master_card);
             case MASTER_GET_STATE:
                 State state = new State(data);
-                return "State Master card\n" + state.toString();
+                return App.str(R.string.state_master_card) + "\n" + state.toString();
             case MASTER_SLEEP:
-                return "Sleep Master card";
+                return App.str(R.string.sleep_master_card);
             case MASTER_READ_BACKUP:
                 return parseBackupMaster(data);
             case MASTER_CONFIG:
-                return "Config Master card";
+                return App.str(R.string.config_master_card);
             default:
-                return "Unknown card type";
+                return App.str(R.string.unknown_card_type);
         }
     }
 
@@ -68,9 +70,9 @@ public class MasterCard extends Card {
         int stationNumber = dataPage4[0] & 0xff;
         long timeHigh12bits = 0;
         long initTime = 0;
-        StringBuilder ret = new StringBuilder("Backup Master card");
+        StringBuilder ret = new StringBuilder(App.str(R.string.backup_master_card));
         if (dataPage4[3] > 0) { // have timestamp
-            ret.append("\n").append("Station No ").append(stationNumber);
+            ret.append("\n").append(App.str(R.string.station_no_)).append(stationNumber);
             for (byte[] datum : data) {
                 if (timeHigh12bits == 0) {
                     initTime = Util.toUint32(datum);

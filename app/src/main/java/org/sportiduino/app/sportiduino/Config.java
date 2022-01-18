@@ -1,5 +1,7 @@
 package org.sportiduino.app.sportiduino;
 
+import androidx.annotation.NonNull;
+
 import org.sportiduino.app.App;
 import org.sportiduino.app.R;
 
@@ -98,44 +100,45 @@ public class Config {
         return (Byte[]) configData.toArray();
     }
 
+    @NonNull
     @Override
     public String toString() {
-        String str = App.ctx().getString(R.string.config_station_no_) + stationCode;
+        String str = App.str(R.string.config_station_no_) + stationCode;
         switch (stationCode) {
             case START_STATION:
-                str += App.ctx().getString(R.string.config_start);
+                str += App.str(R.string.config_start);
                 break;
             case FINISH_STATION:
-                str += App.ctx().getString(R.string.config_finish);
+                str += App.str(R.string.config_finish);
                 break;
             case CHECK_STATION:
-                str += App.ctx().getString(R.string.config_check);
+                str += App.str(R.string.config_check);
                 break;
             case CLEAR_STATION:
-                str += App.ctx().getString(R.string.config_clear);
+                str += App.str(R.string.config_clear);
                 break;
         }
-        String activeModeString = (1 << activeModeDuration) + App.ctx().getString(R.string.config_hour);
+        String activeModeString = (1 << activeModeDuration) + App.str(R.string.config_hour);
         if (activeModeDuration == 64) {
-            activeModeString = App.ctx().getString(R.string.config_always_active);
+            activeModeString = App.str(R.string.config_always_active);
         } else if (activeModeDuration == 128) {
-            activeModeString = App.ctx().getString(R.string.config_always_in_wait);
+            activeModeString = App.str(R.string.config_always_in_wait);
         }
-        str += App.ctx().getString(R.string.config_active_time) + activeModeString;
-        str += App.ctx().getString(R.string.config_flags);
+        str += App.str(R.string.config_active_time) + activeModeString;
+        str += App.str(R.string.config_flags);
         if (checkStartFinish) {
-            str += App.ctx().getString(R.string.config_check_start_finish);
+            str += App.str(R.string.config_check_start_finish);
         }
         if (checkCardInitTime) {
-            str += App.ctx().getString(R.string.config_check_init_time);
+            str += App.str(R.string.config_check_init_time);
         }
         if (autoSleep) {
-            str += App.ctx().getString(R.string.config_auto_sleep_flag);
+            str += App.str(R.string.config_auto_sleep_flag);
         }
         if (fastPunch) {
-            str += App.ctx().getString(R.string.config_fast_punch_flag);
+            str += App.str(R.string.config_fast_punch_flag);
         }
-        str += App.ctx().getString(R.string.config_antenna_gain_) + antennaGain.label;
+        str += App.str(R.string.config_antenna_gain_) + antennaGain.label;
         return str;
     }
 }

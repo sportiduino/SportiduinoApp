@@ -85,13 +85,13 @@ public class State {
         public String toString() {
             String voltageText = "";
             if (voltage > 0) {
-                voltageText = String.format(App.ctx().getString(R.string.battery_volts), voltage);
+                voltageText = String.format(App.str(R.string.battery_volts), voltage);
             }
 
             if (isOk()) {
-                return App.ctx().getString(R.string.battery_ok) + voltageText;
+                return App.str(R.string.battery_ok) + voltageText;
             }
-            return App.ctx().getString(R.string.battery_low) + voltageText;
+            return App.str(R.string.battery_low) + voltageText;
         }
     }
 
@@ -122,12 +122,12 @@ public class State {
         if (isEmpty) {
             return "Empty";
         }
-        String stringState = App.ctx().getString(R.string.version_) + version.toString();
-        stringState += App.ctx().getString(R.string.state_config_) + config.toString();
-        stringState += App.ctx().getString(R.string.state_battery_) + battery.toString();
-        stringState += App.ctx().getString(R.string.state_mode_) + Util.capitalize(mode.name());
-        stringState += App.ctx().getString(R.string.state_clock_) + Util.dformat.format(new Date(timestamp*1000));
-        stringState += App.ctx().getString(R.string.state_alarm_) + Util.dformat.format(new Date(wakeupTimestamp*1000));
+        String stringState = App.str(R.string.version_) + version.toString();
+        stringState += App.str(R.string.state_config_) + config.toString();
+        stringState += App.str(R.string.state_battery_) + battery.toString();
+        stringState += App.str(R.string.state_mode_) + Util.capitalize(mode.name());
+        stringState += App.str(R.string.state_clock_) + Util.dformat.format(new Date(timestamp*1000));
+        stringState += App.str(R.string.state_alarm_) + Util.dformat.format(new Date(wakeupTimestamp*1000));
         return stringState;
     }
 }
