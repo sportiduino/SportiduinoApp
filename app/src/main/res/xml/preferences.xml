@@ -4,8 +4,9 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <org.sportiduino.app.PasswordPreference
+        android:defaultValue="0-0-0"
         android:key="password"
-        android:title="Password"
+        android:title="@string/password"
         android:summary="" />
 
     <!--

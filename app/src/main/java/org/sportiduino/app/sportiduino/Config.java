@@ -6,6 +6,7 @@ import org.sportiduino.app.App;
 import org.sportiduino.app.R;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ public class Config {
     public static final int CHECK_STATION  = 248;
     public static final int CLEAR_STATION  = 249;
 
-    private enum AntennaGain {
+    public enum AntennaGain {
         ANTENNA_GAIN_UNKNOWN("unknown", 0),
         ANTENNA_GAIN_18DB("18 " + "dB", 0x02),
         ANTENNA_GAIN_23DB("23 " + "dB", 0x03),
@@ -42,6 +43,15 @@ public class Config {
 
         public static AntennaGain byValue(int value) {
             return BY_VALUE.get(value);
+        }
+
+        public static AntennaGain[] realValues() {
+            return Arrays.copyOfRange(values(), 1, values().length);
+        }
+
+        @Override
+        public String toString() {
+            return label;
         }
     }
 
@@ -124,21 +134,21 @@ public class Config {
         } else if (activeModeDuration == 128) {
             activeModeString = App.str(R.string.config_always_in_wait);
         }
-        str += App.str(R.string.config_active_time) + activeModeString;
-        str += App.str(R.string.config_flags);
+        str += "\n\t" + App.str(R.string.config_active_time) + activeModeString;
+        str += "\n\t" + App.str(R.string.config_flags);
         if (checkStartFinish) {
-            str += App.str(R.string.config_check_start_finish);
+            str += "\n\t\t" + App.str(R.string.config_check_start_finish);
         }
         if (checkCardInitTime) {
-            str += App.str(R.string.config_check_init_time);
+            str += "\n\t\t" + App.str(R.string.config_check_init_time);
         }
         if (autoSleep) {
-            str += App.str(R.string.config_auto_sleep_flag);
+            str += "\n\t\t" + App.str(R.string.config_auto_sleep_flag);
         }
         if (fastPunch) {
-            str += App.str(R.string.config_fast_punch_flag);
+            str += "\n\t\t" + App.str(R.string.config_fast_punch_flag);
         }
-        str += App.str(R.string.config_antenna_gain_) + antennaGain.label;
+        str += "\n\t" + App.str(R.string.config_antenna_gain_) + antennaGain.label;
         return str;
     }
 }

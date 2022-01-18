@@ -9,4 +9,5 @@
     <color name="white">#FFFFFFFF</color>
     <color name="error_text_bg">#FFf6c0c0</color>
     <color name="ok_text_bg">#FFc5e1b0</color>
+    <color name="border_color">@color/black</color>
 </resources>

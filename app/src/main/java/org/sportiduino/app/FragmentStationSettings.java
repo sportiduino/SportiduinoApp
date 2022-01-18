@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.RadioButton;
 
@@ -87,6 +88,14 @@ public class FragmentStationSettings extends NfcFragment {
         binding.textViewWakeupTime.setOnClickListener(timeClickListener);
 
         updateWakeupTime();
+        
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireActivity(),
+                R.array.active_time_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        binding.spinnerActiveTime.setAdapter(adapter);
+
+        binding.spinnerAntennaGain.setAdapter(new ArrayAdapter<>(requireActivity(),
+                android.R.layout.simple_spinner_item, Config.AntennaGain.realValues()));
     }
 
     View.OnClickListener dateClickListener = new View.OnClickListener() {
@@ -130,60 +139,63 @@ public class FragmentStationSettings extends NfcFragment {
         binding.textViewWakeupTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(wakeupTime.getTime()));
     }
 
-    View.OnClickListener rbClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-            RadioButton rb = (RadioButton) v;
-            if (listRadioButtons.contains(rb)) {
-                binding.textViewNfcInfo.setText(R.string.bring_card);
-            }
-            binding.layoutStationNumber.setVisibility(View.GONE);
-            binding.layoutWakeupTime.setVisibility(View.GONE);
-            switch (rb.getId()) {
-                case R.id.radio_button_master_get_state:
-                    cardType = CardType.MASTER_GET_STATE;
-                    break;
-                case R.id.radio_button_master_time:
-                    cardType = CardType.MASTER_SET_TIME;
-                    break;
-                case R.id.radio_button_master_number:
-                    cardType = CardType.MASTER_SET_NUMBER;
-                    binding.layoutStationNumber.setVisibility(View.VISIBLE);
-                    break;
-                case R.id.radio_button_master_sleep:
-                    cardType = CardType.MASTER_SLEEP;
-                    binding.layoutWakeupTime.setVisibility(View.VISIBLE);
-                    break;
-                case R.id.radio_button_master_config:
-                    cardType = CardType.MASTER_CONFIG;
-                    break;
-                case R.id.radio_button_master_backup:
-                    cardType = CardType.MASTER_READ_BACKUP;
-                    break;
-                default:
-                    cardType = CardType.UNKNOWN;
-            }
-        }
+    View.OnClickListener rbClickListener = (View v) -> {
+        RadioButton rb = (RadioButton) v;
+        rbChecked(rb);
     };
 
-    View.OnClickListener buttonClickListener = new View.OnClickListener() {
-        @Override
-        public void onClick(View view) {
-            Button b = (Button) view;
-            switch (b.getId()) {
-                case R.id.button_start:
-                    binding.editTextStationNumber.setText(String.valueOf(Config.START_STATION));
-                    break;
-                case R.id.button_finish:
-                    binding.editTextStationNumber.setText(String.valueOf(Config.FINISH_STATION));
-                    break;
-                case R.id.button_check:
-                    binding.editTextStationNumber.setText(String.valueOf(Config.CHECK_STATION));
-                    break;
-                case R.id.button_clear:
-                    binding.editTextStationNumber.setText(String.valueOf(Config.CLEAR_STATION));
-                    break;
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        for (RadioButton rb : listRadioButtons) {
+            if (rb.isChecked()) {
+                rbChecked(rb);
             }
+        }
+    }
+
+    private void rbChecked(RadioButton rb) {
+        if (listRadioButtons.contains(rb)) {
+            binding.textViewNfcInfo.setText(R.string.bring_card);
+        }
+        binding.layoutStationNumber.setVisibility(View.GONE);
+        binding.layoutWakeupTime.setVisibility(View.GONE);
+        int rbId = rb.getId();
+        if (rbId == R.id.radio_button_master_get_state) {
+            cardType = CardType.MASTER_GET_STATE;
+        } else if (rbId == R.id.radio_button_master_time) {
+            cardType = CardType.MASTER_SET_TIME;
+        } else if (rbId == R.id.radio_button_master_number) {
+            cardType = CardType.MASTER_SET_NUMBER;
+            binding.layoutStationNumber.setVisibility(View.VISIBLE);
+        } else if (rbId == R.id.radio_button_master_sleep) {
+            cardType = CardType.MASTER_SLEEP;
+            binding.layoutWakeupTime.setVisibility(View.VISIBLE);
+        } else if (rbId == R.id.radio_button_master_config) {
+            cardType = CardType.MASTER_CONFIG;
+        } else if (rbId == R.id.radio_button_master_backup) {
+            cardType = CardType.MASTER_READ_BACKUP;
+        } else {
+            cardType = CardType.UNKNOWN;
+        }
+    }
+
+    View.OnClickListener buttonClickListener = (View view) -> {
+        Button b = (Button) view;
+        switch (b.getId()) {
+            case R.id.button_start:
+                binding.editTextStationNumber.setText(String.valueOf(Config.START_STATION));
+                break;
+            case R.id.button_finish:
+                binding.editTextStationNumber.setText(String.valueOf(Config.FINISH_STATION));
+                break;
+            case R.id.button_check:
+                binding.editTextStationNumber.setText(String.valueOf(Config.CHECK_STATION));
+                break;
+            case R.id.button_clear:
+                binding.editTextStationNumber.setText(String.valueOf(Config.CLEAR_STATION));
+                break;
         }
     };
 

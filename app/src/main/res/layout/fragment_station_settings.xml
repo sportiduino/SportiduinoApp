@@ -43,6 +43,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="2dp"
+            android:background="@drawable/border"
             android:visibility="gone">
 
             <LinearLayout
@@ -120,6 +121,7 @@
             android:id="@+id/layout_wakeup_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/border"
             android:visibility="gone">
 
             <TextView
@@ -157,6 +159,79 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/config_master_card" />
+
+        <LinearLayout
+            android:id="@+id/layout_config"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2dp"
+            android:background="@drawable/border"
+            android:visibility="visible">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/config_active_time"/>
+
+                <Spinner
+                    android:id="@+id/spinner_active_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <CheckBox
+                android:id="@+id/check_box_start_finish"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_start_finish_punches" />
+
+            <CheckBox
+                android:id="@+id/check_box_init_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/check_init_time_of_card" />
+
+            <CheckBox
+                android:id="@+id/check_box_auto_sleep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/auto_sleep" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/config_antenna_gain_"/>
+
+                <Spinner
+                    android:id="@+id/spinner_antenna_gain"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/new_password"/>
+
+            <include
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                layout="@layout/preference_password"
+                />
+        </LinearLayout>
 
     </RadioGroup>
 
