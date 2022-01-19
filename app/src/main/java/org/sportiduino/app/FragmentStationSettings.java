@@ -10,7 +10,6 @@ import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.InputFilter;
-import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -66,15 +65,12 @@ public class FragmentStationSettings extends NfcFragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         updatePasswordFromSharedPreferences(sharedPref);
 
-        SharedPreferences.OnSharedPreferenceChangeListener listener;
-        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
-            @Override
-            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
-                if (key.equals("password")) {
-                    updatePasswordFromSharedPreferences(sharedPreferences);
-                }
+        SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+            if (key.equals("password")) {
+                updatePasswordFromSharedPreferences(sharedPreferences);
             }
         };
+        sharedPref.registerOnSharedPreferenceChangeListener(listener);
 
         int count = binding.radioGroup.getChildCount();
         listRadioButtons = new ArrayList<>();
@@ -186,7 +182,7 @@ public class FragmentStationSettings extends NfcFragment {
     }
 
     private void rbChecked(RadioButton rb) {
-        if (listRadioButtons.contains(rb)) {
+        if (listRadioButtons.contains(rb) && binding.textViewNfcInfo.getText().toString().isEmpty()) {
             binding.textViewNfcInfo.setText(R.string.bring_card);
         }
         binding.layoutStationNumber.setVisibility(View.GONE);
@@ -242,12 +238,16 @@ public class FragmentStationSettings extends NfcFragment {
             }
             if (adapter != null) {
                 MasterCard masterCard = getMasterCard(adapter);
+                if (masterCard == null) {
+                    return;
+                }
                 new WriteCardTask(masterCard).execute();
                 break;
             }
         }
     }
 
+    @Nullable
     private MasterCard getMasterCard(CardAdapter adapter) {
         MasterCard masterCard = new MasterCard(adapter, cardType, password);
         if (binding.radioButtonMasterNumber.isChecked()) {
