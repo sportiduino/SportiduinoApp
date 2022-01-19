@@ -60,11 +60,10 @@
                     android:id="@+id/edit_text_station_number"
                     android:defaultValue="0"
                     android:inputType="number"
-                    android:max="255"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    tools:ignore="TextFields" />
+                    tools:ignore="TextFields"/>
 
             </LinearLayout>
 
@@ -167,11 +166,12 @@
             android:orientation="vertical"
             android:padding="2dp"
             android:background="@drawable/border"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -207,6 +207,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_margin="5dp"
                 android:orientation="horizontal">
 
                 <TextView
@@ -217,20 +218,68 @@
                 <Spinner
                     android:id="@+id/spinner_antenna_gain"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
-
+                    android:layout_height="wrap_content" />
             </LinearLayout>
 
-            <TextView
+            <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/new_password"/>
+                android:layout_margin="5dp"
+                android:orientation="horizontal">
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/new_password"/>
+
+                <EditText
+                    android:id="@+id/new_password1"
+                    android:defaultValue="0"
+                    android:inputType="number"
+                    android:layout_width="50dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    tools:ignore="TextFields" />
+                    <!--android:minHeight = "48dp"-->
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password_separator" />
+
+                <EditText
+                    android:id="@+id/new_password2"
+                    android:defaultValue="0"
+                    android:inputType="number"
+                    android:layout_width="50dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    tools:ignore="TextFields" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/password_separator" />
+
+                <EditText
+                    android:id="@+id/new_password3"
+                    android:layout_width="50dp"
+                    android:layout_margin="2dp"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:defaultValue="0"
+                    android:inputType="number"
+                    tools:ignore="TextFields" />
+            </LinearLayout>
+            <!--
             <include
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 layout="@layout/preference_password"
                 />
+                -->
         </LinearLayout>
 
     </RadioGroup>

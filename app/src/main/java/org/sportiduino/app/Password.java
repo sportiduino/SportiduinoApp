@@ -53,7 +53,7 @@ public class Password {
     }
 
     public int getValue(int index) {
-        if (index < 3) {
+        if (0 <= index && index < 3) {
             return passwordArray[index];
         }
         return 0;

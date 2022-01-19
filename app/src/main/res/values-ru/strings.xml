@@ -47,9 +47,9 @@
     <string name="config_finish"> (Финиш)</string>
     <string name="config_check"> (Проверка)</string>
     <string name="config_clear"> (Очистка)</string>
-    <string name="config_hour"> ч</string>
-    <string name="config_always_active">всегда в активном</string>
-    <string name="config_always_in_wait">всегда в ждущем</string>
+    <string name="config_hour">ч</string>
+    <string name="config_always_active">всегда</string>
+    <string name="config_never_active">никогда</string>
     <string name="config_active_time">Время в активном: </string>
     <string name="config_flags">Опции: </string>
     <string name="config_check_start_finish">Проверка старта/финиша</string>

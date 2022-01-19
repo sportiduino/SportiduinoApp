@@ -7,7 +7,8 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
-    <color name="error_text_bg">#FFf6c0c0</color>
-    <color name="ok_text_bg">#FFc5e1b0</color>
-    <color name="border_color">@color/black</color>
+    <color name="gray">#FF808080</color>
+    <color name="error_text_bg">#FFF6C0C0</color>
+    <color name="ok_text_bg">#FFC5E1B0</color>
+    <color name="border_color">@color/gray</color>
 </resources>

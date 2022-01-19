@@ -5,6 +5,7 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,6 +38,8 @@ public class FragmentWriteCard extends NfcFragment {
         super.onViewCreated(view, savedInstanceState);
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
+
+        binding.editTextCardNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 65000)});
     }
 
     @Override

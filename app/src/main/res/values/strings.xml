@@ -47,9 +47,9 @@
     <string name="config_finish"> (Finish)</string>
     <string name="config_check"> (Check)</string>
     <string name="config_clear"> (Clear)</string>
-    <string name="config_hour"> h</string>
-    <string name="config_always_active">always Active</string>
-    <string name="config_always_in_wait">always in Wait</string>
+    <string name="config_hour">h</string>
+    <string name="config_always_active">always</string>
+    <string name="config_never_active">never</string>
     <string name="config_active_time">Active time: </string>
     <string name="config_flags">Flags: </string>
     <string name="config_check_start_finish">Check start/finish</string>
@@ -80,15 +80,6 @@
     <string name="auto_sleep">Auto sleep</string>
     <string name="check_init_time_of_card">Check init time of card</string>
     <string name="check_start_finish_punches">Check start/finish punches</string>
-    <string-array name="active_time_array">
-        <item>1 h</item>
-        <item>2 h</item>
-        <item>4 h</item>
-        <item>8 h</item>
-        <item>16 h</item>
-        <item>32 h</item>
-        <item>32 h</item>
-        <item>always</item>
-        <item>never</item>
-    </string-array>
+    <string name="password_separator">-</string>
+    <string name="antenna_gain_unknown">unknown</string>
 </resources>

@@ -27,7 +27,6 @@
             android:id="@+id/edit_text_card_number"
             android:defaultValue="0"
             android:inputType="number"
-            android:max="65000"
             android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:textAlignment="center"

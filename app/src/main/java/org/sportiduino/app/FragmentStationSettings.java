@@ -9,6 +9,8 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.InputFilter;
+import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,7 @@ import android.widget.Button;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.preference.PreferenceManager;
 
 import org.sportiduino.app.databinding.FragmentStationSettingsBinding;
@@ -55,13 +58,23 @@ public class FragmentStationSettings extends NfcFragment {
         return binding.getRoot();
     }
 
+
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireActivity());
-        String passwordStr = sharedPref.getString("password", Password.defaultPassword().toString());
-        this.password = Password.fromString(passwordStr);
+        updatePasswordFromSharedPreferences(sharedPref);
+
+        SharedPreferences.OnSharedPreferenceChangeListener listener;
+        listener = new SharedPreferences.OnSharedPreferenceChangeListener() {
+            @Override
+            public void onSharedPreferenceChanged(SharedPreferences sharedPreferences, String key) {
+                if (key.equals("password")) {
+                    updatePasswordFromSharedPreferences(sharedPreferences);
+                }
+            }
+        };
 
         int count = binding.radioGroup.getChildCount();
         listRadioButtons = new ArrayList<>();
@@ -76,6 +89,8 @@ public class FragmentStationSettings extends NfcFragment {
             }
         }
 
+        binding.editTextStationNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 255)});
+
         binding.buttonStart.setOnClickListener(buttonClickListener);
         binding.buttonFinish.setOnClickListener(buttonClickListener);
         binding.buttonClear.setOnClickListener(buttonClickListener);
@@ -89,13 +104,23 @@ public class FragmentStationSettings extends NfcFragment {
 
         updateWakeupTime();
         
-        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(requireActivity(),
-                R.array.active_time_array, android.R.layout.simple_spinner_item);
+        ArrayAdapter<Config.ActiveModeDuration> adapter = new ArrayAdapter<>(requireActivity(),
+                android.R.layout.simple_spinner_item, Config.ActiveModeDuration.values());
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         binding.spinnerActiveTime.setAdapter(adapter);
+        binding.spinnerActiveTime.setSelection(1);
 
         binding.spinnerAntennaGain.setAdapter(new ArrayAdapter<>(requireActivity(),
                 android.R.layout.simple_spinner_item, Config.AntennaGain.realValues()));
+        binding.spinnerAntennaGain.setSelection(2);
+
+        binding.newPassword1.setText(String.valueOf(password.getValue(0)));
+        binding.newPassword2.setText(String.valueOf(password.getValue(1)));
+        binding.newPassword3.setText(String.valueOf(password.getValue(2)));
+
+        binding.newPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        binding.newPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        binding.newPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
     }
 
     View.OnClickListener dateClickListener = new View.OnClickListener() {
@@ -134,6 +159,11 @@ public class FragmentStationSettings extends NfcFragment {
         updateWakeupTime();
     };
 
+    private void updatePasswordFromSharedPreferences(SharedPreferences sharedPreferences) {
+        String passwordStr = sharedPreferences.getString("password", Password.defaultPassword().toString());
+        this.password = Password.fromString(passwordStr);
+    }
+
     private void updateWakeupTime() {
         binding.textViewWakeupDate.setText(DateFormat.getDateInstance().format(wakeupTime.getTime()));
         binding.textViewWakeupTime.setText(DateFormat.getTimeInstance(DateFormat.SHORT).format(wakeupTime.getTime()));
@@ -161,6 +191,7 @@ public class FragmentStationSettings extends NfcFragment {
         }
         binding.layoutStationNumber.setVisibility(View.GONE);
         binding.layoutWakeupTime.setVisibility(View.GONE);
+        binding.layoutConfig.setVisibility(View.GONE);
         int rbId = rb.getId();
         if (rbId == R.id.radio_button_master_get_state) {
             cardType = CardType.MASTER_GET_STATE;
@@ -174,6 +205,7 @@ public class FragmentStationSettings extends NfcFragment {
             binding.layoutWakeupTime.setVisibility(View.VISIBLE);
         } else if (rbId == R.id.radio_button_master_config) {
             cardType = CardType.MASTER_CONFIG;
+            binding.layoutConfig.setVisibility(View.VISIBLE);
         } else if (rbId == R.id.radio_button_master_backup) {
             cardType = CardType.MASTER_READ_BACKUP;
         } else {
@@ -183,19 +215,15 @@ public class FragmentStationSettings extends NfcFragment {
 
     View.OnClickListener buttonClickListener = (View view) -> {
         Button b = (Button) view;
-        switch (b.getId()) {
-            case R.id.button_start:
-                binding.editTextStationNumber.setText(String.valueOf(Config.START_STATION));
-                break;
-            case R.id.button_finish:
-                binding.editTextStationNumber.setText(String.valueOf(Config.FINISH_STATION));
-                break;
-            case R.id.button_check:
-                binding.editTextStationNumber.setText(String.valueOf(Config.CHECK_STATION));
-                break;
-            case R.id.button_clear:
-                binding.editTextStationNumber.setText(String.valueOf(Config.CLEAR_STATION));
-                break;
+        int id = b.getId();
+        if (id == R.id.button_start) {
+            binding.editTextStationNumber.setText(String.valueOf(Config.START_STATION));
+        } else if (id == R.id.button_finish) {
+            binding.editTextStationNumber.setText(String.valueOf(Config.FINISH_STATION));
+        } else if (id == R.id.button_check) {
+            binding.editTextStationNumber.setText(String.valueOf(Config.CHECK_STATION));
+        } else if (id == R.id.button_clear) {
+            binding.editTextStationNumber.setText(String.valueOf(Config.CLEAR_STATION));
         }
     };
 
@@ -213,31 +241,49 @@ public class FragmentStationSettings extends NfcFragment {
                 adapter = new CardMifareUltralight(MifareUltralight.get(tag));
             }
             if (adapter != null) {
-                MasterCard masterCard = new MasterCard(adapter, cardType, password);
-                if (binding.radioButtonMasterNumber.isChecked()) {
-                    String str = binding.editTextStationNumber.getText().toString();
-                    int stationNumber;
-                    try {
-                        stationNumber = Integer.parseInt(str);
-                    } catch (NumberFormatException e) {
-                        stationNumber = 0;
-                    }
-                    if (stationNumber == 0) {
-                        binding.textViewNfcInfo.setText(R.string.insert_station_number);
-                        return;
-                    }
-                    masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
-                } else if (binding.radioButtonMasterTime.isChecked()) {
-                    Calendar c = Calendar.getInstance();
-                    c.add(Calendar.SECOND, 3);
-                    masterCard.dataForWriting = MasterCard.packTime(c);
-                } else if (binding.radioButtonMasterSleep.isChecked()) {
-                    masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
-                }
+                MasterCard masterCard = getMasterCard(adapter);
                 new WriteCardTask(masterCard).execute();
                 break;
             }
         }
+    }
+
+    private MasterCard getMasterCard(CardAdapter adapter) {
+        MasterCard masterCard = new MasterCard(adapter, cardType, password);
+        if (binding.radioButtonMasterNumber.isChecked()) {
+            String str = binding.editTextStationNumber.getText().toString();
+            int stationNumber;
+            try {
+                stationNumber = Integer.parseInt(str);
+            } catch (NumberFormatException e) {
+                stationNumber = 0;
+            }
+            if (stationNumber == 0) {
+                binding.textViewNfcInfo.setText(R.string.insert_station_number);
+                return null;
+            }
+            masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
+        } else if (binding.radioButtonMasterTime.isChecked()) {
+            Calendar c = Calendar.getInstance();
+            c.add(Calendar.SECOND, 3);
+            masterCard.dataForWriting = MasterCard.packTime(c);
+        } else if (binding.radioButtonMasterSleep.isChecked()) {
+            masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
+        } else if (binding.radioButtonMasterConfig.isChecked()) {
+            Config config = new Config();
+            config.stationCode = 0;  // if 0 don't change code of station
+            config.activeModeDuration = (Config.ActiveModeDuration) binding.spinnerActiveTime.getSelectedItem();
+            config.checkStartFinish = binding.checkBoxStartFinish.isChecked();
+            config.checkCardInitTime = binding.checkBoxInitTime.isChecked();
+            config.autoSleep = binding.checkBoxAutoSleep.isChecked();
+            config.antennaGain = (Config.AntennaGain) binding.spinnerAntennaGain.getSelectedItem();
+            config.password = new Password(
+                    Integer.parseInt(binding.newPassword1.getText().toString()),
+                    Integer.parseInt(binding.newPassword2.getText().toString()),
+                    Integer.parseInt(binding.newPassword3.getText().toString()));
+            masterCard.dataForWriting = config.pack();
+        }
+        return masterCard;
     }
 
     private void startCountdownTimer() {
@@ -304,4 +350,3 @@ public class FragmentStationSettings extends NfcFragment {
         }
     }
 }
-

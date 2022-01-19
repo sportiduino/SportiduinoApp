@@ -1,6 +1,7 @@
 package org.sportiduino.app;
 
 import android.os.Bundle;
+import android.text.InputFilter;
 import android.view.View;
 import android.widget.EditText;
 
@@ -10,9 +11,9 @@ import androidx.preference.PreferenceDialogFragmentCompat;
 public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
 
     private static final String SAVE_STATE_TEXT = "PasswordPreferenceDialogFragment.text";
-    private EditText pass1;
-    private EditText pass2;
-    private EditText pass3;
+    private EditText editTextPass1;
+    private EditText editTextPass2;
+    private EditText editTextPass3;
     private Password password;
 
     public static PasswordPreferenceDialog newInstance(String key) {
@@ -44,13 +45,16 @@ public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
     @Override
     protected void onBindDialogView(View view) {
         super.onBindDialogView(view);
-        pass1 = view.findViewById(R.id.password1);
-        pass2 = view.findViewById(R.id.password2);
-        pass3 = view.findViewById(R.id.password3);
-        pass1.requestFocus();
-        pass1.setText(String.valueOf(password.getValue(0)));
-        pass2.setText(String.valueOf(password.getValue(1)));
-        pass3.setText(String.valueOf(password.getValue(2)));
+        editTextPass1 = view.findViewById(R.id.password1);
+        editTextPass2 = view.findViewById(R.id.password2);
+        editTextPass3 = view.findViewById(R.id.password3);
+        editTextPass1.requestFocus();
+        editTextPass1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        editTextPass2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        editTextPass3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        editTextPass1.setText(String.valueOf(password.getValue(0)));
+        editTextPass2.setText(String.valueOf(password.getValue(1)));
+        editTextPass3.setText(String.valueOf(password.getValue(2)));
     }
 
     private PasswordPreference getPasswordPreference() {
@@ -61,9 +65,9 @@ public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
     public void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             Password value = new Password(
-                    Integer.parseInt(pass1.getText().toString()),
-                    Integer.parseInt(pass2.getText().toString()),
-                    Integer.parseInt(pass3.getText().toString()));
+                    Integer.parseInt(editTextPass1.getText().toString()),
+                    Integer.parseInt(editTextPass2.getText().toString()),
+                    Integer.parseInt(editTextPass3.getText().toString()));
             final PasswordPreference preference = getPasswordPreference();
             preference.persistPassword(value);
         }
