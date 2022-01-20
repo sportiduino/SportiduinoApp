@@ -46,7 +46,7 @@ public class FragmentStationSettings extends NfcFragment {
     Calendar wakeupTime = Calendar.getInstance();
     private int timerCount;
     private Timer timer;
-    //private final DateFormat dateFormat = new SimpleDateFormat();
+    private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
 
     @Override
     public View onCreateView(
@@ -65,12 +65,12 @@ public class FragmentStationSettings extends NfcFragment {
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         updatePasswordFromSharedPreferences(sharedPref);
 
-        SharedPreferences.OnSharedPreferenceChangeListener listener = (sharedPreferences, key) -> {
+        preferenceChangeListener = (sharedPreferences, key) -> {
             if (key.equals("password")) {
                 updatePasswordFromSharedPreferences(sharedPreferences);
             }
         };
-        sharedPref.registerOnSharedPreferenceChangeListener(listener);
+        sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
 
         int count = binding.radioGroup.getChildCount();
         listRadioButtons = new ArrayList<>();
@@ -109,10 +109,6 @@ public class FragmentStationSettings extends NfcFragment {
         binding.spinnerAntennaGain.setAdapter(new ArrayAdapter<>(requireActivity(),
                 android.R.layout.simple_spinner_item, Config.AntennaGain.realValues()));
         binding.spinnerAntennaGain.setSelection(2);
-
-        binding.newPassword1.setText(String.valueOf(password.getValue(0)));
-        binding.newPassword2.setText(String.valueOf(password.getValue(1)));
-        binding.newPassword3.setText(String.valueOf(password.getValue(2)));
 
         binding.newPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.newPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
@@ -158,6 +154,10 @@ public class FragmentStationSettings extends NfcFragment {
     private void updatePasswordFromSharedPreferences(SharedPreferences sharedPreferences) {
         String passwordStr = sharedPreferences.getString("password", Password.defaultPassword().toString());
         this.password = Password.fromString(passwordStr);
+
+        binding.newPassword1.setText(String.valueOf(password.getValue(0)));
+        binding.newPassword2.setText(String.valueOf(password.getValue(1)));
+        binding.newPassword3.setText(String.valueOf(password.getValue(2)));
     }
 
     private void updateWakeupTime() {

@@ -75,4 +75,9 @@
     <string name="about_copyleft">Copyleft © 2022 Семён Якимов</string>
     <string name="about_license"><a href="https://www.gnu.org/licenses/gpl-3.0.html">Лицензия GPLv3</a></string>
     <string name="beep">Пи-и-п</string>
+    <string name="new_password">Новый пароль</string>
+    <string name="auto_sleep">Авто сон</string>
+    <string name="check_init_time_of_card">Проверка времени чипа</string>
+    <string name="check_start_finish_punches">Проверка отметок старта/финиша</string>
+    <string name="antenna_gain_unknown">неизв.</string>
 </resources>

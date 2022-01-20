@@ -136,8 +136,8 @@ public class Config {
         }
 
         return new byte[][] {
-            {(byte) stationCode, flags, (byte) antennaGain.value, (byte) password.getValue(0)},
-            {(byte) password.getValue(1), (byte) password.getValue(2), 0, 0}
+            {(byte) stationCode, flags, (byte) antennaGain.value, (byte) password.getValue(2)},
+            {(byte) password.getValue(1), (byte) password.getValue(0), 0, 0}
         };
     }
 

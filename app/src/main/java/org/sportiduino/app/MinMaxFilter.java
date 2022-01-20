@@ -29,9 +29,7 @@ public class MinMaxFilter implements InputFilter {
                     return null;
                 }
             }
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
-        }
+        } catch (NumberFormatException ignored) {}
         return "";
     }
 
