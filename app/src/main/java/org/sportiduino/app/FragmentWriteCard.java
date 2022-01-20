@@ -82,6 +82,7 @@ public class FragmentWriteCard extends NfcFragment {
         @Override
         protected void onPreExecute() {
             binding.textViewNfcInfo.setText(R.string.writing_card_dont_remove_it);
+            binding.progressBar.setVisibility(View.VISIBLE);
         }
 
         @Override
@@ -96,6 +97,7 @@ public class FragmentWriteCard extends NfcFragment {
 
         @Override
         protected void onPostExecute(Boolean result) {
+            binding.progressBar.setVisibility(View.GONE);
             if (result) {
                 binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
                 if (binding.checkBoxAutoIncrement.isChecked()) {

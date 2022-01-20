@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -58,12 +57,12 @@
 
                 <EditText
                     android:id="@+id/edit_text_station_number"
-                    android:defaultValue="0"
                     android:inputType="number"
+                    android:text="1"
                     android:layout_width="100dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    tools:ignore="TextFields"/>
+                    android:importantForAutofill="no" />
 
             </LinearLayout>
 
@@ -234,8 +233,8 @@
 
                 <EditText
                     android:id="@+id/new_password1"
-                    android:defaultValue="0"
                     android:inputType="number"
+                    android:text="0"
                     android:layout_width="50dp"
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
@@ -250,8 +249,8 @@
 
                 <EditText
                     android:id="@+id/new_password2"
-                    android:defaultValue="0"
                     android:inputType="number"
+                    android:text="0"
                     android:layout_width="50dp"
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
@@ -265,21 +264,14 @@
 
                 <EditText
                     android:id="@+id/new_password3"
+                    android:inputType="number"
+                    android:text="0"
                     android:layout_width="50dp"
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:defaultValue="0"
-                    android:inputType="number"
                     tools:ignore="TextFields" />
             </LinearLayout>
-            <!--
-            <include
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                layout="@layout/preference_password"
-                />
-                -->
         </LinearLayout>
 
     </RadioGroup>
