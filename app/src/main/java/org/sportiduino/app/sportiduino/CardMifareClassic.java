@@ -1,7 +1,7 @@
 package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
-import android.util.Log;
+//import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -14,6 +14,7 @@ public class CardMifareClassic extends CardAdapter {
         super(tag);
         this.tag = tag;
         int size = tag.getSize();
+        //Log.d("mfc", String.format("timeout: %d", tag.getTimeout()));
         switch (size) {
             case MifareClassic.SIZE_1K:
             case MifareClassic.SIZE_2K: // FIXME
@@ -89,6 +90,7 @@ public class CardMifareClassic extends CardAdapter {
             if (sector != lastSector) {
                 lastSector = sector;
                 try {
+                    //Log.d("mfc", String.format("authenticate sector: %d, blockIndex: %d, %b", sector, blockIndex, tag.isConnected()));
                     if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
                         throw new ReadWriteCardException();
                     }
@@ -102,6 +104,7 @@ public class CardMifareClassic extends CardAdapter {
                 pageData = Arrays.copyOf(pageData, MifareClassic.BLOCK_SIZE);
             }
             try {
+                //Log.d("mfc", String.format("writeBlock: %d, %b", blockIndex, tag.isConnected()));
                 tag.writeBlock(blockIndex, pageData);
             } catch (IOException e) {
                 e.printStackTrace();
