@@ -1,11 +1,11 @@
 name: Build
 
 on: push
-  #push:
-    #branches:
-    #  - '**'
-    #tags:
-    #- 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+#  push:
+#    branches:
+#      - '**'
+#    tags:
+#    - 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
 jobs:
   build:
@@ -55,7 +55,5 @@ jobs:
         with:
           body_path: ${{ github.workspace }}-CHANGELOG.txt
           files: app/build/outputs/apk/release/SportiduinoApp-*.apk
-           
-
  
 # vim: ts=2 sw=2 et

@@ -2,7 +2,6 @@ package org.sportiduino.app;
 
 import android.text.InputFilter;
 import android.text.Spanned;
-import android.util.Log;
 
 public class MinMaxFilter implements InputFilter {
     private final int min;

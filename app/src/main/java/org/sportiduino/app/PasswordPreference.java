@@ -2,16 +2,14 @@ package org.sportiduino.app;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.util.Log;
 
 import androidx.preference.DialogPreference;
-
-import java.util.Arrays;
 
 public class PasswordPreference extends DialogPreference {
 
     public PasswordPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
+        setSummary(Password.defaultPassword().toString());
     }
     
     public void persistPassword(Password password) {
