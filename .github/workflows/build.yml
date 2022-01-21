@@ -1,0 +1,63 @@
+name: Build
+
+on:
+  push:
+    #branches: [ $default-branch ]
+    branches:
+      - '**'
+    #tags:
+    #- 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
+
+jobs:
+  build:
+    name: Build APK
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+      - name: Set up JDK environment
+        uses: actions/setup-java@v2
+        with:
+          distribution: 'zulu'
+          java-version: 11
+          #cache: 'gradle'
+      - name: Build release APK
+        run: |
+          ./gradlew assembleRelease --no-daemon
+      - name: Sign APK
+        id: sign_app
+        uses: r0adkll/sign-android-release@v1
+        with:
+          releaseDirectory: app/build/outputs/apk/release
+          signingKeyBase64: ${{ secrets.KEYSTORE }}
+          alias: ${{ secrets.KEYALIAS }}
+          keyStorePassword: ${{ secrets.KEYSTORE_PASSWORD }}
+          keyPassword: ${{ secrets.KEY_PASSWORD }}
+        env:
+          # override default build-tools version (29.0.3) -- optional
+          BUILD_TOOLS_VERSION: "30.0.2"
+      - name: Rename APK
+        run: |
+          mv ${{steps.sign_app.outputs.signedReleaseFile}} app/build/outputs/apk/release/SportiduinoApp-${{ github.ref_name }}.apk
+      - name: Upload APK
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-release.apk
+          path: app/build/outputs/apk/release/SportiduinoApp-*.apk
+      - name: Generate Changelog
+        if: startsWith(github.ref, 'refs/tags/v')
+        run: |
+          # Get text after ## ... <version> from changelog.ru.md and changelog.en.md
+          sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" changelog.ru.md | sed -z "s/^\n*//g" - > ${{ github.workspace }}-CHANGELOG.txt
+          printf "\n---\n" >> ${{ github.workspace }}-CHANGELOG.txt
+          sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" changelog.en.md | sed -z "s/^\n*//g" - >> ${{ github.workspace }}-CHANGELOG.txt
+      - name: Create release
+        uses: softprops/action-gh-release@v1
+        if: startsWith(github.ref, 'refs/tags/v')
+        with:
+          body_path: ${{ github.workspace }}-CHANGELOG.txt
+          files: app/build/outputs/apk/release/SportiduinoApp-*.apk
+           
+
+ 
+# vim: ts=2 sw=2 et
