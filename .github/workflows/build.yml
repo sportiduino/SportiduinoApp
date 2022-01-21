@@ -1,10 +1,9 @@
 name: Build
 
-on:
-  push:
-    #branches: [ $default-branch ]
-    branches:
-      - '**'
+on: push
+  #push:
+    #branches:
+    #  - '**'
     #tags:
     #- 'v*' # Push events to matching v*, i.e. v1.0, v20.15.10
 
@@ -39,18 +38,17 @@ jobs:
       - name: Rename APK
         run: |
           mv ${{steps.sign_app.outputs.signedReleaseFile}} app/build/outputs/apk/release/SportiduinoApp-${{ github.ref_name }}.apk
-      - name: Upload APK
-        uses: actions/upload-artifact@v2
-        with:
-          name: app-release.apk
-          path: app/build/outputs/apk/release/SportiduinoApp-*.apk
+      #- name: Upload APK
+      #  uses: actions/upload-artifact@v2
+      #  with:
+      #    path: app/build/outputs/apk/release/SportiduinoApp-*.apk
       - name: Generate Changelog
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
-          # Get text after ## ... <version> from changelog.ru.md and changelog.en.md
-          sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" changelog.ru.md | sed -z "s/^\n*//g" - > ${{ github.workspace }}-CHANGELOG.txt
+          # Get text after for this release from changelog files
+          sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" CHANGELOG.md | sed -z "s/^\n*//g" - > ${{ github.workspace }}-CHANGELOG.txt
           printf "\n---\n" >> ${{ github.workspace }}-CHANGELOG.txt
-          sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" changelog.en.md | sed -z "s/^\n*//g" - >> ${{ github.workspace }}-CHANGELOG.txt
+          sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" CHANGELOG.ru.md | sed -z "s/^\n*//g" - >> ${{ github.workspace }}-CHANGELOG.txt
       - name: Create release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
