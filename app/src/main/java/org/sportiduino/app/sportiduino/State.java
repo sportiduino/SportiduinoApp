@@ -104,16 +104,20 @@ public class State {
     boolean isEmpty = false;
 
     public State(byte[][] data) {
-        if (data == null || data.length == 0 || data[0][0] == 0) {
+        try {
+            if (data == null || data.length == 0 || data[0][0] == 0) {
+                isEmpty = true;
+                return;
+            }
+            version = new Version(data[0][0], data[0][1], data[0][2]);
+            config = Config.unpack(data[1]);
+            battery = new Battery(data[2][0] & 0xFF);
+            mode = Mode.values()[data[2][1]];
+            timestamp = Util.toUint32(data[3]);
+            wakeupTimestamp = Util.toUint32(data[4]);
+        } catch (ArrayIndexOutOfBoundsException e) {
             isEmpty = true;
-            return;
         }
-        version = new Version(data[0][0], data[0][1], data[0][2]);
-        config = Config.unpack(data[1]);
-        battery = new Battery(data[2][0] & 0xFF);
-        mode = Mode.values()[data[2][1]];
-        timestamp = Util.toUint32(data[3]);
-        wakeupTimestamp = Util.toUint32(data[4]);
     }
 
     @NonNull
