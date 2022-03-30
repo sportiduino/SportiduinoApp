@@ -1,5 +1,10 @@
 # SportiduinoApp Changelog
 
+## v1.1
+
+* Added Password Master card
+* New format of Backup Master card (BS FW >= vX.10.0)
+
 ## v1.0
 
 Initial release of the application.

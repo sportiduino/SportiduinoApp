@@ -113,6 +113,10 @@ public class FragmentStationSettings extends NfcFragment {
         binding.newPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.newPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.newPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+
+        binding.mpNewPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        binding.mpNewPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+        binding.mpNewPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
     }
 
     View.OnClickListener dateClickListener = new View.OnClickListener() {
@@ -158,6 +162,10 @@ public class FragmentStationSettings extends NfcFragment {
         binding.newPassword1.setText(String.valueOf(password.getValue(0)));
         binding.newPassword2.setText(String.valueOf(password.getValue(1)));
         binding.newPassword3.setText(String.valueOf(password.getValue(2)));
+
+        binding.mpNewPassword1.setText(String.valueOf(password.getValue(0)));
+        binding.mpNewPassword2.setText(String.valueOf(password.getValue(1)));
+        binding.mpNewPassword3.setText(String.valueOf(password.getValue(2)));
     }
 
     private void updateWakeupTime() {
@@ -187,6 +195,7 @@ public class FragmentStationSettings extends NfcFragment {
         }
         binding.layoutStationNumber.setVisibility(View.GONE);
         binding.layoutWakeupTime.setVisibility(View.GONE);
+        binding.layoutPassword.setVisibility(View.GONE);
         binding.layoutConfig.setVisibility(View.GONE);
         int rbId = rb.getId();
         if (rbId == R.id.radio_button_master_get_state) {
@@ -199,6 +208,9 @@ public class FragmentStationSettings extends NfcFragment {
         } else if (rbId == R.id.radio_button_master_sleep) {
             cardType = CardType.MASTER_SLEEP;
             binding.layoutWakeupTime.setVisibility(View.VISIBLE);
+        } else if (rbId == R.id.radio_button_master_password) {
+            cardType = CardType.MASTER_PASSWORD;
+            binding.layoutPassword.setVisibility(View.VISIBLE);
         } else if (rbId == R.id.radio_button_master_config) {
             cardType = CardType.MASTER_CONFIG;
             binding.layoutConfig.setVisibility(View.VISIBLE);
@@ -269,6 +281,12 @@ public class FragmentStationSettings extends NfcFragment {
             masterCard.dataForWriting = MasterCard.packTime(c);
         } else if (binding.radioButtonMasterSleep.isChecked()) {
             masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
+        } else if (binding.radioButtonMasterPassword.isChecked()) {
+            Password password = new Password(
+                    Integer.parseInt(binding.mpNewPassword1.getText().toString()),
+                    Integer.parseInt(binding.mpNewPassword2.getText().toString()),
+                    Integer.parseInt(binding.mpNewPassword3.getText().toString()));
+            masterCard.dataForWriting = MasterCard.packNewPassword(password);
         } else if (binding.radioButtonMasterConfig.isChecked()) {
             Config config = new Config();
             config.stationCode = 0;  // if 0 don't change code of station

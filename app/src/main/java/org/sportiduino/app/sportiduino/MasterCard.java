@@ -49,6 +49,8 @@ public class MasterCard extends Card {
                 return parseBackupMaster(data);
             case MASTER_CONFIG:
                 return App.str(R.string.config_master_card);
+            case MASTER_PASSWORD:
+                return App.str(R.string.password_master_card);
             default:
                 return App.str(R.string.unknown_card_type);
         }
@@ -128,6 +130,12 @@ public class MasterCard extends Card {
         return new byte[][] {
             {(byte) month, (byte) year, (byte) day, 0},
             {(byte) hour, (byte) minute, (byte) second, 0}
+        };
+    }
+
+    public static byte[][] packNewPassword(Password password) {
+        return new byte[][] {
+            {(byte) password.getValue(2), (byte) password.getValue(1), (byte) password.getValue(0), 0}
         };
     }
 }

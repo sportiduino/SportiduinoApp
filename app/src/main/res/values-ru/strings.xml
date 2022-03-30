@@ -19,6 +19,7 @@
     <string name="number_master_card">Мастер-чип номера</string>
     <string name="sleep_master_card">Мастер-чип сна</string>
     <string name="config_master_card">Мастер-чип конфига</string>
+    <string name="password_master_card">Мастер-чип пароля</string>
     <string name="backup_master_card">Мастер-чип лога</string>
     <string name="station_no">№ станции</string>
     <string name="button_start">Старт</string>

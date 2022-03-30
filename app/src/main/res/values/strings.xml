@@ -19,6 +19,7 @@
     <string name="number_master_card">Number Master Card</string>
     <string name="sleep_master_card">Sleep Master Card</string>
     <string name="config_master_card">Config Master Card</string>
+    <string name="password_master_card">Password Master Card</string>
     <string name="backup_master_card">Backup Master Card</string>
     <string name="station_no">Station No</string>
     <string name="button_start">Start</string>

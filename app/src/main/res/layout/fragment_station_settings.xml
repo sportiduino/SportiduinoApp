@@ -153,6 +153,69 @@
             android:text="@string/backup_master_card" />
 
         <RadioButton
+            android:id="@+id/radio_button_master_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/password_master_card" />
+
+        <LinearLayout
+            android:id="@+id/layout_password"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="5dp"
+            android:padding="2dp"
+            android:orientation="horizontal"
+            android:background="@drawable/border"
+            android:visibility="gone">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/new_password"/>
+
+            <EditText
+                android:id="@+id/mp_new_password1"
+                android:inputType="number"
+                android:text="0"
+                android:layout_width="50dp"
+                android:layout_margin="2dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:ignore="TextFields" />
+                <!--android:minHeight = "48dp"-->
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password_separator" />
+
+            <EditText
+                android:id="@+id/mp_new_password2"
+                android:inputType="number"
+                android:text="0"
+                android:layout_width="50dp"
+                android:layout_margin="2dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:ignore="TextFields" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/password_separator" />
+
+            <EditText
+                android:id="@+id/mp_new_password3"
+                android:inputType="number"
+                android:text="0"
+                android:layout_width="50dp"
+                android:layout_margin="2dp"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                tools:ignore="TextFields" />
+        </LinearLayout>
+
+        <RadioButton
             android:id="@+id/radio_button_master_config"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
