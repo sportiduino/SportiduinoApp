@@ -23,6 +23,12 @@ public class Util {
         buffer.position(0);
         return buffer.getLong();
     }
+
+    public static int toUint16(byte b1, byte b2) {
+        int ret = (b1 & 0xff) << 8;
+        ret |= b2 & 0xff;
+        return ret;
+    }
  
     public static byte[] fromUint32(long value) {
         byte[] bytes = new byte[8];

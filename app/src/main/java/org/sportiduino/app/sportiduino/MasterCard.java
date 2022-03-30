@@ -68,10 +68,10 @@ public class MasterCard extends Card {
 
     private String parseBackupMaster(byte[][] data) {
         int stationNumber = dataPage4[0] & 0xff;
-        long timeHigh12bits = 0;
-        long initTime = 0;
         StringBuilder ret = new StringBuilder(App.str(R.string.backup_master_card));
-        if (dataPage4[3] > 0) { // have timestamp
+        if (dataPage4[3] == 1) { // old format with timestamps
+            long timeHigh12bits = 0;
+            long initTime = 0;
             ret.append("\n").append(App.str(R.string.station_no_)).append(stationNumber);
             for (byte[] datum : data) {
                 if (timeHigh12bits == 0) {
@@ -80,8 +80,7 @@ public class MasterCard extends Card {
                     continue;
                 }
 
-                int cardNum = (datum[0] & 0xff) << 8;
-                cardNum |= datum[1] & 0xff;
+                int cardNum = Util.toUint16(datum[0], datum[1]);
                 cardNum >>= 4;
 
                 if (cardNum == 0) {
@@ -93,7 +92,22 @@ public class MasterCard extends Card {
                     punchTime += 0x100000;
                 }
                 ret.append(String.format("\n%1$4s", cardNum));
-                ret.append(" - ").append(Util.dformat.format(new Date(punchTime * 1000)));
+                ret.append(" - ").append(Util.dformat.format(new Date(punchTime*1000)));
+            }
+        } else if (dataPage4[3] >= 10) { // new format (FW version 10 or greater)
+            int lastTimeHigh16bits = 0;
+            for (byte[] datum : data) {
+                int cardNum = Util.toUint16(datum[0], datum[1]);
+                int time16bits = Util.toUint16(datum[2], datum[3]);
+                if (cardNum == 0) {
+                    if (time16bits > 0 && time16bits != lastTimeHigh16bits) {
+                        lastTimeHigh16bits = time16bits;
+                    }
+                    continue;
+                }
+                long punchTime = (long)lastTimeHigh16bits << 16 | time16bits;
+                ret.append(String.format("\n%1$5s", cardNum));
+                ret.append(" - ").append(Util.dformat.format(new Date(punchTime*1000)));
             }
         }
         return ret.toString();
