@@ -2,8 +2,9 @@
 
 ## v1.1
 
-* Added Password Master card
+* Added Password Master card (BS FW >= vX.10.0)
 * New format of Backup Master card (BS FW >= vX.10.0)
+* Fix MIFARE Classic tag reading bug
 
 ## v1.0
 

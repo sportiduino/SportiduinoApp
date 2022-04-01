@@ -60,9 +60,10 @@
     <string name="config_antenna_gain_">Усиление антенны: </string>
     <string name="wakeup_time_">Пробуждение:</string>
     <string name="unknown_card_type">Неизвестный тип чипа</string>
-    <string name="station_no_">Станция № </string>
+    <string name="station_no_">Станция №</string>
+    <string name="record_count">Отметок</string>
     <string name="participant_card_no_">Чип №: </string>
-    <string name="clear_time_">\nОчистка: </string>
+    <string name="clear_time_">Очистка: </string>
     <string name="start">Старт</string>
     <string name="finish">Финиш</string>
     <string name="write">Записать:</string>

@@ -1,6 +1,7 @@
 package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
+import android.util.Log;
 //import android.util.Log;
 
 import java.io.IOException;
@@ -36,7 +37,7 @@ public class CardMifareClassic extends CardAdapter {
         int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
-        for (int blockIndex = firstBlockIndex; blockIndex <= tag.getBlockCount(); ++blockIndex) {
+        for (int blockIndex = firstBlockIndex; blockIndex < tag.getBlockCount(); ++blockIndex) {
             if ((blockIndex + 1) % numOfBlockInSector == 0) {
                 continue;
             }
@@ -45,6 +46,9 @@ public class CardMifareClassic extends CardAdapter {
                 lastSector = sector;
                 try {
                     if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
+                        Log.d("CardMifareClassic", "authenticateSectorWithKeyA failed, sector " +
+                            sector + ", block " + 
+                            blockIndex);
                         throw new ReadWriteCardException();
                     }
                 } catch (IOException e) {
@@ -54,7 +58,7 @@ public class CardMifareClassic extends CardAdapter {
             }
             try {
                 blockData[i] = tag.readBlock(blockIndex);
-                //Log.i("CardMifareClassic", String.valueOf(i) + ": " +
+                //Log.d("CardMifareClassic", i + ": " +
                 //    Integer.toHexString(blockData[i][0] & 0xff) + " " +
                 //    Integer.toHexString(blockData[i][1] & 0xff) + " " +
                 //    Integer.toHexString(blockData[i][2] & 0xff) + " " +

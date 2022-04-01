@@ -60,9 +60,10 @@
     <string name="config_antenna_gain_">Antenna Gain: </string>
     <string name="wakeup_time_">Wakeup time:</string>
     <string name="unknown_card_type">Unknown card type</string>
-    <string name="station_no_">Station No </string>
+    <string name="station_no_">Station No</string>
+    <string name="record_count">Record count</string>
     <string name="participant_card_no_">Participant card No: </string>
-    <string name="clear_time_">\nClear time: </string>
+    <string name="clear_time_">Clear time: </string>
     <string name="start">Start</string>
     <string name="finish">Finish</string>
     <string name="write">Write:</string>

@@ -43,7 +43,9 @@ public class ParticipantCard extends Card {
         }
 
         String str = App.str(R.string.participant_card_no_) + cardNumber;
-        str += App.str(R.string.clear_time_) + Util.dformat.format(new Date(cardInitTimestamp * 1000));
+        str += "\n" + App.str(R.string.clear_time_) + Util.dformat.format(new Date(cardInitTimestamp*1000));
+        str += "\n" + App.str(R.string.record_count) + " %d";
+        int recordCount = 0;
         long timeHighPart = cardInitTimestamp & 0xFF000000;
         for (byte[] datum : data) {
             int cp = datum[0] & 0xFF;
@@ -65,9 +67,10 @@ public class ParticipantCard extends Card {
                     break;
             }
             str += String.format("%1$6s", cpStr);
-            str += " - " + Util.dformat.format(new Date(punchTimestamp * 1000));
+            str += " - " + Util.dformat.format(new Date(punchTimestamp*1000));
+            ++recordCount;
         }
-        return str;
+        return String.format(str, recordCount);
     }
 
     @Override

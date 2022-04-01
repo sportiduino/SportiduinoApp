@@ -69,12 +69,14 @@ public class MasterCard extends Card {
     }
 
     private String parseBackupMaster(byte[][] data) {
-        int stationNumber = dataPage4[0] & 0xff;
         StringBuilder ret = new StringBuilder(App.str(R.string.backup_master_card));
+        int stationNumber = dataPage4[0] & 0xff;
+        ret.append("\n").append(App.str(R.string.station_no_)).append(stationNumber);
+        ret.append("\n").append(App.str(R.string.record_count)).append(" %d");
+        int recordCount = 0;
         if (dataPage4[3] == 1) { // old format with timestamps
             long timeHigh12bits = 0;
             long initTime = 0;
-            ret.append("\n").append(App.str(R.string.station_no_)).append(stationNumber);
             for (byte[] datum : data) {
                 if (timeHigh12bits == 0) {
                     initTime = Util.toUint32(datum);
@@ -95,6 +97,7 @@ public class MasterCard extends Card {
                 }
                 ret.append(String.format("\n%1$4s", cardNum));
                 ret.append(" - ").append(Util.dformat.format(new Date(punchTime*1000)));
+                ++recordCount;
             }
         } else if (dataPage4[3] >= 10) { // new format (FW version 10 or greater)
             int lastTimeHigh16bits = 0;
@@ -110,9 +113,10 @@ public class MasterCard extends Card {
                 long punchTime = (long)lastTimeHigh16bits << 16 | time16bits;
                 ret.append(String.format("\n%1$5s", cardNum));
                 ret.append(" - ").append(Util.dformat.format(new Date(punchTime*1000)));
+                ++recordCount;
             }
         }
-        return ret.toString();
+        return String.format(ret.toString(), recordCount);
     }
 
     public static byte[][] packStationNumber(int stationNumber) {
