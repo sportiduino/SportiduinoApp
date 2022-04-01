@@ -6,11 +6,13 @@
 * Новый формат мастер-чипа лога (прошивка >= vX.10.0)
 * Исправлена ошибка чтения меток MIFARE Classic
 
+[Все изменения](https://github.com/sportiduino/sportiduinoapp/compare/v1.0...v1.1)
+
 ## v1.0
 
 Первый выпуск приложения.
 
 Совместим со станциями Sportiduino с прошивкой vX.7 или выше.
 
-Поддерживаются чипы NTAG213/215/216, Mifare Classic 1K/4K.
+Поддерживаются чипы NTAG213/215/216, MIFARE Classic 1K/4K.
 

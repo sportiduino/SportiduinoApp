@@ -6,6 +6,8 @@
 * New format of Backup Master card (BS FW >= vX.10.0)
 * Fix MIFARE Classic tag reading bug
 
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.0...v1.1)
+
 ## v1.0
 
 Initial release of the application.
