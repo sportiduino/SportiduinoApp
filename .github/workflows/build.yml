@@ -36,12 +36,19 @@ jobs:
           # override default build-tools version (29.0.3) -- optional
           BUILD_TOOLS_VERSION: "30.0.2"
       - name: Rename APK
+        id: rename_apk
         run: |
-          mv ${{steps.sign_app.outputs.signedReleaseFile}} app/build/outputs/apk/release/SportiduinoApp-${{ github.ref_name }}.apk
-      #- name: Upload APK
-      #  uses: actions/upload-artifact@v2
-      #  with:
-      #    path: app/build/outputs/apk/release/SportiduinoApp-*.apk
+          RELEASE_APK_PATH=app/build/outputs/apk/release/SportiduinoApp-${{ github.ref_name }}.apk
+          ARTIFACT_APK_PATH=${{ github.workspace }}-$(git rev-parse --short HEAD).apk
+          mv ${{ steps.sign_app.outputs.signedReleaseFile }} ${RELEASE_APK_PATH}
+          cp ${RELEASE_APK_PATH} ${ARTIFACT_APK_PATH}
+          echo "::set-output name=release_apk_path::${RELEASE_APK_PATH}"
+          echo "::set-output name=artifact_apk_path::${ARTIFACT_APK_PATH}"
+      - name: Upload APK
+        uses: actions/upload-artifact@v3
+        with:
+          name: SportiduinoApp
+          path: ${{ steps.rename_apk.outputs.artifact_apk_path }}
       - name: Generate Changelog
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
@@ -54,6 +61,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           body_path: ${{ github.workspace }}-CHANGELOG.txt
-          files: app/build/outputs/apk/release/SportiduinoApp-*.apk
+          files: ${{ steps.rename_apk.outputs.release_apk_path }}
  
 # vim: ts=2 sw=2 et
