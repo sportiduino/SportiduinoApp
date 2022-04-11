@@ -219,6 +219,7 @@ public class FragmentStationSettings extends NfcFragment {
         } else {
             cardType = CardType.UNKNOWN;
         }
+        binding.scrollView.post(() -> binding.scrollView.fullScroll(View.FOCUS_DOWN));
     }
 
     View.OnClickListener buttonClickListener = (View view) -> {
@@ -291,7 +292,7 @@ public class FragmentStationSettings extends NfcFragment {
             Config config = new Config();
             config.stationCode = 0;  // if 0 don't change code of station
             config.activeModeDuration = (Config.ActiveModeDuration) binding.spinnerActiveTime.getSelectedItem();
-            config.checkStartFinish = binding.checkBoxStartFinish.isChecked();
+            config.startAsCheck = binding.checkBoxStartFinish.isChecked();
             config.checkCardInitTime = binding.checkBoxInitTime.isChecked();
             config.autoSleep = binding.checkBoxAutoSleep.isChecked();
             config.antennaGain = (Config.AntennaGain) binding.spinnerAntennaGain.getSelectedItem();

@@ -53,7 +53,7 @@
     <string name="config_never_active">никогда</string>
     <string name="config_active_time">Время в активном: </string>
     <string name="config_flags">Опции: </string>
-    <string name="config_check_start_finish">Проверка старта/финиша</string>
+    <string name="config_start_as_check">Проверка на станции старта</string>
     <string name="config_check_init_time">Проверка времени инициализации чипа</string>
     <string name="config_auto_sleep_flag">Автосон</string>
     <string name="config_fast_punch_flag">Быстрая отметка</string>
@@ -80,6 +80,7 @@
     <string name="new_password">Новый пароль</string>
     <string name="auto_sleep">Авто сон</string>
     <string name="check_init_time_of_card">Проверка времени чипа</string>
-    <string name="check_start_finish_punches">Проверка отметок старта/финиша</string>
+    <string name="check_start_finish_punches">Проверка на станции старта</string>
     <string name="antenna_gain_unknown">неизв.</string>
+    <string name="enable_fast_punch_when_clear">Вкл. быструю отметку при очистке</string>
 </resources>

@@ -95,10 +95,10 @@ public class Config {
 
     public int stationCode = 0;
     public ActiveModeDuration activeModeDuration = ActiveModeDuration.ACTIVE_MODE_2H;
-    public boolean checkStartFinish = false;
+    public boolean startAsCheck = false;
     public boolean checkCardInitTime = false;
     public boolean autoSleep = false;
-    public boolean fastPunch = false;
+    public boolean enableFastPunchForCard = false;
     public AntennaGain antennaGain = AntennaGain.ANTENNA_GAIN_33DB;
     public Password password = Password.defaultPassword();
 
@@ -108,10 +108,10 @@ public class Config {
 
         config.activeModeDuration = ActiveModeDuration.byValue(configData[1] & 0x7);
 
-        config.checkStartFinish = (configData[1] & 0x08) > 0;
+        config.startAsCheck = (configData[1] & 0x08) > 0;
         config.checkCardInitTime = (configData[1] & 0x10) > 0;
         config.autoSleep = (configData[1] & 0x20) > 0;
-        config.fastPunch = (configData[1] & 0x40) > 0;
+        config.enableFastPunchForCard = (configData[1] & 0x80) > 0;
 
         config.antennaGain = AntennaGain.byValue(configData[2] & 0xFF);
         return config;
@@ -122,7 +122,7 @@ public class Config {
 
         byte flags = (byte) activeModeDuration.value;
 
-        if (checkStartFinish) {
+        if (startAsCheck) {
             flags |= 0x08;
         }
         if (checkCardInitTime) {
@@ -131,8 +131,8 @@ public class Config {
         if (autoSleep) {
             flags |= 0x20;
         }
-        if (fastPunch) {
-            flags |= 0x40;
+        if (enableFastPunchForCard) {
+            flags |= 0x80;
         }
 
         return new byte[][] {
@@ -161,8 +161,8 @@ public class Config {
         }
         str += "\n\t" + App.str(R.string.config_active_time) + activeModeDuration.toString();
         str += "\n\t" + App.str(R.string.config_flags);
-        if (checkStartFinish) {
-            str += "\n\t\t" + App.str(R.string.config_check_start_finish);
+        if (startAsCheck) {
+            str += "\n\t\t" + App.str(R.string.config_start_as_check);
         }
         if (checkCardInitTime) {
             str += "\n\t\t" + App.str(R.string.config_check_init_time);
@@ -170,7 +170,7 @@ public class Config {
         if (autoSleep) {
             str += "\n\t\t" + App.str(R.string.config_auto_sleep_flag);
         }
-        if (fastPunch) {
+        if (enableFastPunchForCard) {
             str += "\n\t\t" + App.str(R.string.config_fast_punch_flag);
         }
         str += "\n\t" + App.str(R.string.config_antenna_gain_) + antennaGain.label;

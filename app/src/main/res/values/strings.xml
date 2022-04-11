@@ -53,7 +53,7 @@
     <string name="config_never_active">never</string>
     <string name="config_active_time">Active time: </string>
     <string name="config_flags">Flags: </string>
-    <string name="config_check_start_finish">Check start/finish</string>
+    <string name="config_start_as_check">Start as Check</string>
     <string name="config_check_init_time">Check card init time flag</string>
     <string name="config_auto_sleep_flag">tAuto sleep flag</string>
     <string name="config_fast_punch_flag">Fast punch flag</string>
@@ -81,7 +81,8 @@
     <string name="new_password">New password</string>
     <string name="auto_sleep">Auto sleep</string>
     <string name="check_init_time_of_card">Check init time of card</string>
-    <string name="check_start_finish_punches">Check start/finish punches</string>
+    <string name="check_start_finish_punches">Check no punches before start</string>
     <string name="password_separator" translatable="false">-</string>
     <string name="antenna_gain_unknown">unknown</string>
+    <string name="enable_fast_punch_when_clear">Enable fast punch when clear</string>
 </resources>
