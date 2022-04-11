@@ -1,293 +1,178 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical"
-    tools:context=".FragmentStationSettings">
+    android:scrollbars="vertical"
+    android:fillViewport="true">
 
-    <TextView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/write"/>
+        android:padding="16dp"
+        android:orientation="vertical"
+        tools:context=".FragmentStationSettings">
 
-    <RadioGroup
-        android:id="@+id/radio_group"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content" >
-
-        <RadioButton
-            android:id="@+id/radio_button_master_get_state"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/state_master_card" />
+            android:text="@string/write"/>
 
-        <RadioButton
-            android:id="@+id/radio_button_master_time"
+        <RadioGroup
+            android:id="@+id/radio_group"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/time_master_card" />
+            android:layout_height="wrap_content" >
 
-        <RadioButton
-            android:id="@+id/radio_button_master_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/number_master_card" />
-
-        <LinearLayout
-            android:id="@+id/layout_station_number"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="2dp"
-            android:background="@drawable/border"
-            android:visibility="gone">
-
-            <LinearLayout
+            <RadioButton
+                android:id="@+id/radio_button_master_get_state"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:text="@string/state_master_card" />
+
+            <RadioButton
+                android:id="@+id/radio_button_master_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/time_master_card" />
+
+            <RadioButton
+                android:id="@+id/radio_button_master_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/number_master_card" />
+
+            <LinearLayout
+                android:id="@+id/layout_station_number"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="2dp"
+                android:background="@drawable/border"
+                android:visibility="gone">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/station_no"/>
+
+                    <EditText
+                        android:id="@+id/edit_text_station_number"
+                        android:inputType="number"
+                        android:text="1"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        android:importantForAutofill="no" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <Button
+                        android:id="@+id/button_start"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:textSize="@dimen/text_size_small"
+                        android:text="@string/button_start" />
+
+                    <Button
+                        android:id="@+id/button_finish"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="1dp"
+                        android:layout_weight="1"
+                        android:text="@string/button_finish"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <Button
+                        android:id="@+id/button_check"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:text="@string/button_check"
+                        android:textSize="@dimen/text_size_small" />
+
+                    <Button
+                        android:id="@+id/button_clear"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_margin="1dp"
+                        android:text="@string/button_clear"
+                        android:textSize="@dimen/text_size_small" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <RadioButton
+                android:id="@+id/radio_button_master_sleep"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/sleep_master_card" />
+
+            <LinearLayout
+                android:id="@+id/layout_wakeup_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/border"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/station_no"/>
+                    android:text="@string/wakeup_time_"/>
 
-                <EditText
-                    android:id="@+id/edit_text_station_number"
-                    android:inputType="number"
-                    android:text="1"
-                    android:layout_width="100dp"
+                <TextView
+                    android:id="@+id/text_view_wakeup_date"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
-                    android:importantForAutofill="no" />
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-
-                <Button
-                    android:id="@+id/button_start"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="1dp"
-                    android:textSize="@dimen/text_size_small"
-                    android:text="@string/button_start" />
-
-                <Button
-                    android:id="@+id/button_finish"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="1dp"
-                    android:layout_weight="1"
-                    android:text="@string/button_finish"
-                    android:textSize="@dimen/text_size_small" />
-
-                <Button
-                    android:id="@+id/button_check"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="1dp"
-                    android:text="@string/button_check"
-                    android:textSize="@dimen/text_size_small" />
-
-                <Button
-                    android:id="@+id/button_clear"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:layout_margin="1dp"
-                    android:text="@string/button_clear"
-                    android:textSize="@dimen/text_size_small" />
-            </LinearLayout>
-        </LinearLayout>
-
-        <RadioButton
-            android:id="@+id/radio_button_master_sleep"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/sleep_master_card" />
-
-        <LinearLayout
-            android:id="@+id/layout_wakeup_time"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/border"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/wakeup_time_"/>
-
-            <TextView
-                android:id="@+id/text_view_wakeup_date"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                android:textStyle=""
-                />
-
-            <TextView
-                android:id="@+id/text_view_wakeup_time"
-                android:layout_width="wrap_content"
-                android:layout_weight="1"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                />
-
-        </LinearLayout>
-
-        <RadioButton
-            android:id="@+id/radio_button_master_backup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/backup_master_card" />
-
-        <RadioButton
-            android:id="@+id/radio_button_master_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/password_master_card" />
-
-        <LinearLayout
-            android:id="@+id/layout_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_margin="5dp"
-            android:padding="2dp"
-            android:orientation="horizontal"
-            android:background="@drawable/border"
-            android:visibility="gone">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/new_password"/>
-
-            <EditText
-                android:id="@+id/mp_new_password1"
-                android:inputType="number"
-                android:text="0"
-                android:layout_width="50dp"
-                android:layout_margin="2dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:ignore="TextFields" />
-                <!--android:minHeight = "48dp"-->
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/password_separator" />
-
-            <EditText
-                android:id="@+id/mp_new_password2"
-                android:inputType="number"
-                android:text="0"
-                android:layout_width="50dp"
-                android:layout_margin="2dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:ignore="TextFields" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/password_separator" />
-
-            <EditText
-                android:id="@+id/mp_new_password3"
-                android:inputType="number"
-                android:text="0"
-                android:layout_width="50dp"
-                android:layout_margin="2dp"
-                android:layout_height="wrap_content"
-                android:textAlignment="center"
-                tools:ignore="TextFields" />
-        </LinearLayout>
-
-        <RadioButton
-            android:id="@+id/radio_button_master_config"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/config_master_card" />
-
-        <LinearLayout
-            android:id="@+id/layout_config"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="2dp"
-            android:background="@drawable/border"
-            android:visibility="gone">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                    android:textStyle=""
+                    />
 
                 <TextView
+                    android:id="@+id/text_view_wakeup_time"
                     android:layout_width="wrap_content"
+                    android:layout_weight="1"
                     android:layout_height="wrap_content"
-                    android:text="@string/config_active_time"/>
-
-                <Spinner
-                    android:id="@+id/spinner_active_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:textAlignment="center"
+                    />
 
             </LinearLayout>
 
-            <CheckBox
-                android:id="@+id/check_box_start_finish"
+            <RadioButton
+                android:id="@+id/radio_button_master_backup"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/check_start_finish_punches" />
+                android:text="@string/backup_master_card" />
 
-            <CheckBox
-                android:id="@+id/check_box_init_time"
+            <RadioButton
+                android:id="@+id/radio_button_master_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/check_init_time_of_card" />
-
-            <CheckBox
-                android:id="@+id/check_box_auto_sleep"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/auto_sleep" />
+                android:text="@string/password_master_card" />
 
             <LinearLayout
+                android:id="@+id/layout_password"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/config_antenna_gain_"/>
-
-                <Spinner
-                    android:id="@+id/spinner_antenna_gain"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                android:orientation="horizontal">
+                android:padding="2dp"
+                android:orientation="horizontal"
+                android:background="@drawable/border"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -295,7 +180,7 @@
                     android:text="@string/new_password"/>
 
                 <EditText
-                    android:id="@+id/new_password1"
+                    android:id="@+id/mp_new_password1"
                     android:inputType="number"
                     android:text="0"
                     android:layout_width="50dp"
@@ -311,7 +196,7 @@
                     android:text="@string/password_separator" />
 
                 <EditText
-                    android:id="@+id/new_password2"
+                    android:id="@+id/mp_new_password2"
                     android:inputType="number"
                     android:text="0"
                     android:layout_width="50dp"
@@ -326,7 +211,7 @@
                     android:text="@string/password_separator" />
 
                 <EditText
-                    android:id="@+id/new_password3"
+                    android:id="@+id/mp_new_password3"
                     android:inputType="number"
                     android:text="0"
                     android:layout_width="50dp"
@@ -335,19 +220,141 @@
                     android:textAlignment="center"
                     tools:ignore="TextFields" />
             </LinearLayout>
-        </LinearLayout>
 
-    </RadioGroup>
+            <RadioButton
+                android:id="@+id/radio_button_master_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/config_master_card" />
 
-    <TextView
-        android:id="@+id/text_view_nfc_info"
-        style="@style/TextViewNfcInfo"/>
+            <LinearLayout
+                android:id="@+id/layout_config"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="2dp"
+                android:background="@drawable/border"
+                android:visibility="gone">
 
-    <TextView
-        android:id="@+id/text_view_timer"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:textAlignment="center"
-        android:textSize="@dimen/text_size_timer" />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
 
-</LinearLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/config_active_time"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_active_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
+
+                <CheckBox
+                    android:id="@+id/check_box_start_finish"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_start_finish_punches" />
+
+                <CheckBox
+                    android:id="@+id/check_box_init_time"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/check_init_time_of_card" />
+
+                <CheckBox
+                    android:id="@+id/check_box_auto_sleep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="@string/auto_sleep" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/config_antenna_gain_"/>
+
+                    <Spinner
+                        android:id="@+id/spinner_antenna_gain"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/new_password"/>
+
+                    <EditText
+                        android:id="@+id/new_password1"
+                        android:inputType="number"
+                        android:text="0"
+                        android:layout_width="50dp"
+                        android:layout_margin="2dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        tools:ignore="TextFields" />
+                        <!--android:minHeight = "48dp"-->
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/password_separator" />
+
+                    <EditText
+                        android:id="@+id/new_password2"
+                        android:inputType="number"
+                        android:text="0"
+                        android:layout_width="50dp"
+                        android:layout_margin="2dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        tools:ignore="TextFields" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/password_separator" />
+
+                    <EditText
+                        android:id="@+id/new_password3"
+                        android:inputType="number"
+                        android:text="0"
+                        android:layout_width="50dp"
+                        android:layout_margin="2dp"
+                        android:layout_height="wrap_content"
+                        android:textAlignment="center"
+                        tools:ignore="TextFields" />
+                </LinearLayout>
+            </LinearLayout>
+
+        </RadioGroup>
+
+        <TextView
+            android:id="@+id/text_view_nfc_info"
+            style="@style/TextViewNfcInfo"/>
+
+        <TextView
+            android:id="@+id/text_view_timer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:textAlignment="center"
+            android:textSize="@dimen/text_size_timer" />
+    </LinearLayout>
+</ScrollView>
+
