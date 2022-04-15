@@ -9,7 +9,7 @@
     <string name="settings_label">Настройки</string>
     <string name="password">Пароль</string>
     <string name="fragment_station_settings_label">Станция</string>
-    <string name="bring_card">Приложите чип...</string>
+    <string name="bring_card">Приложите чип…</string>
     <string name="tag_id_s">ID метки: %s</string>
     <string name="tag_type_s">Тип: %s</string>
     <string name="card_no">№ чипа</string>
@@ -83,4 +83,6 @@
     <string name="check_start_finish_punches">Проверка на станции старта</string>
     <string name="antenna_gain_unknown">неизв.</string>
     <string name="enable_fast_punch_when_clear">Вкл. быструю отметку при очистке</string>
+    <string name="fast_punch">Быстрая отметка</string>
+    <string name="cleaning_only">Только очистка</string>
 </resources>

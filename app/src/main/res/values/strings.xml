@@ -85,4 +85,6 @@
     <string name="password_separator" translatable="false">-</string>
     <string name="antenna_gain_unknown">unknown</string>
     <string name="enable_fast_punch_when_clear">Enable fast punch when clear</string>
+    <string name="fast_punch">Fast punch</string>
+    <string name="cleaning_only">Cleaning only</string>
 </resources>

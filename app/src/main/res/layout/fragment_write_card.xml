@@ -38,6 +38,26 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:text="@string/auto_increment" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <CheckBox
+            android:id="@+id/check_box_fast_punch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/fast_punch" />
+
+        <CheckBox
+            android:id="@+id/check_box_cleaning_only"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:text="@string/cleaning_only" />
 
     </LinearLayout>
 

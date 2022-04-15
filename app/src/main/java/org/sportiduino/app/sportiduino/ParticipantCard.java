@@ -1,10 +1,6 @@
 package org.sportiduino.app.sportiduino;
 
-import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INFO1;
-import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INIT;
-import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_INIT_TIME;
-import static org.sportiduino.app.sportiduino.Constants.CARD_PAGE_START;
-import static org.sportiduino.app.sportiduino.Constants.FW_PROTO_VERSION;
+import static org.sportiduino.app.sportiduino.Constants.*;
 
 import org.sportiduino.app.App;
 import org.sportiduino.app.R;
@@ -14,17 +10,19 @@ import java.util.Date;
 public class ParticipantCard extends Card {
     int cardNumber;
     long cardInitTimestamp;
+    boolean fastPunch;
 
-    public ParticipantCard(CardAdapter adapter, int cardNumber, long cardInitTimestamp) {
-        this(adapter, cardNumber);
+    public ParticipantCard(CardAdapter adapter, int cardNumber, boolean fastPunch, long cardInitTimestamp) {
+        this(adapter, cardNumber, fastPunch);
         this.cardInitTimestamp = cardInitTimestamp;
     }
 
-    public ParticipantCard(CardAdapter adapter, int cardNumber) {
+    public ParticipantCard(CardAdapter adapter, int cardNumber, boolean fastPunch) {
         super(adapter);
 
         this.type = CardType.ORDINARY;
         this.cardNumber = cardNumber;
+        this.fastPunch = fastPunch;
     }
 
     @Override
@@ -43,6 +41,9 @@ public class ParticipantCard extends Card {
         }
 
         String str = App.str(R.string.participant_card_no_) + cardNumber;
+        if (fastPunch) {
+            str += String.format(" (%s)", App.str(R.string.fast_punch));
+        }
         str += "\n" + App.str(R.string.clear_time_) + Util.dformat.format(new Date(cardInitTimestamp*1000));
         str += "\n" + App.str(R.string.record_count) + " %d";
         int recordCount = 0;
@@ -76,10 +77,15 @@ public class ParticipantCard extends Card {
     @Override
     protected void writeImpl() throws ReadWriteCardException {
         adapter.clear(CARD_PAGE_INFO1, adapter.getMaxPage());
+        if (fastPunch) {
+            adapter.writePage(CARD_PAGE_INFO1, new byte[]{0, 0, 0, FAST_PUNCH_SIGN});
+        }
         long currentTimestamp = System.currentTimeMillis() / 1000;
         adapter.writePage(CARD_PAGE_INIT_TIME, Util.fromUint32(currentTimestamp));
-        final byte[] cardNumberArray = Util.fromUint16(cardNumber);
-        final byte[] dataPageInit = {cardNumberArray[0], cardNumberArray[1], 0, FW_PROTO_VERSION};
-        adapter.writePage(CARD_PAGE_INIT, dataPageInit);
+        if (cardNumber > 0) {  // else cleaning only
+            final byte[] cardNumberArray = Util.fromUint16(cardNumber);
+            final byte[] dataPageInit = {cardNumberArray[0], cardNumberArray[1], 0, FW_PROTO_VERSION};
+            adapter.writePage(CARD_PAGE_INIT, dataPageInit);
+        }
     }
 }

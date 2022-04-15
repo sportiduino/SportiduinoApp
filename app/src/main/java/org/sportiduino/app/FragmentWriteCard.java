@@ -9,6 +9,7 @@ import android.text.InputFilter;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
 
@@ -39,7 +40,17 @@ public class FragmentWriteCard extends NfcFragment {
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
 
-        binding.editTextCardNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 65000)});
+        binding.editTextCardNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 65535)});
+
+        binding.checkBoxCleaningOnly.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+            if (isChecked) {
+                binding.editTextCardNumber.setEnabled(false);
+                binding.checkBoxAutoIncrement.setEnabled(false);
+            } else {
+                binding.editTextCardNumber.setEnabled(true);
+                binding.checkBoxAutoIncrement.setEnabled(true);
+            }
+        });
     }
 
     @Override
@@ -65,7 +76,10 @@ public class FragmentWriteCard extends NfcFragment {
                 adapter = new CardMifareUltralight(MifareUltralight.get(tag));
             }
             if (adapter != null) {
-                ParticipantCard card = new ParticipantCard(adapter, cardNumber);
+                if (binding.checkBoxCleaningOnly.isChecked()) {
+                    cardNumber = -1;
+                }
+                ParticipantCard card = new ParticipantCard(adapter, cardNumber, binding.checkBoxFastPunch.isChecked());
                 new WriteCardTask(card).execute();
                 break;
             }
@@ -100,7 +114,7 @@ public class FragmentWriteCard extends NfcFragment {
             binding.progressBar.setVisibility(View.GONE);
             if (result) {
                 binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
-                if (binding.checkBoxAutoIncrement.isChecked()) {
+                if (binding.checkBoxAutoIncrement.isChecked() && !binding.checkBoxCleaningOnly.isChecked()) {
                     binding.editTextCardNumber.setText(String.valueOf(cardNumber + 1));
                 }
             } else {

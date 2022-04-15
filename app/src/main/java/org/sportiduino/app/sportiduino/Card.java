@@ -42,7 +42,9 @@ public abstract class Card {
             cardNumber |= data[1] & 0xFF;
             data = adapter.readPage(CARD_PAGE_INIT_TIME);
             long cardInitTimestamp = Util.toUint32(data);
-            return new ParticipantCard(adapter, cardNumber, cardInitTimestamp);
+            data = adapter.readPage(CARD_PAGE_INFO1);
+            boolean fastPunch = (data[3] == FAST_PUNCH_SIGN);
+            return new ParticipantCard(adapter, cardNumber, fastPunch, cardInitTimestamp);
         }
          
     }
