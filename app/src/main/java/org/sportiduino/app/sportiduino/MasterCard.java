@@ -2,6 +2,9 @@ package org.sportiduino.app.sportiduino;
 
 import static org.sportiduino.app.sportiduino.Constants.*;
 
+import android.text.Html;
+import android.util.Log;
+
 import org.sportiduino.app.App;
 import org.sportiduino.app.Password;
 import org.sportiduino.app.R;
@@ -34,7 +37,7 @@ public class MasterCard extends Card {
     }
 
     @Override
-    public String parseData(byte[][] data) {
+    public CharSequence parseData(byte[][] data) {
         switch (type) {
             case MASTER_SET_TIME:
                 return App.str(R.string.time_master_card);
@@ -42,7 +45,7 @@ public class MasterCard extends Card {
                 return App.str(R.string.number_master_card);
             case MASTER_GET_STATE:
                 State state = new State(data);
-                return App.str(R.string.state_master_card) + "\n" + state.toString();
+                return Html.fromHtml((App.str(R.string.state_master_card) + "\n" + state.toString()).replace("\n", "<br/>"));
             case MASTER_SLEEP:
                 return App.str(R.string.sleep_master_card);
             case MASTER_READ_BACKUP:

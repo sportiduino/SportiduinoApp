@@ -144,19 +144,19 @@ public class Config {
     @NonNull
     @Override
     public String toString() {
-        String str = App.str(R.string.config_station_no_) + stationCode;
+        String str = App.str(R.string.config_station_no_) + " " + stationCode;
         switch (stationCode) {
             case START_STATION:
-                str += App.str(R.string.config_start);
+                str += " " + App.str(R.string.config_start);
                 break;
             case FINISH_STATION:
-                str += App.str(R.string.config_finish);
+                str += " " + App.str(R.string.config_finish);
                 break;
             case CHECK_STATION:
-                str += App.str(R.string.config_check);
+                str += " " + App.str(R.string.config_check);
                 break;
             case CLEAR_STATION:
-                str += App.str(R.string.config_clear);
+                str += " " + App.str(R.string.config_clear);
                 break;
         }
         str += "\n\t" + App.str(R.string.config_active_time) + activeModeDuration.toString();

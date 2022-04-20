@@ -15,7 +15,7 @@ public abstract class Card {
     }
 
     public abstract byte[][] read() throws ReadWriteCardException;
-    public abstract String parseData(byte[][] data);
+    public abstract CharSequence parseData(byte[][] data);
 
     protected abstract void writeImpl() throws ReadWriteCardException;
 

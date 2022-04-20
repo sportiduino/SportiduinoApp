@@ -35,7 +35,7 @@ public class ParticipantCard extends Card {
     }
 
     @Override
-    public String parseData(byte[][] data) {
+    public CharSequence parseData(byte[][] data) {
         if (type == CardType.UNKNOWN) {
             return App.str(R.string.unknown_card_type);
         }

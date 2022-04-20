@@ -7,6 +7,7 @@ import androidx.annotation.NonNull;
 import org.sportiduino.app.App;
 import org.sportiduino.app.R;
 
+import java.util.Calendar;
 import java.util.Date;
 
 
@@ -91,7 +92,7 @@ public class State {
             if (isOk()) {
                 return App.str(R.string.battery_ok) + voltageText;
             }
-            return App.str(R.string.battery_low) + voltageText;
+            return "<b>" + App.str(R.string.battery_low) + voltageText + "</b>";
         }
     }
 
@@ -126,12 +127,17 @@ public class State {
         if (isEmpty) {
             return "Empty";
         }
-        String stringState = App.str(R.string.version_) + version.toString();
+        String stringState = App.str(R.string.version_) + " " + version.toString();
         stringState += App.str(R.string.state_config_) + config.toString();
-        stringState += App.str(R.string.state_battery_) + battery.toString();
-        stringState += App.str(R.string.state_mode_) + Util.capitalize(mode.name());
-        stringState += App.str(R.string.state_clock_) + Util.dformat.format(new Date(timestamp*1000));
-        stringState += App.str(R.string.state_alarm_) + Util.dformat.format(new Date(wakeupTimestamp*1000));
+        stringState += App.str(R.string.state_battery_) + " " + battery.toString();
+        stringState += App.str(R.string.state_mode_) + " " + Util.capitalize(mode.name());
+        String clockStr = Util.dformat.format(new Date(timestamp*1000));
+        long nowSec = Calendar.getInstance().getTimeInMillis()/1000;
+        if (timestamp < (nowSec - 60)) {
+            clockStr = "<b>" + clockStr + "</b>";
+        }
+        stringState += App.str(R.string.state_clock_) + " " + clockStr;
+        stringState += App.str(R.string.state_alarm_) + " " + Util.dformat.format(new Date(wakeupTimestamp*1000));
         return stringState;
     }
 }
