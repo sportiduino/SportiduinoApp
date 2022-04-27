@@ -3,7 +3,6 @@ package org.sportiduino.app.sportiduino;
 import static org.sportiduino.app.sportiduino.Constants.*;
 
 import android.text.Html;
-import android.util.Log;
 
 import org.sportiduino.app.App;
 import org.sportiduino.app.Password;
@@ -127,13 +126,14 @@ public class MasterCard extends Card {
     }
 
     public static byte[][] packTime(Calendar calendar) {
-        calendar.setTimeZone(TimeZone.getTimeZone("UTC"));
-        int year = calendar.get(Calendar.YEAR) - 2000;
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
-        int hour = calendar.get(Calendar.HOUR_OF_DAY);
-        int minute = calendar.get(Calendar.MINUTE);
-        int second = calendar.get(Calendar.SECOND);
+        Calendar c = (Calendar) calendar.clone();
+        c.setTimeZone(TimeZone.getTimeZone("UTC"));
+        int year = c.get(Calendar.YEAR) - 2000;
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
         return new byte[][] {
             {(byte) month, (byte) year, (byte) day, 0},
             {(byte) hour, (byte) minute, (byte) second, 0}
