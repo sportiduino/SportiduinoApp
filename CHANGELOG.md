@@ -1,5 +1,14 @@
 # SportiduinoApp Changelog
 
+## v1.2
+
+* Updated config for BS vX.10.0
+* Cleaning only option for card prepare
+* New fast punch mode (BS vX.10.0)
+* Scrollable station settings tab
+* Highlight text for incorrect time or low battery charge level
+* Fix problem with UTC time for Master Sleep card
+
 ## v1.1
 
 * Added Password Master card (BS FW >= vX.10.0)
