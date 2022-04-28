@@ -9,6 +9,8 @@
 * Highlight text for incorrect time or low battery charge level
 * Fix problem with UTC time for Master Sleep card
 
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.1...v1.2)
+
 ## v1.1
 
 * Added Password Master card (BS FW >= vX.10.0)
