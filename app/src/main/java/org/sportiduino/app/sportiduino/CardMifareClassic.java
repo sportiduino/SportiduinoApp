@@ -2,7 +2,6 @@ package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.MifareClassic;
 import android.util.Log;
-//import android.util.Log;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -10,6 +9,7 @@ import java.util.Arrays;
 public class CardMifareClassic extends CardAdapter {
     private final MifareClassic tag;
     final int numOfBlockInSector = 4;
+    int lastSectorAuth = -1;
 
     public CardMifareClassic(MifareClassic tag) {
         super(tag);
@@ -34,28 +34,13 @@ public class CardMifareClassic extends CardAdapter {
 
     public byte[][] readPages(int firstPageIndex, int count, boolean stopIfPageNull) throws ReadWriteCardException {
         byte[][] blockData = new byte[count][MifareClassic.BLOCK_SIZE];
-        int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
         for (int blockIndex = firstBlockIndex; blockIndex < tag.getBlockCount(); ++blockIndex) {
             if ((blockIndex + 1) % numOfBlockInSector == 0) {
                 continue;
             }
-            int sector = tag.blockToSector(blockIndex);
-            if (sector != lastSector) {
-                lastSector = sector;
-                try {
-                    if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
-                        Log.d("CardMifareClassic", "authenticateSectorWithKeyA failed, sector " +
-                            sector + ", block " + 
-                            blockIndex);
-                        throw new ReadWriteCardException();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new ReadWriteCardException();
-                }
-            }
+            authenticateSectorIfNeed(tag.blockToSector(blockIndex));
             try {
                 blockData[i] = tag.readBlock(blockIndex);
                 //Log.d("CardMifareClassic", i + ": " +
@@ -83,26 +68,13 @@ public class CardMifareClassic extends CardAdapter {
     }
 
     public void writePages(int firstPageIndex, byte[][] data, int count) throws ReadWriteCardException {
-        int lastSector = -1;
         int firstBlockIndex = firstPageIndex - 3 + (firstPageIndex - 3)/3;
         int i = 0;
         for (int blockIndex = firstBlockIndex; i < count; ++blockIndex) {
             if ((blockIndex + 1) % numOfBlockInSector == 0) {
                 continue;
             }
-            int sector = tag.blockToSector(blockIndex);
-            if (sector != lastSector) {
-                lastSector = sector;
-                try {
-                    //Log.d("mfc", String.format("authenticate sector: %d, blockIndex: %d, %b", sector, blockIndex, tag.isConnected()));
-                    if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
-                        throw new ReadWriteCardException();
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                    throw new ReadWriteCardException();
-                }
-            }
+            authenticateSectorIfNeed(tag.blockToSector(blockIndex));
             byte[] pageData = data[i++];
             if (pageData.length < MifareClassic.BLOCK_SIZE) {
                 pageData = Arrays.copyOf(pageData, MifareClassic.BLOCK_SIZE);
@@ -117,4 +89,21 @@ public class CardMifareClassic extends CardAdapter {
         }
     }
 
+    private void authenticateSectorIfNeed(int sector) throws ReadWriteCardException {
+        if (sector != lastSectorAuth) {
+            lastSectorAuth = sector;
+            try {
+                //Log.d("mfc", String.format("authenticate sector: %d, %b", sector, tag.isConnected()));
+                if (!tag.authenticateSectorWithKeyA(sector, MifareClassic.KEY_DEFAULT)) {
+                    Log.d("CardMifareClassic", "authenticateSectorWithKeyA failed, sector " +
+                        sector);
+                    lastSectorAuth = -1;
+                    throw new ReadWriteCardException();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                throw new ReadWriteCardException();
+            }
+        }
+    }
 }
