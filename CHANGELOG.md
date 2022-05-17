@@ -1,5 +1,9 @@
 # SportiduinoApp Changelog
 
+## v1.2.1
+
+* Fix crash on Android 12
+
 ## v1.2
 
 * Updated config for BS vX.10.0
