@@ -13,6 +13,8 @@ import android.view.View;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import java.util.Objects;
+
 public abstract class NfcFragment extends Fragment implements IntentReceiver {
     private NfcAdapter nfcAdapter;
     PendingIntent pendingIntent;
@@ -25,7 +27,8 @@ public abstract class NfcFragment extends Fragment implements IntentReceiver {
         Activity activity = getActivity();
         nfcAdapter = NfcAdapter.getDefaultAdapter(activity);
         pendingIntent = PendingIntent.getActivity(activity, 0,
-                new Intent(activity, activity.getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+                new Intent(activity, Objects.requireNonNull(activity).getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP),
+                PendingIntent.FLAG_MUTABLE);
         techList = new String[][]{
                 new String[]{MifareClassic.class.getName()},
                 new String[]{MifareUltralight.class.getName()}
@@ -38,7 +41,7 @@ public abstract class NfcFragment extends Fragment implements IntentReceiver {
         super.onResume();
         setThisAsIntentReceiver();
         if (nfcAdapter != null) {
-            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, null);
+            nfcAdapter.enableForegroundDispatch(getActivity(), pendingIntent, null, techList);
         }
     }
 
