@@ -133,7 +133,7 @@ public class State {
         stringState += App.str(R.string.state_mode_) + " " + Util.capitalize(mode.name());
         String clockStr = Util.dformat.format(new Date(timestamp*1000));
         long nowSec = Calendar.getInstance().getTimeInMillis()/1000;
-        if (timestamp < (nowSec - 60)) {
+        if (timestamp < (nowSec - 60) || timestamp > (nowSec + 60)) {
             clockStr = "<b>" + clockStr + "</b>";
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
