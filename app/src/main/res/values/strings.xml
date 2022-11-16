@@ -40,7 +40,7 @@
     <string name="state_mode_">\nMode:</string>
     <string name="state_clock_">\nClock:</string>
     <string name="state_alarm_">\nAlarm:</string>
-    <string name="battery_volts">(%.2f V)</string>
+    <string name="battery_volts">%d%% (%.2f V)</string>
     <string name="battery_ok">OK</string>
     <string name="battery_low">Low</string>
     <string name="config_station_no_">\tStation No:</string>

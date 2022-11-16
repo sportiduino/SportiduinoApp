@@ -64,8 +64,33 @@ public class State {
     }
 
     public static class Battery {
+        private final float[][] lipoVoltageGraph = new float[][] {
+            {3.25f, 3.35f, 3.45f, 3.55f, 3.75f, 3.95f, 4.10f},
+            {0, 5, 20, 40, 60, 95, 100}
+        };
         private float voltage = 0;
         private final boolean status;
+
+        private int getChargeLevel(float v) {
+            int low = 0;
+            int high = lipoVoltageGraph[0].length;
+            while (low < high) {
+                int mid = (low + high)/2;
+                if (v > lipoVoltageGraph[0][mid]) {
+                    low = mid + 1;
+                } else {
+                    high = mid;
+                }
+            }
+            if (low > 0) {
+                float x0 = lipoVoltageGraph[0][low - 1];
+                float x1 = lipoVoltageGraph[0][low];
+                float y0 = lipoVoltageGraph[1][low - 1];
+                float y1 = lipoVoltageGraph[1][low];
+                return (int) (y0 + (v - x0)*(y1 - y0)/(x1 - x0));
+            }
+            return (int) lipoVoltageGraph[1][low];
+        }
 
         public Battery(int batteryByte) {
             if (batteryByte == 0 || batteryByte == 1) {
@@ -86,7 +111,7 @@ public class State {
         public String toString() {
             String voltageText = "";
             if (voltage > 0) {
-                voltageText = String.format(App.str(R.string.battery_volts), voltage);
+                voltageText = " - " + String.format(App.str(R.string.battery_volts), getChargeLevel(voltage), voltage);
             }
 
             if (isOk()) {

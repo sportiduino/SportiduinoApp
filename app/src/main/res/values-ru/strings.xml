@@ -40,7 +40,7 @@
     <string name="state_mode_">\nРежим:</string>
     <string name="state_clock_">\nЧасы:</string>
     <string name="state_alarm_">\nПробуждение:</string>
-    <string name="battery_volts">(%.2f В)</string>
+    <string name="battery_volts">%d%% (%.2f В)</string>
     <string name="battery_ok">OK</string>
     <string name="battery_low">Разряжена</string>
     <string name="config_station_no_">\tСтанция №: </string>
