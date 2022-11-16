@@ -279,7 +279,7 @@ public class FragmentStationSettings extends NfcFragment {
             masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
         } else if (binding.radioButtonMasterTime.isChecked()) {
             Calendar c = Calendar.getInstance();
-            c.add(Calendar.SECOND, 3);
+            c.add(Calendar.SECOND, 2);
             masterCard.dataForWriting = MasterCard.packTime(c);
         } else if (binding.radioButtonMasterSleep.isChecked()) {
             masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
@@ -312,7 +312,7 @@ public class FragmentStationSettings extends NfcFragment {
         }
         timer = new Timer();
         CountdownTimerTask countdownTimerTask = new CountdownTimerTask();
-        timerCount = 3;
+        timerCount = 2;
         timer.scheduleAtFixedRate(countdownTimerTask, 0, 1000);
     }
 
