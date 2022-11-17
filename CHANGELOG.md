@@ -1,5 +1,10 @@
 # SportiduinoApp Changelog
 
+## v1.3
+
+* Display Li-pol battery level
+* Colored station state (e.g. red for low battery)
+
 ## v1.2.1
 
 * Fix crash on Android 12
