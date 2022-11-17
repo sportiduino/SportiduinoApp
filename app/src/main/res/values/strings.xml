@@ -43,7 +43,7 @@
     <string name="battery_volts">%d%% (%.2f V)</string>
     <string name="battery_ok">OK</string>
     <string name="battery_low">Low</string>
-    <string name="config_station_no_">\tStation No:</string>
+    <string name="config_station_no">\tStation No:</string>
     <string name="config_start">(Start)</string>
     <string name="config_finish">(Finish)</string>
     <string name="config_check">(Check)</string>

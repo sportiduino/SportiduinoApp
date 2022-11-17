@@ -144,7 +144,7 @@ public class Config {
     @NonNull
     @Override
     public String toString() {
-        String str = App.str(R.string.config_station_no_) + " " + stationCode;
+        String str = App.str(R.string.config_station_no) + String.format(" <b>%s</b>", stationCode);
         switch (stationCode) {
             case START_STATION:
                 str += " " + App.str(R.string.config_start);
@@ -159,7 +159,7 @@ public class Config {
                 str += " " + App.str(R.string.config_clear);
                 break;
         }
-        str += "\n\t" + App.str(R.string.config_active_time) + activeModeDuration.toString();
+        str += "\n\t" + App.str(R.string.config_active_time) + " " + activeModeDuration.toString();
         str += "\n\t" + App.str(R.string.config_flags);
         if (startAsCheck) {
             str += "\n\t\t" + App.str(R.string.config_start_as_check);
@@ -173,7 +173,7 @@ public class Config {
         if (enableFastPunchForCard) {
             str += "\n\t\t" + App.str(R.string.config_fast_punch_flag);
         }
-        str += "\n\t" + App.str(R.string.config_antenna_gain_) + antennaGain.label;
+        str += "\n\t" + App.str(R.string.config_antenna_gain_) + " " + antennaGain.label;
         return str;
     }
 }

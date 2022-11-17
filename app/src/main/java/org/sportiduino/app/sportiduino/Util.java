@@ -63,5 +63,9 @@ public class Util {
     public static SpannableString ok(String s) {
         return colorString(s, App.color(R.color.ok_text_bg));
     }
+
+    public static String coloredHtmlString(String s, String color) {
+        return String.format("<font color=\"%s\">%s</font>", color, s);
+    }
 }
 

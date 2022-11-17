@@ -116,9 +116,9 @@ public class State {
             }
 
             if (isOk()) {
-                return App.str(R.string.battery_ok) + voltageText;
+                return Util.coloredHtmlString(App.str(R.string.battery_ok) + voltageText, "#008000");
             }
-            return "<b>" + App.str(R.string.battery_low) + voltageText + "</b>";
+            return Util.coloredHtmlString(App.str(R.string.battery_low) + voltageText, "red");
         }
     }
 
@@ -160,7 +160,7 @@ public class State {
         String clockStr = Util.dformat.format(new Date(timestamp*1000));
         long nowSec = Calendar.getInstance().getTimeInMillis()/1000;
         if (timestamp < (nowSec - 60) || timestamp > (nowSec + 60)) {
-            clockStr = "<b>" + clockStr + "</b>";
+            clockStr = Util.coloredHtmlString(clockStr, "red");
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
         stringState += App.str(R.string.state_alarm_) + " " + Util.dformat.format(new Date(wakeupTimestamp*1000));
