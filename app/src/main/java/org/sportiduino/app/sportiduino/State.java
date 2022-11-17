@@ -73,7 +73,8 @@ public class State {
 
         private int getChargeLevel(float v) {
             int low = 0;
-            int high = lipoVoltageGraph[0].length;
+            final int n = lipoVoltageGraph[0].length - 1;
+            int high = n;
             while (low < high) {
                 int mid = (low + high)/2;
                 if (v > lipoVoltageGraph[0][mid]) {
@@ -82,7 +83,7 @@ public class State {
                     high = mid;
                 }
             }
-            if (low > 0) {
+            if (low > 0 && low < n) {
                 float x0 = lipoVoltageGraph[0][low - 1];
                 float x1 = lipoVoltageGraph[0][low];
                 float y0 = lipoVoltageGraph[1][low - 1];

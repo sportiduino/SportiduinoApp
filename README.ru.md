@@ -1,6 +1,6 @@
 # SportiduinoApp
 
-[![SportiduinoPQ release](https://img.shields.io/github/v/release/sportiduino/sportiduinoapp)](https://github.com/sportiduino/sportiduinoapp/releases)
+[![SportiduinoApp release](https://img.shields.io/github/v/release/sportiduino/sportiduinoapp)](https://github.com/sportiduino/sportiduinoapp/releases)
 
 <p float="left">
   <img src="/img/screenshot0.jpg" width="240"/>

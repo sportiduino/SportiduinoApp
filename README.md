@@ -1,6 +1,6 @@
 # SportiduinoApp
 
-[![SportiduinoPQ release](https://img.shields.io/github/v/release/sportiduino/sportiduinoapp)](https://github.com/sportiduino/sportiduinoapp/releases)
+[![SportiduinoApp release](https://img.shields.io/github/v/release/sportiduino/sportiduinoapp)](https://github.com/sportiduino/sportiduinoapp/releases)
 
 [Русский язык](README.ru.md)
 
