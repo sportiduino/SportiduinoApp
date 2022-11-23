@@ -1,5 +1,11 @@
 # SportiduinoApp Changelog
 
+## v1.3.1
+
+* Fix problem with Mifare Classic cards writing
+
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.3...v1.3.1)
+
 ## v1.3
 
 * Display Li-pol battery level

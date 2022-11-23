@@ -1,5 +1,11 @@
 # Список изменений SportiduinoApp
 
+## v1.3.1
+
+* Исправление проблемы с записью чипов Mifare Classic
+
+[Все изменения](https://github.com/sportiduino/sportiduinoapp/compare/v1.3...v1.3.1)
+
 ## v1.3
 
 * Отображение уровня заряда литий-полимерной батареи
