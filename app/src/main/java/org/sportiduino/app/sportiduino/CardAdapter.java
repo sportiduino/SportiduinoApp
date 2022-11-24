@@ -19,6 +19,7 @@ public abstract class CardAdapter {
             }
         } catch (IOException e) {
             e.printStackTrace();
+            throw new ReadWriteCardException();
         }
     }
 

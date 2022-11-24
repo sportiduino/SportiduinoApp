@@ -40,17 +40,23 @@ public class CardMifareClassic extends CardAdapter {
             if ((blockIndex + 1) % numOfBlockInSector == 0) {
                 continue;
             }
-            authenticateSectorIfNeed(tag.blockToSector(blockIndex));
-            try {
-                blockData[i] = tag.readBlock(blockIndex);
-                //Log.d("CardMifareClassic", i + ": " +
-                //    Integer.toHexString(blockData[i][0] & 0xff) + " " +
-                //    Integer.toHexString(blockData[i][1] & 0xff) + " " +
-                //    Integer.toHexString(blockData[i][2] & 0xff) + " " +
-                //    Integer.toHexString(blockData[i][3] & 0xff));
-            } catch (IOException e) {
-                e.printStackTrace();
-                throw new ReadWriteCardException();
+            int nAttempts = 3;
+            for (int j = 0; j < nAttempts; ++j) {
+                try {
+                    authenticateSectorIfNeed(tag.blockToSector(blockIndex));
+                    blockData[i] = tag.readBlock(blockIndex);
+                    //Log.d("CardMifareClassic", i + ": " +
+                    //    Integer.toHexString(blockData[i][0] & 0xff) + " " +
+                    //    Integer.toHexString(blockData[i][1] & 0xff) + " " +
+                    //    Integer.toHexString(blockData[i][2] & 0xff) + " " +
+                    //    Integer.toHexString(blockData[i][3] & 0xff));
+                } catch (IOException|ReadWriteCardException e) {
+                    Log.d("mfc", e.toString());
+                    if (j == nAttempts - 1) {
+                        e.printStackTrace();
+                        throw new ReadWriteCardException();
+                    }
+                }
             }
             if (stopIfPageNull
                 && blockData[i][0] == 0
@@ -82,27 +88,25 @@ public class CardMifareClassic extends CardAdapter {
             int nAttempts = 5;
             for (int j = 0; j < nAttempts; ++j) {
                 try {
+                    if (!tag.isConnected()) {
+                        connect();
+                    }
                     authenticateSectorIfNeed(tag.blockToSector(blockIndex));
                     //Log.d("mfc", String.format("writeBlock: %d, %b", blockIndex, tag.isConnected()));
                     tag.writeBlock(blockIndex, pageData);
                     break;
-                } catch (IOException e) {
+                } catch (IOException|ReadWriteCardException e) {
                     Log.d("mfc", e.toString());
+                    //Log.d("mfc", String.valueOf(j));
                     if (j == nAttempts - 1) {
                         e.printStackTrace();
                         throw new ReadWriteCardException();
                     }
-                    reconnect();
+                    lastSectorAuth = -1;
+                    close();
                 }
             }
         }
-    }
-
-    private void reconnect() throws ReadWriteCardException {
-        //Log.d("mfc", "reconnect");
-        lastSectorAuth = -1;
-        close();
-        connect();
     }
 
     private void authenticateSectorIfNeed(int sector) throws ReadWriteCardException {
