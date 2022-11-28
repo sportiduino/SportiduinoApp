@@ -53,7 +53,7 @@ public class CardMifareClassic extends CardAdapter {
                 } catch (IOException|ReadWriteCardException e) {
                     Log.d("mfc", e.toString());
                     if (j == nAttempts - 1) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         throw new ReadWriteCardException();
                     }
                 }
@@ -90,16 +90,17 @@ public class CardMifareClassic extends CardAdapter {
                 try {
                     if (!tag.isConnected()) {
                         connect();
+                        Log.d("mfc", "connect");
                     }
                     authenticateSectorIfNeed(tag.blockToSector(blockIndex));
                     //Log.d("mfc", String.format("writeBlock: %d, %b", blockIndex, tag.isConnected()));
                     tag.writeBlock(blockIndex, pageData);
                     break;
                 } catch (IOException|ReadWriteCardException e) {
+                    Log.d("mfc", String.format("writeBlock %d failed, attempt %d", blockIndex, j+1));
                     Log.d("mfc", e.toString());
-                    //Log.d("mfc", String.valueOf(j));
                     if (j == nAttempts - 1) {
-                        e.printStackTrace();
+                        //e.printStackTrace();
                         throw new ReadWriteCardException();
                     }
                     lastSectorAuth = -1;
@@ -121,7 +122,8 @@ public class CardMifareClassic extends CardAdapter {
                     throw new ReadWriteCardException();
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                Log.d("mfc", e.toString());
+                //e.printStackTrace();
                 throw new ReadWriteCardException();
             }
         }
