@@ -9,7 +9,7 @@
     <string name="settings_label">Settings</string>
     <string name="password">Password</string>
     <string name="fragment_station_settings_label">Station</string>
-    <string name="bring_card">Bring card...</string>
+    <string name="bring_card">Bring card…</string>
     <string name="tag_id_s">Tag ID: %s</string>
     <string name="tag_type_s">Tag type: %s</string>
     <string name="card_no">Card No</string>
@@ -29,7 +29,7 @@
     <string name="reading_card_dont_remove_it">Reading card, don\'t remove it!</string>
     <string name="reading_card_failed">Reading card failed!</string>
     <string name="insert_station_number">Insert station number.</string>
-    <string name="writing_card_dont_remove_it">Writing card, don\'t remove it...</string>
+    <string name="writing_card_dont_remove_it">Writing card, don\'t remove it!</string>
     <string name="data_written_to_card_successfully">Data written to card successfully</string>
     <string name="writing_card_failed">Writing card failed!</string>
     <string name="insert_card_number">Insert card number.</string>
@@ -55,7 +55,7 @@
     <string name="config_flags">Flags: </string>
     <string name="config_start_as_check">Start as Check</string>
     <string name="config_check_init_time">Check card init time flag</string>
-    <string name="config_auto_sleep_flag">tAuto sleep flag</string>
+    <string name="config_auto_sleep_flag">Auto sleep flag</string>
     <string name="config_fast_punch_flag">Fast punch flag</string>
     <string name="config_antenna_gain_">Antenna Gain: </string>
     <string name="wakeup_time_">Wakeup time:</string>
