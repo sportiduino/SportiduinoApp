@@ -1,5 +1,10 @@
 # SportiduinoApp Changelog
 
+## v1.3.2
+
+* Fix Mifare Classic cards reading
+* Fix strings
+
 ## v1.3.1
 
 * Fix problem with Mifare Classic cards writing
