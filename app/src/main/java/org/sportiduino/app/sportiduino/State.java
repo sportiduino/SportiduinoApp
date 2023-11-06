@@ -159,8 +159,15 @@ public class State {
         stringState += App.str(R.string.state_mode_) + " " + Util.capitalize(mode.name());
         String clockStr = Util.dformat.format(new Date(timestamp*1000));
         long nowSec = Calendar.getInstance().getTimeInMillis()/1000;
-        if (timestamp < (nowSec - 60) || timestamp > (nowSec + 60)) {
-            clockStr = Util.coloredHtmlString(clockStr, "red");
+        long delta = Math.abs(nowSec - timestamp);
+        String deltaStr = " (" + delta + " s)";
+        if (delta > 60) {
+            deltaStr = " (> 60 s)";
+        }
+        if (timestamp < (nowSec - 10) || timestamp > (nowSec + 7)) {
+            clockStr = Util.coloredHtmlString(clockStr + deltaStr, "red");
+        } else if (timestamp < (nowSec - 2) || timestamp > nowSec) {
+            clockStr = Util.coloredHtmlString(clockStr + deltaStr, "#FFC300");
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
         stringState += App.str(R.string.state_alarm_) + " " + Util.dformat.format(new Date(wakeupTimestamp*1000));
