@@ -164,9 +164,9 @@ public class State {
         if (delta > 60) {
             deltaStr = " (> 60 s)";
         }
-        if (timestamp < (nowSec - 10) || timestamp > (nowSec + 7)) {
+        if (timestamp < (nowSec - 20) || timestamp > (nowSec + 17)) {
             clockStr = Util.coloredHtmlString(clockStr + deltaStr, "red");
-        } else if (timestamp < (nowSec - 2) || timestamp > nowSec) {
+        } else if (timestamp < (nowSec - 5) || timestamp > nowSec) {
             clockStr = Util.coloredHtmlString(clockStr + deltaStr, "#FFC300");
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
