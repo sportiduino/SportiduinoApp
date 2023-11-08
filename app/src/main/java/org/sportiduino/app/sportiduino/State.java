@@ -164,10 +164,11 @@ public class State {
         if (delta > 60) {
             deltaStr = " (> 60 s)";
         }
+        clockStr += deltaStr;
         if (timestamp < (nowSec - 20) || timestamp > (nowSec + 17)) {
-            clockStr = Util.coloredHtmlString(clockStr + deltaStr, "red");
+            clockStr = Util.coloredHtmlString(clockStr, "red");
         } else if (timestamp < (nowSec - 5) || timestamp > nowSec) {
-            clockStr = Util.coloredHtmlString(clockStr + deltaStr, "#FFC300");
+            clockStr = Util.coloredHtmlString(clockStr, "#FFC300");
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
         stringState += App.str(R.string.state_alarm_) + " " + Util.dformat.format(new Date(wakeupTimestamp*1000));
