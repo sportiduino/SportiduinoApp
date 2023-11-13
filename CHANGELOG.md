@@ -1,5 +1,12 @@
 # SportiduinoApp Changelog
 
+## v1.4
+
+* State Master card timestamp: yellow if the time of the station differs by more than 5 seconds,
+red if the time differs by more than 20 seconds
+
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.3.3...v1.4)
+
 ## v1.3.2
 
 * Fix Mifare Classic cards reading
