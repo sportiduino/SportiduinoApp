@@ -5,7 +5,7 @@
 * Временная метка чипа состояния станции: жёлтая, если время на станции отличается более чем на 5 секунд,
 красная, если время отличается более чем на 20 секунд
 
-[Все изменения](https://github.com/sportiduino/sportiduinoapp/compare/v1.3.3...v1.4)
+[Все изменения](https://github.com/sportiduino/sportiduinoapp/compare/v1.3.2...v1.4)
 
 ## v1.3.2
 
