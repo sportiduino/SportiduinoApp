@@ -1,5 +1,11 @@
 # SportiduinoApp Changelog
 
+## v1.4.1
+
+* Add the ability to copy the data read from a card
+
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.4...v1.4.1)
+
 ## v1.4
 
 * State Master card timestamp: yellow if the time of the station differs by more than 5 seconds,
