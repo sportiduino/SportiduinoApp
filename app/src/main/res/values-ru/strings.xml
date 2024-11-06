@@ -85,4 +85,5 @@
     <string name="enable_fast_punch_when_clear">Вкл. быструю отметку при очистке</string>
     <string name="fast_punch">Быстрая отметка</string>
     <string name="cleaning_only">Только очистка</string>
+    <string name="countdown_timer">Таймер обратного отсчёта, сек</string>
 </resources>

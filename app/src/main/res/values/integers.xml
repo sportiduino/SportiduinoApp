@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="countdown_timer_default">2</integer>
+    <integer name="countdown_timer_max">10</integer>
+    <integer name="countdown_timer_min">0</integer>
+</resources>

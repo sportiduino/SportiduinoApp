@@ -48,6 +48,7 @@ public class FragmentStationSettings extends NfcFragment {
     private int timerCount;
     private Timer timer;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+    private int countdownTimer;
 
     @Override
     public View onCreateView(
@@ -65,10 +66,13 @@ public class FragmentStationSettings extends NfcFragment {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         updatePasswordFromSharedPreferences(sharedPref);
+        updateCountdownTimerFromSharedPreferences(sharedPref);
 
         preferenceChangeListener = (sharedPreferences, key) -> {
             if (key.equals("password")) {
                 updatePasswordFromSharedPreferences(sharedPreferences);
+            } else if (key.equals("countdown_timer")) {
+                updateCountdownTimerFromSharedPreferences(sharedPreferences);
             }
         };
         sharedPref.registerOnSharedPreferenceChangeListener(preferenceChangeListener);
@@ -167,6 +171,10 @@ public class FragmentStationSettings extends NfcFragment {
         binding.mpNewPassword1.setText(String.valueOf(password.getValue(0)));
         binding.mpNewPassword2.setText(String.valueOf(password.getValue(1)));
         binding.mpNewPassword3.setText(String.valueOf(password.getValue(2)));
+    }
+
+    private void updateCountdownTimerFromSharedPreferences(SharedPreferences sharedPreferences) {
+        countdownTimer = sharedPreferences.getInt("countdown_timer", getResources().getInteger(R.integer.countdown_timer_default));
     }
 
     private void updateWakeupTime() {
@@ -279,7 +287,7 @@ public class FragmentStationSettings extends NfcFragment {
             masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
         } else if (binding.radioButtonMasterTime.isChecked()) {
             Calendar c = Calendar.getInstance();
-            c.add(Calendar.SECOND, 2);
+            c.add(Calendar.SECOND, countdownTimer);
             masterCard.dataForWriting = MasterCard.packTime(c);
         } else if (binding.radioButtonMasterSleep.isChecked()) {
             masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
@@ -312,7 +320,7 @@ public class FragmentStationSettings extends NfcFragment {
         }
         timer = new Timer();
         CountdownTimerTask countdownTimerTask = new CountdownTimerTask();
-        timerCount = 2;
+        timerCount = countdownTimer;
         timer.scheduleAtFixedRate(countdownTimerTask, 0, 1000);
     }
 

@@ -87,4 +87,5 @@
     <string name="enable_fast_punch_when_clear">Enable fast punch when clear</string>
     <string name="fast_punch">Fast punch</string>
     <string name="cleaning_only">Cleaning only</string>
+    <string name="countdown_timer">Countdown timer, sec</string>
 </resources>
