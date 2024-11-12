@@ -74,7 +74,7 @@
         Поддерживаются чипы NTAG213/215/216 и Mifare Classic 1K/4K.
     </string>
     <string name="github_title">Репозиторий на Github</string>
-    <string name="about_copyleft">Copyleft © 2022 - 2023 Семён Якимов</string>
+    <string name="about_copyleft">Copyleft © 2022 — 2024 Семён Якимов</string>
     <string name="about_license"><a href="https://www.gnu.org/licenses/gpl-3.0.html">Лицензия GPLv3</a></string>
     <string name="beep">Пи-и-п</string>
     <string name="new_password">Новый пароль</string>
