@@ -24,6 +24,7 @@ import org.sportiduino.app.sportiduino.Util;
 public class FragmentWriteCard extends NfcFragment {
     private FragmentWriteCardBinding binding;
     private int cardNumber;
+    private View currentView;
 
     @Override
     public View onCreateView(
@@ -37,6 +38,7 @@ public class FragmentWriteCard extends NfcFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.currentView = view;
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
 
@@ -113,12 +115,12 @@ public class FragmentWriteCard extends NfcFragment {
         protected void onPostExecute(Boolean result) {
             binding.progressBar.setVisibility(View.GONE);
             if (result) {
-                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
+                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully), currentView));
                 if (binding.checkBoxAutoIncrement.isChecked() && !binding.checkBoxCleaningOnly.isChecked()) {
                     binding.editTextCardNumber.setText(String.valueOf(cardNumber + 1));
                 }
             } else {
-                binding.textViewNfcInfo.setText(Util.error(getString(R.string.writing_card_failed)));
+                binding.textViewNfcInfo.setText(Util.error(getString(R.string.writing_card_failed), currentView));
             }
         }
     }

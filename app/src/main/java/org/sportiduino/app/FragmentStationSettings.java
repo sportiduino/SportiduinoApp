@@ -48,6 +48,7 @@ public class FragmentStationSettings extends NfcFragment {
     private int timerCount;
     private Timer timer;
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
+    private View currentView;
 
     @Override
     public View onCreateView(
@@ -62,6 +63,7 @@ public class FragmentStationSettings extends NfcFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.currentView = view;
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(requireActivity());
         updatePasswordFromSharedPreferences(sharedPref);
@@ -360,12 +362,12 @@ public class FragmentStationSettings extends NfcFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             if (result) {
-                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully)));
+                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.data_written_to_card_successfully), currentView));
                 if (binding.radioButtonMasterTime.isChecked()) {
                     startCountdownTimer();
                 }
             } else {
-                binding.textViewNfcInfo.setText(Util.error(getString(R.string.writing_card_failed)));
+                binding.textViewNfcInfo.setText(Util.error(getString(R.string.writing_card_failed), currentView));
             }
         }
     }

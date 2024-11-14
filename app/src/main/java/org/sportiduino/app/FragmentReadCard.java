@@ -21,6 +21,7 @@ import org.sportiduino.app.sportiduino.Util;
 
 public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     private FragmentReadCardBinding binding;
+    private View currentView;
 
     @Override
     public View onCreateView(
@@ -34,6 +35,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
+        this.currentView = view;
 
         binding.textViewInfo.setText(R.string.bring_card);
         binding.layoutTagInfo.setVisibility(View.GONE);
@@ -100,7 +102,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
                 binding.textViewTagType.setText(String.format(getString(R.string.tag_type_s), card.adapter.tagType.name()));
                 binding.textViewInfo.setText(card.parseData(buffer));
             } else {
-                binding.textViewInfo.setText(Util.error(getString(R.string.reading_card_failed)));
+                binding.textViewInfo.setText(Util.error(getString(R.string.reading_card_failed), currentView));
             }
         }
     }
