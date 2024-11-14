@@ -104,7 +104,7 @@ public class Config {
 
     public static Config unpack(byte[] configData) {
         Config config = new Config();
-        config.stationCode = configData[0] & 0xFF;
+        config.stationCode = configData[0] & 0xff;
 
         config.activeModeDuration = ActiveModeDuration.byValue(configData[1] & 0x7);
 
@@ -113,7 +113,7 @@ public class Config {
         config.autoSleep = (configData[1] & 0x20) > 0;
         config.enableFastPunchForCard = (configData[1] & 0x80) > 0;
 
-        config.antennaGain = AntennaGain.byValue(configData[2] & 0xFF);
+        config.antennaGain = AntennaGain.byValue(configData[2] & 0xff);
         return config;
     }
 

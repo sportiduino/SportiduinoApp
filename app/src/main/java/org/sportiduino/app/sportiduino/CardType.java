@@ -6,13 +6,13 @@ import java.util.Map;
 public enum CardType {
     UNKNOWN(),
     ORDINARY(),
-    MASTER_GET_STATE(0xF9),
-    MASTER_SET_TIME(0xFA),
-    MASTER_SET_NUMBER(0xFB),
-    MASTER_SLEEP(0xFC),
-    MASTER_READ_BACKUP(0xFD),
-    MASTER_CONFIG(0xFE),
-    MASTER_PASSWORD(0xFF);
+    MASTER_GET_STATE(0xf9),
+    MASTER_SET_TIME(0xfa),
+    MASTER_SET_NUMBER(0xfb),
+    MASTER_SLEEP(0xfc),
+    MASTER_READ_BACKUP(0xfd),
+    MASTER_CONFIG(0xfe),
+    MASTER_PASSWORD(0xff);
 
     private static final Map<Integer, CardType> BY_VALUE = new HashMap<>();
 

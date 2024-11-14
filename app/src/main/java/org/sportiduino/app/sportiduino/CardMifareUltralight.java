@@ -20,7 +20,7 @@ public class CardMifareUltralight extends CardAdapter {
 
         byte[] pageData = readPage(3);
 
-        switch (pageData[2] & 0xFF) {
+        switch (pageData[2] & 0xff) {
             case 0x12:
                 tagType = TagType.NTAG213;
                 break;

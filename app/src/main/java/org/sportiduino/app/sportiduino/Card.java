@@ -37,9 +37,9 @@ public abstract class Card {
             masterCard.dataPage4 = data;
             return masterCard;
         } else {
-            int cardNumber = data[0] & 0xFF;
+            int cardNumber = data[0] & 0xff;
             cardNumber <<= 8;
-            cardNumber |= data[1] & 0xFF;
+            cardNumber |= data[1] & 0xff;
             data = adapter.readPage(CARD_PAGE_INIT_TIME);
             long cardInitTimestamp = Util.toUint32(data);
             data = adapter.readPage(CARD_PAGE_INFO1);

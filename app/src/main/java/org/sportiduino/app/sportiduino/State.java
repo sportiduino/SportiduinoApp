@@ -35,7 +35,7 @@ public class State {
                     this.patch = 0;
                 } else {
                     this.major = (major >> 6) + 1;
-                    this.minor = ((major >> 2) & 0x0F) + 1;
+                    this.minor = ((major >> 2) & 0x0f) + 1;
                     this.patch = major & 0x03;
                 }
                 return;
@@ -116,9 +116,9 @@ public class State {
             }
 
             if (isOk()) {
-                return Util.coloredHtmlString(App.str(R.string.battery_ok) + voltageText, "#008000");
+                return Util.coloredHtmlString(App.str(R.string.battery_ok) + voltageText, Util.colorToHexCode(R.color.green));
             }
-            return Util.coloredHtmlString(App.str(R.string.battery_low) + voltageText, "red");
+            return Util.coloredHtmlString(App.str(R.string.battery_low) + voltageText, Util.colorToHexCode(R.color.red));
         }
     }
 
@@ -138,7 +138,7 @@ public class State {
             }
             version = new Version(data[0][0], data[0][1], data[0][2]);
             config = Config.unpack(data[1]);
-            battery = new Battery(data[2][0] & 0xFF);
+            battery = new Battery(data[2][0] & 0xff);
             mode = Mode.values()[data[2][1]];
             timestamp = Util.toUint32(data[3]);
             wakeupTimestamp = Util.toUint32(data[4]);
@@ -166,9 +166,9 @@ public class State {
         }
         clockStr += deltaStr;
         if (timestamp < (nowSec - 20) || timestamp > (nowSec + 17)) {
-            clockStr = Util.coloredHtmlString(clockStr, "red");
+            clockStr = Util.coloredHtmlString(clockStr, Util.colorToHexCode(R.color.red));
         } else if (timestamp < (nowSec - 5) || timestamp > nowSec) {
-            clockStr = Util.coloredHtmlString(clockStr, "#FFC300");
+            clockStr = Util.coloredHtmlString(clockStr, Util.colorToHexCode(R.color.yellow));
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
         stringState += App.str(R.string.state_alarm_) + " " + Util.dformat.format(new Date(wakeupTimestamp*1000));

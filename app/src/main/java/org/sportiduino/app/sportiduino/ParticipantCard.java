@@ -47,13 +47,13 @@ public class ParticipantCard extends Card {
         str += "\n" + App.str(R.string.clear_time_) + Util.dformat.format(new Date(cardInitTimestamp*1000));
         str += "\n" + App.str(R.string.record_count) + " %d";
         int recordCount = 0;
-        long timeHighPart = cardInitTimestamp & 0xFF000000;
+        long timeHighPart = cardInitTimestamp & 0xff000000;
         for (byte[] datum : data) {
-            int cp = datum[0] & 0xFF;
+            int cp = datum[0] & 0xff;
             if (cp == 0) {
                 break;
             }
-            long punchTimestamp = (Util.toUint32(datum) & 0xFFFFFF) + timeHighPart;
+            long punchTimestamp = (Util.toUint32(datum) & 0xffffff) + timeHighPart;
             if (punchTimestamp < cardInitTimestamp) {
                 punchTimestamp += 0x1000000;
             }

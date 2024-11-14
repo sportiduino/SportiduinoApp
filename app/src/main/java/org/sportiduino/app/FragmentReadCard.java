@@ -44,7 +44,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         StringBuilder tagInfo = new StringBuilder();
         byte[] tagId = tag.getId();
         for (byte b : tagId) {
-            tagInfo.append(Integer.toHexString(b & 0xFF)).append(" ");
+            tagInfo.append(Integer.toHexString(b & 0xff)).append(" ");
         }
         String tagIdStr = tagInfo.toString();
         binding.textViewTagId.setText(String.format(getString(R.string.tag_id_s), tagIdStr));

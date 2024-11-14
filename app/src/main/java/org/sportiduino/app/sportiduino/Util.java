@@ -15,7 +15,7 @@ public class Util {
     public static SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
     public static int byteToUint(byte b) {
-        return ((int) b) & 0xFF;
+        return ((int) b) & 0xff;
     }
 
     public static long toUint32(byte[] bytes) {
@@ -66,6 +66,10 @@ public class Util {
 
     public static String coloredHtmlString(String s, String color) {
         return String.format("<font color=\"%s\">%s</font>", color, s);
+    }
+
+    public static String colorToHexCode(Integer color) {
+        return String.format("#%06x", App.color(color) & 0x00ffffff);
     }
 }
 
