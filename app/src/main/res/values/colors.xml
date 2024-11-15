@@ -11,4 +11,5 @@
     <color name="error_text_bg">#fff6c0c0</color>
     <color name="ok_text_bg">#ffc5E1b0</color>
     <color name="border_color">@color/gray</color>
+    <color name="github_icon">@color/black</color>
 </resources>
