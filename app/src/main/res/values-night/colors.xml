@@ -4,4 +4,5 @@
     <color name="secondary">#980b0b</color>
     <color name="error_text_bg">@color/red</color>
     <color name="ok_text_bg">@color/green</color>
+    <color name="github_icon">@color/white</color>
 </resources>
