@@ -4,6 +4,8 @@ import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
 
+import android.view.View;
+import androidx.core.content.ContextCompat;
 import org.sportiduino.app.App;
 import org.sportiduino.app.R;
 
@@ -60,12 +62,28 @@ public class Util {
         return colorString(s, App.color(R.color.error_text_bg));
     }
 
+    public static SpannableString error(String s, View view) {
+        int color = ContextCompat.getColor(view.getContext(), R.color.error_text_bg);
+
+        return colorString(s, color);
+    }
+
     public static SpannableString ok(String s) {
         return colorString(s, App.color(R.color.ok_text_bg));
     }
 
+    public static SpannableString ok(String s, View view) {
+        int color = ContextCompat.getColor(view.getContext(), R.color.ok_text_bg);
+
+        return colorString(s, color);
+    }
+
     public static String coloredHtmlString(String s, String color) {
         return String.format("<font color=\"%s\">%s</font>", color, s);
+    }
+
+    public static String colorToHexCode(Integer color) {
+        return String.format("#%06x", App.color(color) & 0x00ffffff);
     }
 }
 

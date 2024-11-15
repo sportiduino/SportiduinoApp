@@ -116,9 +116,9 @@ public class State {
             }
 
             if (isOk()) {
-                return Util.coloredHtmlString(App.str(R.string.battery_ok) + voltageText, "#008000");
+                return Util.coloredHtmlString(App.str(R.string.battery_ok) + voltageText, Util.colorToHexCode(R.color.green));
             }
-            return Util.coloredHtmlString(App.str(R.string.battery_low) + voltageText, "red");
+            return Util.coloredHtmlString(App.str(R.string.battery_low) + voltageText, Util.colorToHexCode(R.color.red));
         }
     }
 
@@ -166,9 +166,9 @@ public class State {
         }
         clockStr += deltaStr;
         if (timestamp < (nowSec - 20) || timestamp > (nowSec + 17)) {
-            clockStr = Util.coloredHtmlString(clockStr, "red");
+            clockStr = Util.coloredHtmlString(clockStr, Util.colorToHexCode(R.color.red));
         } else if (timestamp < (nowSec - 5) || timestamp > nowSec) {
-            clockStr = Util.coloredHtmlString(clockStr, "#FFC300");
+            clockStr = Util.coloredHtmlString(clockStr, Util.colorToHexCode(R.color.yellow));
         }
         stringState += App.str(R.string.state_clock_) + " " + clockStr;
         stringState += App.str(R.string.state_alarm_) + " " + Util.dformat.format(new Date(wakeupTimestamp*1000));
