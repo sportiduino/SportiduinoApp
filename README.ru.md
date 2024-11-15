@@ -14,6 +14,6 @@ Android-приложение для работы с чипами системы 
 
 Работает на смартфонах Android 5.0 или выше с поддержкой NFC.
 
-- [Скачать](https://github.com/sportiduino/sportiduinoapp/releases/latest)
+- [Скачать](https://github.com/sportiduino/SportiduinoApp/releases/latest)
 - [Список изменений](CHANGELOG.ru.md)
 

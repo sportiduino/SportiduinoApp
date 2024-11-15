@@ -12,10 +12,10 @@
 
 Android application for working with [Sportiduino](https://github.com/sportiduino/sportiduino) cards.
 
-NTAG213/215/216, Mifare Classic 1K/4K supported.
+NTAG213/215/216, Mifare Classic 1K/4K are supported.
 
-Working at Andtroid 5.0 or greater with NFC support.
+Working at Android 5.0 or greater with NFC support.
 
-- [Download](https://github.com/sportiduino/sportiduinoapp/releases/latest)
+- [Download](https://github.com/sportiduino/SportiduinoApp/releases/latest)
 - [Changelog](CHANGELOG.md)
 
