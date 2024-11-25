@@ -187,6 +187,7 @@
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
+                    android:importantForAutofill="no"
                     tools:ignore="TextFields" />
                     <!--android:minHeight = "48dp"-->
 
@@ -203,6 +204,7 @@
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
+                    android:importantForAutofill="no"
                     tools:ignore="TextFields" />
 
                 <TextView
@@ -218,6 +220,7 @@
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
+                    android:importantForAutofill="no"
                     tools:ignore="TextFields" />
             </LinearLayout>
 
@@ -314,6 +317,7 @@
                         android:layout_margin="2dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
+                        android:importantForAutofill="no"
                         tools:ignore="TextFields" />
                         <!--android:minHeight = "48dp"-->
 
@@ -330,6 +334,7 @@
                         android:layout_margin="2dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
+                        android:importantForAutofill="no"
                         tools:ignore="TextFields" />
 
                     <TextView
@@ -345,6 +350,7 @@
                         android:layout_margin="2dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
+                        android:importantForAutofill="no"
                         tools:ignore="TextFields" />
                 </LinearLayout>
             </LinearLayout>

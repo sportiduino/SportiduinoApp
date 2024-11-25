@@ -19,6 +19,14 @@ public class Password {
         return new Password(0, 0, 0);
     }
 
+    public static Integer parseValue(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            return 0;
+        }
+    }
+
     @Override
     public String toString() {
         String str = "";

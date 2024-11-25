@@ -294,10 +294,15 @@ public class FragmentStationSettings extends NfcFragment {
         } else if (binding.radioButtonMasterSleep.isChecked()) {
             masterCard.dataForWriting = MasterCard.packTime(wakeupTime);
         } else if (binding.radioButtonMasterPassword.isChecked()) {
-            Password password = new Password(
-                    Integer.parseInt(binding.mpNewPassword1.getText().toString()),
+            Password password;
+            try {
+                password = new Password(Integer.parseInt(binding.mpNewPassword1.getText().toString()),
                     Integer.parseInt(binding.mpNewPassword2.getText().toString()),
                     Integer.parseInt(binding.mpNewPassword3.getText().toString()));
+            } catch (NumberFormatException e) {
+                binding.textViewNfcInfo.setText(R.string.insert_correct_password);
+                return null;
+            }
             masterCard.dataForWriting = MasterCard.packNewPassword(password);
         } else if (binding.radioButtonMasterConfig.isChecked()) {
             Config config = new Config();
@@ -307,10 +312,14 @@ public class FragmentStationSettings extends NfcFragment {
             config.checkCardInitTime = binding.checkBoxInitTime.isChecked();
             config.autoSleep = binding.checkBoxAutoSleep.isChecked();
             config.antennaGain = (Config.AntennaGain) binding.spinnerAntennaGain.getSelectedItem();
-            config.password = new Password(
-                    Integer.parseInt(binding.newPassword1.getText().toString()),
+            try {
+                config.password = new Password(Integer.parseInt(binding.newPassword1.getText().toString()),
                     Integer.parseInt(binding.newPassword2.getText().toString()),
                     Integer.parseInt(binding.newPassword3.getText().toString()));
+            } catch (NumberFormatException e) {
+                binding.textViewNfcInfo.setText(R.string.insert_correct_password);
+                return null;
+            }
             masterCard.dataForWriting = config.pack();
         }
         return masterCard;
