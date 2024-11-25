@@ -27,6 +27,7 @@
     <string name="button_clear">Clear</string>
     <string name="button_check">Check</string>
     <string name="reading_card_dont_remove_it">Reading card, don\'t remove it!</string>
+    <string name="card_read_successfully">Card read successfully</string>
     <string name="reading_card_failed">Reading card failed!</string>
     <string name="insert_station_number">Insert station number.</string>
     <string name="writing_card_dont_remove_it">Writing card, don\'t remove it!</string>
