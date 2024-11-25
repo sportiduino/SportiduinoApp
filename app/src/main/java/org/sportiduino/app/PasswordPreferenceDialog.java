@@ -8,6 +8,8 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
+import static org.sportiduino.app.Password.parseValue;
+
 public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
 
     private static final String SAVE_STATE_TEXT = "PasswordPreferenceDialogFragment.text";
@@ -65,9 +67,9 @@ public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
     public void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
             Password value = new Password(
-                    Integer.parseInt(editTextPass1.getText().toString()),
-                    Integer.parseInt(editTextPass2.getText().toString()),
-                    Integer.parseInt(editTextPass3.getText().toString()));
+                    parseValue(editTextPass1.getText().toString()),
+                    parseValue(editTextPass2.getText().toString()),
+                    parseValue(editTextPass3.getText().toString()));
             final PasswordPreference preference = getPasswordPreference();
             preference.persistPassword(value);
         }

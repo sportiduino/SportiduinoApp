@@ -88,4 +88,5 @@
     <string name="fast_punch">Fast punch</string>
     <string name="cleaning_only">Cleaning only</string>
     <string name="countdown_timer">Countdown timer, sec</string>
+    <string name="insert_correct_password">Insert correct password</string>
 </resources>

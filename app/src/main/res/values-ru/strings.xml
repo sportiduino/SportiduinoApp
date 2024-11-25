@@ -86,4 +86,5 @@
     <string name="fast_punch">Быстрая отметка</string>
     <string name="cleaning_only">Только очистка</string>
     <string name="countdown_timer">Таймер обратного отсчёта, сек</string>
+    <string name="insert_correct_password">Укажите корректный пароль</string>
 </resources>
