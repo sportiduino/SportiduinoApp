@@ -7,6 +7,13 @@
         android:title="@string/password"
         android:summary="" />
 
+    <org.sportiduino.app.NumberPickerPreference
+        android:key="countdown_timer"
+        android:title="@string/countdown_timer"
+        android:summary=""
+        android:defaultValue="2"
+        />
+
     <SwitchPreferenceCompat
         android:key="night_mode"
         android:defaultValue="false"
