@@ -37,8 +37,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         super.onViewCreated(view, savedInstanceState);
         this.currentView = view;
 
-        binding.textViewInfo.setText(R.string.bring_card);
-        binding.layoutTagInfo.setVisibility(View.GONE);
+        binding.textViewNfcInfo.setText(R.string.bring_card);
     }
 
     @Override
@@ -78,7 +77,7 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
 
         @Override
         protected void onPreExecute() {
-            binding.textViewInfo.setText(R.string.reading_card_dont_remove_it);
+            binding.textViewNfcInfo.setText(R.string.reading_card_dont_remove_it);
         }
 
         @Override
@@ -100,9 +99,13 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
         protected void onPostExecute(Boolean result) {
             if (result && buffer != null) {
                 binding.textViewTagType.setText(String.format(getString(R.string.tag_type_s), card.adapter.tagType.name()));
+                binding.textViewInfo.setVisibility(View.VISIBLE);
                 binding.textViewInfo.setText(card.parseData(buffer));
+                binding.textViewNfcInfo.setText(Util.ok(getString(R.string.card_read_successfully), currentView));
             } else {
-                binding.textViewInfo.setText(Util.error(getString(R.string.reading_card_failed), currentView));
+                binding.textViewTagType.setText("");
+                binding.textViewInfo.setVisibility(View.GONE);
+                binding.textViewNfcInfo.setText(Util.error(getString(R.string.reading_card_failed), currentView));
             }
         }
     }

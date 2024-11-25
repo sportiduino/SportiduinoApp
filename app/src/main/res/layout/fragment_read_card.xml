@@ -35,9 +35,14 @@
 
         <TextView
             android:id="@+id/text_view_info"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textIsSelectable="true"
             android:fontFamily="monospace"/>
+
+        <TextView
+            android:id="@+id/text_view_nfc_info"
+            style="@style/TextViewNfcInfo"/>
     </LinearLayout>
 </ScrollView>
