@@ -9,6 +9,7 @@ import androidx.annotation.NonNull;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
 import static org.sportiduino.app.Password.parseValue;
+import static org.sportiduino.app.ViewUtils.initCaretEndOnFocus;
 
 public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
 
@@ -50,13 +51,19 @@ public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
         editTextPass1 = view.findViewById(R.id.password1);
         editTextPass2 = view.findViewById(R.id.password2);
         editTextPass3 = view.findViewById(R.id.password3);
-        editTextPass1.requestFocus();
+
+        initCaretEndOnFocus(editTextPass1);
+        initCaretEndOnFocus(editTextPass2);
+        initCaretEndOnFocus(editTextPass3);
+
         editTextPass1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         editTextPass2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         editTextPass3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         editTextPass1.setText(String.valueOf(password.getValue(0)));
         editTextPass2.setText(String.valueOf(password.getValue(1)));
         editTextPass3.setText(String.valueOf(password.getValue(2)));
+
+        editTextPass1.requestFocus();
     }
 
     private PasswordPreference getPasswordPreference() {

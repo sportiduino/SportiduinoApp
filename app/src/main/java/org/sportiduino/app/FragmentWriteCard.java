@@ -21,6 +21,8 @@ import org.sportiduino.app.sportiduino.ParticipantCard;
 import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
+import static org.sportiduino.app.ViewUtils.initCaretEndOnFocus;
+
 public class FragmentWriteCard extends NfcFragment {
     private FragmentWriteCardBinding binding;
     private int cardNumber;
@@ -42,6 +44,7 @@ public class FragmentWriteCard extends NfcFragment {
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
 
+        initCaretEndOnFocus(binding.editTextCardNumber);
         binding.editTextCardNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 65535)});
 
         binding.checkBoxCleaningOnly.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
@@ -53,6 +56,8 @@ public class FragmentWriteCard extends NfcFragment {
                 binding.checkBoxAutoIncrement.setEnabled(true);
             }
         });
+
+        binding.editTextCardNumber.requestFocus();
     }
 
     @Override
