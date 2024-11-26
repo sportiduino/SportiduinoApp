@@ -39,6 +39,9 @@ import java.util.Calendar;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static org.sportiduino.app.ViewUtils.initCaretEndOnFocus;
+import static org.sportiduino.app.ViewUtils.setCaretEnd;
+
 public class FragmentStationSettings extends NfcFragment {
     private FragmentStationSettingsBinding binding;
     private Password password = Password.defaultPassword();
@@ -92,6 +95,7 @@ public class FragmentStationSettings extends NfcFragment {
             }
         }
 
+        initCaretEndOnFocus(binding.editTextStationNumber);
         binding.editTextStationNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 255)});
 
         binding.buttonStart.setOnClickListener(buttonClickListener);
@@ -117,9 +121,17 @@ public class FragmentStationSettings extends NfcFragment {
                 android.R.layout.simple_spinner_item, Config.AntennaGain.realValues()));
         binding.spinnerAntennaGain.setSelection(2);
 
+        initCaretEndOnFocus(binding.newPassword1);
+        initCaretEndOnFocus(binding.newPassword2);
+        initCaretEndOnFocus(binding.newPassword3);
+
         binding.newPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.newPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.newPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+
+        initCaretEndOnFocus(binding.mpNewPassword1);
+        initCaretEndOnFocus(binding.mpNewPassword2);
+        initCaretEndOnFocus(binding.mpNewPassword2);
 
         binding.mpNewPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.mpNewPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
@@ -236,14 +248,21 @@ public class FragmentStationSettings extends NfcFragment {
     View.OnClickListener buttonClickListener = (View view) -> {
         Button b = (Button) view;
         int id = b.getId();
+        int stationNumber = -1;
+
         if (id == R.id.button_start) {
-            binding.editTextStationNumber.setText(String.valueOf(Config.START_STATION));
+            stationNumber = Config.START_STATION;
         } else if (id == R.id.button_finish) {
-            binding.editTextStationNumber.setText(String.valueOf(Config.FINISH_STATION));
+            stationNumber = Config.FINISH_STATION;
         } else if (id == R.id.button_check) {
-            binding.editTextStationNumber.setText(String.valueOf(Config.CHECK_STATION));
+            stationNumber = Config.CHECK_STATION;
         } else if (id == R.id.button_clear) {
-            binding.editTextStationNumber.setText(String.valueOf(Config.CLEAR_STATION));
+            stationNumber = Config.CLEAR_STATION;
+        }
+
+        if (stationNumber != -1) {
+            binding.editTextStationNumber.setText(String.valueOf(stationNumber));
+            setCaretEnd(binding.editTextStationNumber);
         }
     };
 
