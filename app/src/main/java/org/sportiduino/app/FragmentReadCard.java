@@ -77,6 +77,9 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
 
         @Override
         protected void onPreExecute() {
+            binding.textViewTagType.setText("");
+            binding.textViewInfo.setVisibility(View.GONE);
+            binding.textViewInfo.setText("");
             binding.textViewNfcInfo.setText(R.string.reading_card_dont_remove_it);
         }
 
@@ -103,8 +106,6 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
                 binding.textViewInfo.setText(card.parseData(buffer));
                 binding.textViewNfcInfo.setText(Util.ok(getString(R.string.card_read_successfully), currentView));
             } else {
-                binding.textViewTagType.setText("");
-                binding.textViewInfo.setVisibility(View.GONE);
                 binding.textViewNfcInfo.setText(Util.error(getString(R.string.reading_card_failed), currentView));
             }
         }
