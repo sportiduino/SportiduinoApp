@@ -88,4 +88,5 @@
     <string name="cleaning_only">Только очистка</string>
     <string name="countdown_timer">Таймер обратного отсчёта, сек</string>
     <string name="insert_correct_password">Укажите корректный пароль</string>
+    <string name="incorrect_device_date">На устройстве установлена некорректная дата</string>
 </resources>

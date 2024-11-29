@@ -90,4 +90,5 @@
     <string name="cleaning_only">Cleaning only</string>
     <string name="countdown_timer">Countdown timer, sec</string>
     <string name="insert_correct_password">Insert correct password</string>
+    <string name="incorrect_device_date">Incorrect device date</string>
 </resources>

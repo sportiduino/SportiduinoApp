@@ -41,6 +41,8 @@ import java.util.TimerTask;
 
 import static org.sportiduino.app.ViewUtils.initCaretEndOnFocus;
 import static org.sportiduino.app.ViewUtils.setCaretEnd;
+import static org.sportiduino.app.sportiduino.Constants.OPERATED_YEAR_MIN;
+import static org.sportiduino.app.sportiduino.Util.checkOperatedYearMin;
 
 public class FragmentStationSettings extends NfcFragment {
     private FragmentStationSettingsBinding binding;
@@ -145,7 +147,10 @@ public class FragmentStationSettings extends NfcFragment {
             int month = wakeupTime.get(Calendar.MONTH);
             int day = wakeupTime.get(Calendar.DAY_OF_MONTH);
 
-            new DatePickerDialog(getActivity(), dateSetListener, year, month, day).show();
+            wakeupTime.set(OPERATED_YEAR_MIN, 0, 1);
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getActivity(), dateSetListener, year, month, day);
+            datePickerDialog.getDatePicker().setMinDate(wakeupTime.getTimeInMillis());
+            datePickerDialog.show();
         }
     };
 
@@ -307,6 +312,10 @@ public class FragmentStationSettings extends NfcFragment {
             }
             masterCard.dataForWriting = MasterCard.packStationNumber(stationNumber);
         } else if (binding.radioButtonMasterTime.isChecked()) {
+            if (!checkOperatedYearMin()) {
+                binding.textViewNfcInfo.setText(Util.error(getString(R.string.incorrect_device_date), currentView));
+                return null;
+            }
             Calendar c = Calendar.getInstance();
             c.add(Calendar.SECOND, countdownTimer);
             masterCard.dataForWriting = MasterCard.packTime(c);
