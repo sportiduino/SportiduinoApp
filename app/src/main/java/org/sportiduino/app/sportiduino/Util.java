@@ -12,6 +12,9 @@ import org.sportiduino.app.R;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
+import java.util.Calendar;
+
+import static org.sportiduino.app.sportiduino.Constants.OPERATED_YEAR_MIN;
 
 public class Util {
     public static SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -84,6 +87,12 @@ public class Util {
 
     public static String colorToHexCode(Integer color) {
         return String.format("#%06x", App.color(color) & 0x00ffffff);
+    }
+
+    public static Boolean checkOperatedYearMin() {
+        Calendar calendar = Calendar.getInstance();
+
+        return calendar.get(Calendar.YEAR) >= OPERATED_YEAR_MIN;
     }
 }
 
