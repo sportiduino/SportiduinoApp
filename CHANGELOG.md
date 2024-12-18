@@ -1,5 +1,15 @@
 # SportiduinoApp Changelog
 
+## v1.5
+
+* Added night mode
+* Now user can set countdown timer from 0 to 10 seconds for Time master card
+* Fixed crash when trying to write password with empty fields (#3)
+* Setting a minimum year for operation (#22)
+* Improved the application behavior in landscape mode
+
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.4.1...v1.5)
+
 ## v1.4.1
 
 * Add the ability to copy the data read from a card
