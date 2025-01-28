@@ -18,6 +18,7 @@ import static org.sportiduino.app.sportiduino.Constants.OPERATED_YEAR_MIN;
 
 public class Util {
     public static SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+    public static SimpleDateFormat dhmformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
     public static int byteToUint(byte b) {
         return ((int) b) & 0xFF;
