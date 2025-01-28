@@ -128,7 +128,7 @@ public class MasterCard extends Card {
     public static byte[][] packTime(Calendar calendar) {
         Calendar c = (Calendar) calendar.clone();
         c.setTimeZone(TimeZone.getTimeZone("UTC"));
-        int year = c.get(Calendar.YEAR) - OPERATED_YEAR_MIN;
+        int year = c.get(Calendar.YEAR) - 2000;
         int month = c.get(Calendar.MONTH) + 1;
         int day = c.get(Calendar.DAY_OF_MONTH);
         int hour = c.get(Calendar.HOUR_OF_DAY);
