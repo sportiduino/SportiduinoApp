@@ -13,7 +13,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
       - name: Set up JDK environment
         uses: actions/setup-java@v2
         with:
@@ -42,13 +42,13 @@ jobs:
           ARTIFACT_APK_PATH=${{ github.workspace }}-$(git rev-parse --short HEAD).apk
           mv ${{ steps.sign_app.outputs.signedReleaseFile }} ${RELEASE_APK_PATH}
           cp ${RELEASE_APK_PATH} ${ARTIFACT_APK_PATH}
-          echo "::set-output name=release_apk_path::${RELEASE_APK_PATH}"
-          echo "::set-output name=artifact_apk_path::${ARTIFACT_APK_PATH}"
+          echo "RELEASE_APK_PATH=${RELEASE_APK_PATH}" >> $GITHUB_OUTPUT
+          echo "ARTIFACT_APK_PATH=${ARTIFACT_APK_PATH}" >> $GITHUB_OUTPUT
       - name: Upload APK
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: SportiduinoApp
-          path: ${{ steps.rename_apk.outputs.artifact_apk_path }}
+          path: ${{ steps.rename_apk.outputs.ARTIFACT_APK_PATH }}
       - name: Generate Changelog
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
@@ -61,6 +61,6 @@ jobs:
         if: startsWith(github.ref, 'refs/tags/v')
         with:
           body_path: ${{ github.workspace }}-CHANGELOG.txt
-          files: ${{ steps.rename_apk.outputs.release_apk_path }}
+          files: ${{ steps.rename_apk.outputs.RELEASE_APK_PATH }}
  
 # vim: ts=2 sw=2 et
