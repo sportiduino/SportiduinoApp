@@ -9,8 +9,10 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
 
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -55,6 +57,7 @@ public class FragmentStationSettings extends NfcFragment {
     private SharedPreferences.OnSharedPreferenceChangeListener preferenceChangeListener;
     private View currentView;
     private int countdownTimer;
+    private View activeNumberMasterCardView;
 
     @Override
     public View onCreateView(
@@ -100,6 +103,8 @@ public class FragmentStationSettings extends NfcFragment {
         initCaretEndOnFocus(binding.editTextStationNumber);
         binding.editTextStationNumber.setFilters(new InputFilter[]{new MinMaxFilter(1, 255)});
 
+        binding.editTextStationNumber.addTextChangedListener(editTextStationNumberTextChangedLister);
+
         binding.buttonStart.setOnClickListener(buttonClickListener);
         binding.buttonFinish.setOnClickListener(buttonClickListener);
         binding.buttonClear.setOnClickListener(buttonClickListener);
@@ -138,6 +143,18 @@ public class FragmentStationSettings extends NfcFragment {
         binding.mpNewPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.mpNewPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.mpNewPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
+    }
+
+    void setActiveNumberMasterCardView(View v) {
+        activeNumberMasterCardView = v;
+
+        activeNumberMasterCardView.setSelected(true);
+    }
+
+    void unsetActiveNumberMasterCardView() {
+        if (activeNumberMasterCardView != null) {
+            activeNumberMasterCardView.setSelected(false);
+        }
     }
 
     View.OnClickListener dateClickListener = new View.OnClickListener() {
@@ -250,6 +267,35 @@ public class FragmentStationSettings extends NfcFragment {
         binding.scrollView.post(() -> binding.scrollView.fullScroll(View.FOCUS_DOWN));
     }
 
+    TextWatcher editTextStationNumberTextChangedLister = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            unsetActiveNumberMasterCardView();
+
+            try {
+                int id = Integer.parseInt(s.toString());
+
+                if (id == Config.START_STATION) {
+                    setActiveNumberMasterCardView(binding.buttonStart);
+                } else if (id == Config.FINISH_STATION) {
+                    setActiveNumberMasterCardView(binding.buttonFinish);
+                } else if (id == Config.CHECK_STATION) {
+                    setActiveNumberMasterCardView(binding.buttonCheck);
+                } else if (id == Config.CLEAR_STATION) {
+                    setActiveNumberMasterCardView(binding.buttonClear);
+                }
+            } catch (NumberFormatException e) {
+                // do nothing
+            }
+        }
+    };
+
     View.OnClickListener buttonClickListener = (View view) -> {
         Button b = (Button) view;
         int id = b.getId();
@@ -265,9 +311,13 @@ public class FragmentStationSettings extends NfcFragment {
             stationNumber = Config.CLEAR_STATION;
         }
 
+        unsetActiveNumberMasterCardView();
+
         if (stationNumber != -1) {
             binding.editTextStationNumber.setText(String.valueOf(stationNumber));
             setCaretEnd(binding.editTextStationNumber);
+
+            setActiveNumberMasterCardView(view);
         }
     };
 
