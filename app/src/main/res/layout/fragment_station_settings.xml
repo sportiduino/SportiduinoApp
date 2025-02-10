@@ -84,7 +84,8 @@
                         android:layout_weight="1"
                         android:layout_margin="1dp"
                         android:textSize="@dimen/text_size_small"
-                        android:text="@string/button_start" />
+                        android:text="@string/button_start"
+                        android:backgroundTint="@drawable/button" />
 
                     <Button
                         android:id="@+id/button_finish"
@@ -93,7 +94,8 @@
                         android:layout_margin="1dp"
                         android:layout_weight="1"
                         android:text="@string/button_finish"
-                        android:textSize="@dimen/text_size_small" />
+                        android:textSize="@dimen/text_size_small"
+                        android:backgroundTint="@drawable/button" />
 
                     <Button
                         android:id="@+id/button_check"
@@ -102,7 +104,8 @@
                         android:layout_weight="1"
                         android:layout_margin="1dp"
                         android:text="@string/button_check"
-                        android:textSize="@dimen/text_size_small" />
+                        android:textSize="@dimen/text_size_small"
+                        android:backgroundTint="@drawable/button" />
 
                     <Button
                         android:id="@+id/button_clear"
@@ -111,7 +114,8 @@
                         android:layout_weight="1"
                         android:layout_margin="1dp"
                         android:text="@string/button_clear"
-                        android:textSize="@dimen/text_size_small" />
+                        android:textSize="@dimen/text_size_small"
+                        android:backgroundTint="@drawable/button" />
                 </LinearLayout>
             </LinearLayout>
 
