@@ -31,7 +31,7 @@ public class MasterCard extends Card {
             case MASTER_READ_BACKUP:
                 return adapter.readPages(CARD_PAGE_INFO1, adapter.getMaxPage(), true);
             default:
-                return new byte[0][0];
+                return adapter.readPages(CARD_PAGE_INFO1, 2);
         }
     }
 
@@ -46,7 +46,7 @@ public class MasterCard extends Card {
                 State state = new State(data);
                 return Html.fromHtml((App.str(R.string.state_master_card) + "\n" + state.toString()).replace("\n", "<br/>"));
             case MASTER_SLEEP:
-                return App.str(R.string.sleep_master_card);
+                return App.str(R.string.sleep_master_card) + "\n" + parseWakeupTime(data);
             case MASTER_READ_BACKUP:
                 return parseBackupMaster(data);
             case MASTER_CONFIG:
@@ -68,6 +68,43 @@ public class MasterCard extends Card {
         if (dataForWriting != null && dataForWriting.length > 0) {
             adapter.writePages(6, dataForWriting, dataForWriting.length);
         }
+    }
+
+    public static byte[][] packStationNumber(int stationNumber) {
+        return new byte[][] { {(byte) stationNumber, 0, 0, 0} };
+    }
+
+    public static byte[][] packTime(Calendar calendar) {
+        Calendar c = (Calendar) calendar.clone();
+        c.setTimeZone(TimeZone.getTimeZone("UTC"));
+        int year = c.get(Calendar.YEAR) - 2000;
+        int month = c.get(Calendar.MONTH) + 1;
+        int day = c.get(Calendar.DAY_OF_MONTH);
+        int hour = c.get(Calendar.HOUR_OF_DAY);
+        int minute = c.get(Calendar.MINUTE);
+        int second = c.get(Calendar.SECOND);
+        return new byte[][] {
+            {(byte) month, (byte) year, (byte) day, 0},
+            {(byte) hour, (byte) minute, (byte) second, 0}
+        };
+    }
+
+    public static byte[][] packNewPassword(Password password) {
+        return new byte[][] {
+            {(byte) password.getValue(2), (byte) password.getValue(1), (byte) password.getValue(0), 0}
+        };
+    }
+
+    public static String parseWakeupTime(byte[][] data) {
+        int year = data[0][1] + 2000;
+        int month = data[0][0];
+        int day = data[0][2];
+        int hour = data[1][0];
+        int minute = data[1][1];
+        int second = data[1][2];
+        Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+        c.set(year, month - 1, day, hour, minute, second);
+        return App.str(R.string.wakeup_time_) + " " + Util.dhmformat.format(new Date(c.getTimeInMillis()));
     }
 
     private String parseBackupMaster(byte[][] data) {
@@ -119,31 +156,6 @@ public class MasterCard extends Card {
             }
         }
         return String.format(ret.toString(), recordCount);
-    }
-
-    public static byte[][] packStationNumber(int stationNumber) {
-        return new byte[][] { {(byte) stationNumber, 0, 0, 0} };
-    }
-
-    public static byte[][] packTime(Calendar calendar) {
-        Calendar c = (Calendar) calendar.clone();
-        c.setTimeZone(TimeZone.getTimeZone("UTC"));
-        int year = c.get(Calendar.YEAR) - OPERATED_YEAR_MIN;
-        int month = c.get(Calendar.MONTH) + 1;
-        int day = c.get(Calendar.DAY_OF_MONTH);
-        int hour = c.get(Calendar.HOUR_OF_DAY);
-        int minute = c.get(Calendar.MINUTE);
-        int second = c.get(Calendar.SECOND);
-        return new byte[][] {
-            {(byte) month, (byte) year, (byte) day, 0},
-            {(byte) hour, (byte) minute, (byte) second, 0}
-        };
-    }
-
-    public static byte[][] packNewPassword(Password password) {
-        return new byte[][] {
-            {(byte) password.getValue(2), (byte) password.getValue(1), (byte) password.getValue(0), 0}
-        };
     }
 }
 

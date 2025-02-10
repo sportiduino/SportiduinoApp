@@ -15,5 +15,5 @@ public class Constants {
     public static final byte MASTER_CARD_SIGN = (byte) 0xFF;
     public static final byte FAST_PUNCH_SIGN = (byte) 0xAA;
     public static final byte FW_PROTO_VERSION = (byte) 8;
-    public static final int OPERATED_YEAR_MIN = 2000;
+    public static final int OPERATED_YEAR_MIN = 2001;
 }
