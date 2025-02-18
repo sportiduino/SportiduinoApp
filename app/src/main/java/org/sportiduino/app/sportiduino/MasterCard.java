@@ -27,7 +27,7 @@ public class MasterCard extends Card {
     public byte[][] read() throws ReadWriteCardException {
         switch (type) {
             case MASTER_GET_STATE:
-                return adapter.readPages(8, 12);
+                return adapter.readPages(CARD_PAGE_START, 5);
             case MASTER_READ_BACKUP:
                 return adapter.readPages(CARD_PAGE_INFO1, adapter.getMaxPage(), true);
             default:
@@ -66,8 +66,19 @@ public class MasterCard extends Card {
         };
         adapter.writePages(CARD_PAGE_INIT, header, header.length);
         if (dataForWriting != null && dataForWriting.length > 0) {
-            adapter.writePages(6, dataForWriting, dataForWriting.length);
+            adapter.writePages(CARD_PAGE_INFO1, dataForWriting, dataForWriting.length);
         }
+    }
+
+    public static byte[][] packGetState() {
+        // In fact, state data is recorded in 5 pages from index 8 (CARD_PAGE_START),
+        // but since only the first byte of CARD_PAGE_START is checked to determine
+        // the state of the card as "empty", it is enough to zero out only CARD_PAGE_START
+        // and pages with index 6 (CARD_PAGE_INFO1) and 7 (CARD_PAGE_INFO2).
+        return new byte[][] {
+                {0, 0, 0, 0}, {0, 0, 0, 0},
+                {0, 0, 0, 0} // CARD_PAGE_START
+        };
     }
 
     public static byte[][] packStationNumber(int stationNumber) {
