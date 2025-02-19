@@ -60,6 +60,15 @@ public class FragmentStationSettings extends NfcFragment {
     private View activeNumberMasterCardView;
 
     @Override
+    public void onStop() {
+        super.onStop();
+
+        if (timer != null) {
+            timer.cancel();
+        }
+    }
+
+    @Override
     public View onCreateView(
             @NonNull LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState
