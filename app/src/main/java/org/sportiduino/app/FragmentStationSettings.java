@@ -348,7 +348,10 @@ public class FragmentStationSettings extends NfcFragment {
     @Nullable
     private MasterCard getMasterCard(CardAdapter adapter) {
         MasterCard masterCard = new MasterCard(adapter, cardType, password);
-        if (binding.radioButtonMasterNumber.isChecked()) {
+
+        if (binding.radioButtonMasterGetState.isChecked()) {
+            masterCard.dataForWriting = MasterCard.packGetState();
+        } else if (binding.radioButtonMasterNumber.isChecked()) {
             String str = binding.editTextStationNumber.getText().toString();
             int stationNumber;
             try {
