@@ -61,8 +61,8 @@ public class MasterCard extends Card {
     @Override
     protected void writeImpl() throws ReadWriteCardException {
         final byte[][] header = {
-                {0, (byte) type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
-                {password[0], password[1], password[2], 0}
+            {0, (byte) type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
+            {password[0], password[1], password[2], 0}
         };
         adapter.writePages(CARD_PAGE_INIT, header, header.length);
         if (dataForWriting != null && dataForWriting.length > 0) {
@@ -76,8 +76,8 @@ public class MasterCard extends Card {
         // the state of the card as "empty", it is enough to zero out only CARD_PAGE_START
         // and pages with index 6 (CARD_PAGE_INFO1) and 7 (CARD_PAGE_INFO2).
         return new byte[][] {
-                {0, 0, 0, 0}, {0, 0, 0, 0},
-                {0, 0, 0, 0} // CARD_PAGE_START
+            {0, 0, 0, 0}, {0, 0, 0, 0},
+            {0, 0, 0, 0} // CARD_PAGE_START
         };
     }
 

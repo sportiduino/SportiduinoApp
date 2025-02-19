@@ -24,6 +24,14 @@ public class Util {
         return ((int) b) & 0xFF;
     }
 
+    public static String bytesToHex(byte[] bytes) {
+        StringBuilder sb = new StringBuilder();
+        for (byte b : bytes) {
+            sb.append(String.format("%02x", b));
+        }
+        return sb.toString();
+    }
+
     public static long toUint32(byte[] bytes) {
         ByteBuffer buffer = ByteBuffer.allocate(8).put(new byte[]{0,0,0,0}).put(Arrays.copyOfRange(bytes, 0, 4));
         buffer.position(0);

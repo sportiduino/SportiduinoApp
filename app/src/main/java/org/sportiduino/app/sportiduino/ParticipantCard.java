@@ -29,19 +29,11 @@ public class ParticipantCard extends Card {
 
     @Override
     public byte[][] read() throws ReadWriteCardException {
-        if (cardNumber == 0) {
-            type = CardType.UNKNOWN;
-            return new byte[0][0];
-        }
         return adapter.readPages(CARD_PAGE_START, adapter.getMaxPage(), true);
     }
 
     @Override
     public CharSequence parseData(byte[][] data) {
-        if (type == CardType.UNKNOWN) {
-            return App.str(R.string.unknown_card_type);
-        }
-
         StringBuilder str = new StringBuilder();
 
         str.append(App.str(R.string.participant_card_no_)).append(" <b>").append(cardNumber).append("</b>");
