@@ -1,5 +1,11 @@
 # SportiduinoApp Changelog
 
+## v1.5.1
+
+* Bug fixes and small improvements
+
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.5...v1.5.1)
+
 ## v1.5
 
 * Added night mode
