@@ -6,6 +6,7 @@ import java.util.Map;
 public enum CardType {
     UNKNOWN(),
     ORDINARY(),
+    MASTER_AUTH_PASSWORD(0xF8),
     MASTER_GET_STATE(0xF9),
     MASTER_SET_TIME(0xFA),
     MASTER_SET_NUMBER(0xFB),

@@ -91,4 +91,6 @@
     <string name="countdown_timer">Countdown timer, sec</string>
     <string name="insert_correct_password">Insert correct password</string>
     <string name="incorrect_device_date">Incorrect device date</string>
+    <string name="auth_password_master_card">Auth Password Master Card</string>
+    <string name="auth_password">Password</string>
 </resources>

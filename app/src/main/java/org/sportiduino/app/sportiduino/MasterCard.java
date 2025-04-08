@@ -53,6 +53,8 @@ public class MasterCard extends Card {
                 return App.str(R.string.config_master_card);
             case MASTER_PASSWORD:
                 return App.str(R.string.password_master_card);
+            case MASTER_AUTH_PASSWORD:
+                return App.str(R.string.auth_password_master_card);
             default:
                 return App.str(R.string.unknown_card_type);
         }
@@ -103,6 +105,12 @@ public class MasterCard extends Card {
     public static byte[][] packNewPassword(Password password) {
         return new byte[][] {
             {(byte) password.getValue(2), (byte) password.getValue(1), (byte) password.getValue(0), 0}
+        };
+    }
+
+    public static byte[][] packAuthPassword(int[] password) {
+        return new byte[][] {
+            {(byte) password[3], (byte) password[2], (byte) password[1], (byte) password[0]}
         };
     }
 
