@@ -91,4 +91,8 @@
     <string name="incorrect_device_date">На устройстве установлена некорректная дата</string>
     <string name="auth_password_master_card">Мастер-чип пароля аутентификации</string>
     <string name="auth_password">Пароль</string>
+    <string name="ntag_write_protection">Защита от записи</string>
+    <string name="ntag_read_protection">Защита от чтения</string>
+    <string name="ntag_auth_key">Ключ защиты Ntag</string>
+    <string name="button_ntag_auth_key_reset">Сбросить</string>
 </resources>

@@ -93,4 +93,8 @@
     <string name="incorrect_device_date">Incorrect device date</string>
     <string name="auth_password_master_card">Auth Password Master Card</string>
     <string name="auth_password">Password</string>
+    <string name="ntag_write_protection">Write protection</string>
+    <string name="ntag_read_protection">Read protection</string>
+    <string name="ntag_auth_key">Ntag auth key</string>
+    <string name="button_ntag_auth_key_reset">Reset</string>
 </resources>

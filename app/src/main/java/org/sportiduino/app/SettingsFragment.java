@@ -36,6 +36,9 @@ public class SettingsFragment extends PreferenceFragmentCompat  implements Prefe
         DialogFragment dialogFragment = null;
         if (preference instanceof PasswordPreference) {
             dialogFragment = PasswordPreferenceDialog.newInstance(preference.getKey());
+        }
+        else if (preference instanceof NtagAuthKeyPreference) {
+            dialogFragment = NtagAuthKeyPreferenceDialog.newInstance(preference.getKey());
         } else if (preference instanceof NumberPickerPreference) {
             dialogFragment = NumberPickerPreferenceDialogFragmentCompat.newInstance(preference.getKey());
         }
