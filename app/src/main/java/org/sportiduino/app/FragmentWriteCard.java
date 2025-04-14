@@ -12,7 +12,6 @@ import android.view.ViewGroup;
 import android.widget.CompoundButton;
 
 import androidx.annotation.NonNull;
-
 import org.sportiduino.app.databinding.FragmentWriteCardBinding;
 import org.sportiduino.app.sportiduino.CardAdapter;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
@@ -57,7 +56,37 @@ public class FragmentWriteCard extends NfcFragment {
             }
         });
 
+        binding.checkBoxWriteProtection.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+            if (!isChecked) {
+                binding.checkBoxReadProtection.setChecked(false);
+            }
+        });
+
+        binding.checkBoxReadProtection.setOnCheckedChangeListener((CompoundButton buttonView, boolean isChecked) -> {
+            if (isChecked) {
+                binding.checkBoxWriteProtection.setChecked(true);
+            }
+        });
+
         binding.editTextCardNumber.requestFocus();
+        updateUiFromPreferences();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        binding.editTextCardNumber.requestFocus();
+        updateUiFromPreferences();
+    }
+
+    private void updateUiFromPreferences() {
+        NtagAuthKey authKey = NtagAuthKeyManager.getAuthKey(requireActivity());
+        binding.checkBoxWriteProtection.setEnabled(!authKey.isDefault());
+        binding.checkBoxReadProtection.setEnabled(!authKey.isDefault());
+        if (authKey.isDefault()) {
+            binding.checkBoxWriteProtection.setChecked(false);
+            binding.checkBoxReadProtection.setChecked(false);
+        }
     }
 
     @Override
@@ -80,13 +109,18 @@ public class FragmentWriteCard extends NfcFragment {
             if (s.equals(MifareClassic.class.getName())) {
                 adapter = new CardMifareClassic(MifareClassic.get(tag));
             } else if (s.equals(MifareUltralight.class.getName())) {
-                adapter = new CardMifareUltralight(MifareUltralight.get(tag));
+                NtagAuthKey authKey = NtagAuthKeyManager.getAuthKey(requireActivity());
+
+                adapter = new CardMifareUltralight(MifareUltralight.get(tag), authKey);
             }
             if (adapter != null) {
                 if (binding.checkBoxCleaningOnly.isChecked()) {
                     cardNumber = -1;
                 }
+
                 ParticipantCard card = new ParticipantCard(adapter, cardNumber, binding.checkBoxFastPunch.isChecked());
+                card.setWriteReadProtection(binding.checkBoxWriteProtection.isChecked(), binding.checkBoxReadProtection.isChecked());
+
                 new WriteCardTask(card).execute();
                 break;
             }

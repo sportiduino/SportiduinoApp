@@ -16,3 +16,4 @@ local.properties
 .externalNativeBuild
 .cxx
 *.swp
+tags

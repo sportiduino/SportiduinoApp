@@ -1,6 +1,9 @@
 package org.sportiduino.app.sportiduino;
 
 import android.nfc.tech.TagTechnology;
+import android.util.Log;
+
+import org.sportiduino.app.NtagAuthKey;
 
 import java.io.IOException;
 
@@ -13,6 +16,7 @@ public abstract class CardAdapter {
     }
 
     public void connect() throws ReadWriteCardException {
+        Log.d("CardAdapter", "Connecting to " + tagTech);
         try {
             if (!tagTech.isConnected()) {
                 tagTech.connect();
@@ -78,5 +82,11 @@ public abstract class CardAdapter {
         for (int page = endPage; page >= beginPage; --page) {
             clearPage(page);
         }
+    }
+
+    public void enableDisableAuthentication(boolean writeProtection, boolean readProtection) throws ReadWriteCardException {
+    }
+
+    public void disableAuthentication() throws ReadWriteCardException {
     }
 }

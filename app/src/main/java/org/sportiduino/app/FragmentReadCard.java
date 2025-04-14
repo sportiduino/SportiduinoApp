@@ -57,7 +57,8 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
             if (s.equals(MifareClassic.class.getName())) {
                 adapter = new CardMifareClassic(MifareClassic.get(tag));
             } else if (s.equals(MifareUltralight.class.getName())) {
-                adapter = new CardMifareUltralight(MifareUltralight.get(tag));
+                NtagAuthKey authKey = NtagAuthKeyManager.getAuthKey(requireActivity());
+                adapter = new CardMifareUltralight(MifareUltralight.get(tag), authKey);
             }
             if (adapter != null) {
                 new ReadCardTask(adapter).execute();

@@ -13,6 +13,8 @@ public class ParticipantCard extends Card {
     int cardNumber;
     long cardInitTimestamp;
     boolean fastPunch;
+    boolean writeProtection = false;
+    boolean readProtection = false;
 
     public ParticipantCard(CardAdapter adapter, int cardNumber, boolean fastPunch, long cardInitTimestamp) {
         this(adapter, cardNumber, fastPunch);
@@ -25,6 +27,11 @@ public class ParticipantCard extends Card {
         this.type = CardType.ORDINARY;
         this.cardNumber = cardNumber;
         this.fastPunch = fastPunch;
+    }
+
+    public void setWriteReadProtection(boolean writeProtection, boolean readProtection) {
+        this.writeProtection = writeProtection;
+        this.readProtection = readProtection;
     }
 
     @Override
@@ -100,5 +107,6 @@ public class ParticipantCard extends Card {
             final byte[] dataPageInit = {cardNumberArray[0], cardNumberArray[1], 0, FW_PROTO_VERSION};
             adapter.writePage(CARD_PAGE_INIT, dataPageInit);
         }
+        adapter.enableDisableAuthentication(writeProtection, readProtection);
     }
 }

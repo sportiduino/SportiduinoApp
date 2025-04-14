@@ -62,6 +62,8 @@ public class MasterCard extends Card {
 
     @Override
     protected void writeImpl() throws ReadWriteCardException {
+        adapter.disableAuthentication();
+
         final byte[][] header = {
             {0, (byte) type.value, MASTER_CARD_SIGN, FW_PROTO_VERSION},
             {password[0], password[1], password[2], 0}

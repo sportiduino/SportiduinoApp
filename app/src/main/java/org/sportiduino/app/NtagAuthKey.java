@@ -20,6 +20,10 @@ public class NtagAuthKey extends PasswordBase {
         return new NtagAuthKey(255, 255, 255, 255);
     }
 
+    public boolean isDefault() {
+        return Arrays.equals(passwordArray, defaultKey().passwordArray);
+    }
+
     public static NtagAuthKey fromString(String str) {
         if (str != null) {
             String[] split = str.split("-");
