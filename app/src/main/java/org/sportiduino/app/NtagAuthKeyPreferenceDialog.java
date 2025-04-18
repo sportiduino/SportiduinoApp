@@ -1,7 +1,9 @@
 package org.sportiduino.app;
 
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.InputFilter;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,7 +21,12 @@ public class NtagAuthKeyPreferenceDialog extends PreferenceDialogFragmentCompat 
     private EditText editTextPass2;
     private EditText editTextPass3;
     private EditText editTextPass4;
+    private Button resetButton;
     private NtagAuthKey key;
+
+    private void updateResetButtonState() {
+        resetButton.setSelected(getAuthKeyFromTextPass().isDefault());
+    }
 
     public static NtagAuthKeyPreferenceDialog newInstance(String key) {
         final NtagAuthKeyPreferenceDialog
@@ -47,13 +54,44 @@ public class NtagAuthKeyPreferenceDialog extends PreferenceDialogFragmentCompat 
         outState.putCharSequence(SAVE_STATE_TEXT, key.toString());
     }
 
+    TextWatcher editTextChangedLister = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+            updateResetButtonState();
+        }
+    };
+
+    private NtagAuthKey getAuthKeyFromTextPass() {
+        return new NtagAuthKey(
+            parseValue(editTextPass1.getText().toString()),
+            parseValue(editTextPass2.getText().toString()),
+            parseValue(editTextPass3.getText().toString()),
+            parseValue(editTextPass4.getText().toString())
+        );
+    }
+
+    private void fillTextPassFromKey(NtagAuthKey key) {
+        editTextPass1.setText(String.valueOf(key.getValue(0)));
+        editTextPass2.setText(String.valueOf(key.getValue(1)));
+        editTextPass3.setText(String.valueOf(key.getValue(2)));
+        editTextPass4.setText(String.valueOf(key.getValue(3)));
+    }
+
     @Override
-    protected void onBindDialogView(View view) {
+    protected void onBindDialogView(@NonNull View view) {
         super.onBindDialogView(view);
+
         editTextPass1 = view.findViewById(R.id.ntag_auth_key1);
         editTextPass2 = view.findViewById(R.id.ntag_auth_key2);
         editTextPass3 = view.findViewById(R.id.ntag_auth_key3);
         editTextPass4 = view.findViewById(R.id.ntag_auth_key4);
+        resetButton = view.findViewById(R.id.ntag_auth_reset_button);
 
         initCaretEndOnFocus(editTextPass1);
         initCaretEndOnFocus(editTextPass2);
@@ -64,20 +102,22 @@ public class NtagAuthKeyPreferenceDialog extends PreferenceDialogFragmentCompat 
         editTextPass2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         editTextPass3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         editTextPass4.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
-        editTextPass1.setText(String.valueOf(key.getValue(0)));
-        editTextPass2.setText(String.valueOf(key.getValue(1)));
-        editTextPass3.setText(String.valueOf(key.getValue(2)));
-        editTextPass4.setText(String.valueOf(key.getValue(3)));
 
+        editTextPass1.addTextChangedListener(editTextChangedLister);
+        editTextPass2.addTextChangedListener(editTextChangedLister);
+        editTextPass3.addTextChangedListener(editTextChangedLister);
+        editTextPass4.addTextChangedListener(editTextChangedLister);
+
+        fillTextPassFromKey(key);
+
+        updateResetButtonState();
         editTextPass1.requestFocus();
 
-        Button resetButton = view.findViewById(R.id.button_ntag_auth_key_reset);
         resetButton.setOnClickListener(v -> {
-            key = NtagAuthKey.defaultKey();
-            editTextPass1.setText(String.valueOf(key.getValue(0)));
-            editTextPass2.setText(String.valueOf(key.getValue(1)));
-            editTextPass3.setText(String.valueOf(key.getValue(2)));
-            editTextPass4.setText(String.valueOf(key.getValue(3)));
+            fillTextPassFromKey(NtagAuthKey.defaultKey());
+
+            updateResetButtonState();
+            editTextPass1.requestFocus();
         });
     }
 
@@ -88,13 +128,8 @@ public class NtagAuthKeyPreferenceDialog extends PreferenceDialogFragmentCompat 
     @Override
     public void onDialogClosed(boolean positiveResult) {
         if (positiveResult) {
-            NtagAuthKey value = new NtagAuthKey(
-                    parseValue(editTextPass1.getText().toString()),
-                    parseValue(editTextPass2.getText().toString()),
-                    parseValue(editTextPass3.getText().toString()),
-                    parseValue(editTextPass4.getText().toString()));
             final NtagAuthKeyPreference preference = getNtagAuthKeyPreference();
-            preference.persistKey(value);
+            preference.persistKey(getAuthKeyFromTextPass());
         }
     }
 }
