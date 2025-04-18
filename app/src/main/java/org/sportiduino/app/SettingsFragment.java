@@ -2,6 +2,7 @@ package org.sportiduino.app;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.fragment.app.DialogFragment;
 import androidx.preference.Preference;
@@ -31,7 +32,7 @@ public class SettingsFragment extends PreferenceFragmentCompat  implements Prefe
     }
 
     @Override
-    public void onDisplayPreferenceDialog(Preference preference) {
+    public void onDisplayPreferenceDialog(@NonNull Preference preference) {
         // Try if the preference is one of our custom Preferences
         DialogFragment dialogFragment = null;
         if (preference instanceof PasswordPreference) {
@@ -39,7 +40,7 @@ public class SettingsFragment extends PreferenceFragmentCompat  implements Prefe
         } else if (preference instanceof NtagAuthKeyPreference) {
             dialogFragment = NtagAuthKeyPreferenceDialog.newInstance(preference.getKey());
         } else if (preference instanceof NumberPickerPreference) {
-            dialogFragment = NumberPickerPreferenceDialogFragmentCompat.newInstance(preference.getKey());
+            dialogFragment = NumberPickerPreferenceDialog.newInstance(preference.getKey());
         }
 
         // If it was one of our custom Preferences, show its dialog

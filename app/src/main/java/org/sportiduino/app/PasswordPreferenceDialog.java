@@ -46,7 +46,7 @@ public class PasswordPreferenceDialog extends PreferenceDialogFragmentCompat {
     }
 
     @Override
-    protected void onBindDialogView(View view) {
+    protected void onBindDialogView(@NonNull View view) {
         super.onBindDialogView(view);
         editTextPass1 = view.findViewById(R.id.password1);
         editTextPass2 = view.findViewById(R.id.password2);
