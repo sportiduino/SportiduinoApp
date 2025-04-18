@@ -141,23 +141,34 @@ public class Config {
         };
     }
 
+    public static String getStationNameFromCode(int code) {
+        String name = "";
+
+        switch (code) {
+            case START_STATION:
+                name = App.str(R.string.config_start);
+                break;
+            case FINISH_STATION:
+                name = App.str(R.string.config_finish);
+                break;
+            case CHECK_STATION:
+                name = App.str(R.string.config_check);
+                break;
+            case CLEAR_STATION:
+                name = App.str(R.string.config_clear);
+                break;
+        }
+
+        return name;
+    }
+
     @NonNull
     @Override
     public String toString() {
-        String str = App.str(R.string.config_station_no) + String.format(" <b>%s</b>", stationCode);
-        switch (stationCode) {
-            case START_STATION:
-                str += " " + App.str(R.string.config_start);
-                break;
-            case FINISH_STATION:
-                str += " " + App.str(R.string.config_finish);
-                break;
-            case CHECK_STATION:
-                str += " " + App.str(R.string.config_check);
-                break;
-            case CLEAR_STATION:
-                str += " " + App.str(R.string.config_clear);
-                break;
+        String stationName = getStationNameFromCode(stationCode);
+        String str = "\t" + App.str(R.string.config_station_no) + String.format(" <b>%s</b>", stationCode);
+        if (!stationName.isEmpty()) {
+            str += " (" + stationName + ")";
         }
         str += "\n\t" + App.str(R.string.config_active_time) + " " + activeModeDuration.toString();
         str += "\n\t" + App.str(R.string.config_flags);

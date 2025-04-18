@@ -44,11 +44,11 @@
     <string name="battery_volts">%d%% (%.2f V)</string>
     <string name="battery_ok">OK</string>
     <string name="battery_low">Low</string>
-    <string name="config_station_no">\tStation No:</string>
-    <string name="config_start">(Start)</string>
-    <string name="config_finish">(Finish)</string>
-    <string name="config_check">(Check)</string>
-    <string name="config_clear">(Clear)</string>
+    <string name="config_station_no">Station No:</string>
+    <string name="config_start">Start</string>
+    <string name="config_finish">Finish</string>
+    <string name="config_check">Check</string>
+    <string name="config_clear">Clear</string>
     <string name="config_hour">h</string>
     <string name="config_always_active">always</string>
     <string name="config_never_active">never</string>
