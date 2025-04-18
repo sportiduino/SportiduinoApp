@@ -93,7 +93,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button_ntag_auth_key_reset"
+        android:id="@+id/ntag_auth_reset_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="1dp"

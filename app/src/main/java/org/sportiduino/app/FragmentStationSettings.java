@@ -152,16 +152,6 @@ public class FragmentStationSettings extends NfcFragment {
         binding.mpNewPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.mpNewPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
         binding.mpNewPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
-
-        binding.masterAuthPassword1.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
-        binding.masterAuthPassword2.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
-        binding.masterAuthPassword3.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
-        binding.masterAuthPassword4.setFilters(new InputFilter[]{new MinMaxFilter(0, 255)});
-
-        initCaretEndOnFocus(binding.masterAuthPassword1);
-        initCaretEndOnFocus(binding.masterAuthPassword2);
-        initCaretEndOnFocus(binding.masterAuthPassword3);
-        initCaretEndOnFocus(binding.masterAuthPassword4);
     }
 
     void setActiveNumberMasterCardView(View v) {
@@ -279,6 +269,8 @@ public class FragmentStationSettings extends NfcFragment {
         } else if (rbId == R.id.radio_button_master_auth_password) {
             cardType = CardType.MASTER_AUTH_PASSWORD;
             binding.layoutAuthPassword.setVisibility(View.VISIBLE);
+            NtagAuthKey authKey = NtagAuthKeyManager.getAuthKey(requireActivity());
+            binding.masterAuthPassword.setText(authKey.toString());
         } else if (rbId == R.id.radio_button_master_config) {
             cardType = CardType.MASTER_CONFIG;
             binding.layoutConfig.setVisibility(View.VISIBLE);
@@ -410,17 +402,8 @@ public class FragmentStationSettings extends NfcFragment {
             }
             masterCard.dataForWriting = MasterCard.packNewPassword(password);
         } else if (binding.radioButtonMasterAuthPassword.isChecked()) {
-            int[] password = new int[4];
-            try {
-                password[0] = Integer.parseInt(binding.masterAuthPassword1.getText().toString());
-                password[1] = Integer.parseInt(binding.masterAuthPassword2.getText().toString());
-                password[2] = Integer.parseInt(binding.masterAuthPassword3.getText().toString());
-                password[3] = Integer.parseInt(binding.masterAuthPassword4.getText().toString());
-            } catch (NumberFormatException e) {
-                binding.textViewNfcInfo.setText(R.string.insert_correct_password);
-                return null;
-            }
-            masterCard.dataForWriting = MasterCard.packAuthPassword(password);
+            NtagAuthKey authKey = NtagAuthKeyManager.getAuthKey(requireActivity());
+            masterCard.dataForWriting = MasterCard.packAuthPassword(authKey);
         } else if (binding.radioButtonMasterConfig.isChecked()) {
             Config config = new Config();
             config.stationCode = 0;  // if 0 don't change code of station

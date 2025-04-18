@@ -5,6 +5,7 @@ import static org.sportiduino.app.sportiduino.Constants.*;
 import android.text.Html;
 
 import org.sportiduino.app.App;
+import org.sportiduino.app.NtagAuthKey;
 import org.sportiduino.app.Password;
 import org.sportiduino.app.R;
 
@@ -110,9 +111,9 @@ public class MasterCard extends Card {
         };
     }
 
-    public static byte[][] packAuthPassword(int[] password) {
+    public static byte[][] packAuthPassword(NtagAuthKey authKey) {
         return new byte[][] {
-            {(byte) password[3], (byte) password[2], (byte) password[1], (byte) password[0]}
+            {(byte) authKey.getValue(3), (byte) authKey.getValue(2), (byte) authKey.getValue(1), (byte) authKey.getValue(0)}
         };
     }
 

@@ -193,7 +193,6 @@
                     android:textAlignment="center"
                     android:importantForAutofill="no"
                     tools:ignore="TextFields" />
-                    <!--android:minHeight = "48dp"-->
 
                 <TextView
                     android:layout_width="wrap_content"
@@ -243,72 +242,11 @@
                 android:orientation="horizontal"
                 android:background="@drawable/border"
                 android:visibility="gone">
-
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/auth_password"/>
-
-                <EditText
-                    android:id="@+id/master_auth_password1"
-                    android:inputType="number"
-                    android:text="255"
-                    android:layout_width="50dp"
-                    android:layout_margin="2dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password_separator" />
-
-                <EditText
-                    android:id="@+id/master_auth_password2"
-                    android:inputType="number"
-                    android:text="255"
-                    android:layout_width="50dp"
-                    android:layout_margin="2dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password_separator" />
-
-                <EditText
-                    android:id="@+id/master_auth_password3"
-                    android:inputType="number"
-                    android:text="255"
-                    android:layout_width="50dp"
-                    android:layout_margin="2dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/password_separator" />
-
-                <EditText
-                    android:id="@+id/master_auth_password4"
-                    android:inputType="number"
-                    android:text="255"
-                    android:layout_width="50dp"
-                    android:layout_margin="2dp"
-                    android:layout_height="wrap_content"
-                    android:textAlignment="center"
-                    android:importantForAutofill="no"
-                    tools:ignore="TextFields" />
+                    android:id="@+id/master_auth_password" />
             </LinearLayout>
-
 
             <RadioButton
                 android:id="@+id/radio_button_master_config"
