@@ -91,7 +91,7 @@ public class ParticipantCard extends Card {
 
         String formattedStr = str.toString().replace("%d", String.valueOf(recordCount));
 
-        return Html.fromHtml(formattedStr, Html.FROM_HTML_MODE_LEGACY);
+        return Html.fromHtml(formattedStr);
     }
 
     @Override
