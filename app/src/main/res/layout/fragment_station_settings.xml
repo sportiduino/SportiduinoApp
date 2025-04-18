@@ -59,12 +59,13 @@
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="@string/station_no"/>
+                        android:text="@string/station_no"
+                        android:labelFor="@+id/edit_text_station_number"/>
 
                     <EditText
                         android:id="@+id/edit_text_station_number"
                         android:inputType="number"
-                        android:text="1"
+                        android:text="@string/number_1"
                         android:layout_width="100dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
@@ -186,7 +187,7 @@
                 <EditText
                     android:id="@+id/mp_new_password1"
                     android:inputType="number"
-                    android:text="0"
+                    android:text="@string/number_0"
                     android:layout_width="50dp"
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
@@ -202,7 +203,7 @@
                 <EditText
                     android:id="@+id/mp_new_password2"
                     android:inputType="number"
-                    android:text="0"
+                    android:text="@string/number_0"
                     android:layout_width="50dp"
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
@@ -218,7 +219,7 @@
                 <EditText
                     android:id="@+id/mp_new_password3"
                     android:inputType="number"
-                    android:text="0"
+                    android:text="@string/number_0"
                     android:layout_width="50dp"
                     android:layout_margin="2dp"
                     android:layout_height="wrap_content"
@@ -336,14 +337,13 @@
                     <EditText
                         android:id="@+id/new_password1"
                         android:inputType="number"
-                        android:text="0"
+                        android:text="@string/number_0"
                         android:layout_width="50dp"
                         android:layout_margin="2dp"
                         android:layout_height="wrap_content"
                         android:textAlignment="center"
                         android:importantForAutofill="no"
                         tools:ignore="TextFields" />
-                        <!--android:minHeight = "48dp"-->
 
                     <TextView
                         android:layout_width="wrap_content"
@@ -353,7 +353,7 @@
                     <EditText
                         android:id="@+id/new_password2"
                         android:inputType="number"
-                        android:text="0"
+                        android:text="@string/number_0"
                         android:layout_width="50dp"
                         android:layout_margin="2dp"
                         android:layout_height="wrap_content"
@@ -369,7 +369,7 @@
                     <EditText
                         android:id="@+id/new_password3"
                         android:inputType="number"
-                        android:text="0"
+                        android:text="@string/number_0"
                         android:layout_width="50dp"
                         android:layout_margin="2dp"
                         android:layout_height="wrap_content"

@@ -8,8 +8,6 @@
     android:orientation="vertical">
 
     <LinearLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:padding="8dp"
@@ -18,17 +16,17 @@
         <EditText
             android:id="@+id/ntag_auth_key1"
             android:inputType="number"
-            android:text="255"
+            android:text="@string/number_255"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:minHeight = "48dp"
+            android:minHeight="48dp"
             android:textAlignment="center"
             android:importantForAutofill="no"
-            tools:ignore="TextFields" />
+            tools:ignore="LabelFor,TextFields" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -38,17 +36,17 @@
         <EditText
             android:id="@+id/ntag_auth_key2"
             android:inputType="number"
-            android:text="255"
+            android:text="@string/number_255"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginEnd="8dp"
             android:layout_width="50dp"
             android:layout_height="wrap_content"
-            android:minHeight = "48dp"
+            android:minHeight="48dp"
             android:textAlignment="center"
             android:importantForAutofill="no"
-            tools:ignore="TextFields" />
+            tools:ignore="LabelFor,TextFields" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -58,7 +56,7 @@
         <EditText
             android:id="@+id/ntag_auth_key3"
             android:inputType="number"
-            android:text="255"
+            android:text="@string/number_255"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
@@ -68,7 +66,7 @@
             android:minHeight="48dp"
             android:textAlignment="center"
             android:importantForAutofill="no"
-            tools:ignore="TextFields" />
+            tools:ignore="LabelFor,TextFields" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -78,7 +76,7 @@
         <EditText
             android:id="@+id/ntag_auth_key4"
             android:inputType="number"
-            android:text="255"
+            android:text="@string/number_255"
             android:layout_marginStart="8dp"
             android:layout_marginLeft="8dp"
             android:layout_marginEnd="8dp"
@@ -88,14 +86,14 @@
             android:minHeight="48dp"
             android:textAlignment="center"
             android:importantForAutofill="no"
-            tools:ignore="TextFields" />
+            tools:ignore="LabelFor,TextFields" />
 
     </LinearLayout>
 
     <Button
         android:id="@+id/ntag_auth_reset_button"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:layout_margin="1dp"
         android:layout_weight="1"
         android:backgroundTint="@drawable/button"
