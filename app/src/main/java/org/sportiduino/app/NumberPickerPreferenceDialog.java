@@ -5,19 +5,17 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.preference.PreferenceDialogFragmentCompat;
 
-public class NumberPickerPreferenceDialogFragmentCompat extends PreferenceDialogFragmentCompat {
+public class NumberPickerPreferenceDialog extends PreferenceDialogFragmentCompat {
 
     private NumberPicker picker;
 
-    public static NumberPickerPreferenceDialogFragmentCompat newInstance(String key) {
-        final NumberPickerPreferenceDialogFragmentCompat fragment = new NumberPickerPreferenceDialogFragmentCompat();
+    public static NumberPickerPreferenceDialog newInstance(String key) {
+        final NumberPickerPreferenceDialog fragment = new NumberPickerPreferenceDialog();
         final Bundle b = new Bundle(1);
         b.putString(ARG_KEY, key);
         fragment.setArguments(b);
