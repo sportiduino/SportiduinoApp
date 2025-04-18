@@ -76,7 +76,7 @@
         NTAG213/215/216, Mifare Classic 1K/4K supported.
     </string>
     <string name="github_title">Github</string>
-    <string name="about_copyleft">Copyleft © 2022 — 2024 Semyon Yakimov</string>
+    <string name="about_copyleft">Copyleft © 2022 — 2025 Semyon Yakimov</string>
     <string name="about_license"><a href="https://www.gnu.org/licenses/gpl-3.0.html">GPLv3 License</a></string>
     <string name="beep">Beep</string>
     <string name="new_password">New password</string>
