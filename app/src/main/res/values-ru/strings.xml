@@ -44,11 +44,11 @@
     <string name="battery_volts">%d%% (%.2f В)</string>
     <string name="battery_ok">OK</string>
     <string name="battery_low">Разряжена</string>
-    <string name="config_station_no">\tСтанция №:</string>
-    <string name="config_start"> (Старт)</string>
-    <string name="config_finish"> (Финиш)</string>
-    <string name="config_check"> (Проверка)</string>
-    <string name="config_clear"> (Очистка)</string>
+    <string name="config_station_no">Станция №:</string>
+    <string name="config_start">Старт</string>
+    <string name="config_finish">Финиш</string>
+    <string name="config_check">Проверка</string>
+    <string name="config_clear">Очистка</string>
     <string name="config_hour">ч</string>
     <string name="config_always_active">всегда</string>
     <string name="config_never_active">никогда</string>

@@ -1,5 +1,6 @@
 package org.sportiduino.app.sportiduino;
 
+import static org.sportiduino.app.sportiduino.Config.getStationNameFromCode;
 import static org.sportiduino.app.sportiduino.Constants.*;
 
 import android.text.Html;
@@ -42,7 +43,7 @@ public class MasterCard extends Card {
             case MASTER_SET_TIME:
                 return App.str(R.string.time_master_card);
             case MASTER_SET_NUMBER:
-                return App.str(R.string.number_master_card);
+                return App.str(R.string.number_master_card) + "\n" + parseStationNumber(data);
             case MASTER_GET_STATE:
                 State state = new State(data);
                 return Html.fromHtml((App.str(R.string.state_master_card) + "\n" + state.toString()).replace("\n", "<br/>"));
@@ -127,6 +128,17 @@ public class MasterCard extends Card {
         Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
         c.set(year, month - 1, day, hour, minute, second);
         return App.str(R.string.wakeup_time_) + " " + Util.dhmformat.format(new Date(c.getTimeInMillis()));
+    }
+
+    public String parseStationNumber(byte[][] data) {
+        int code = data[0][0] & 0xff;
+        String name = getStationNameFromCode(code);
+        StringBuilder sb = new StringBuilder(App.str(R.string.config_station_no));
+        sb.append(" ").append(code);
+        if (!name.isEmpty()) {
+            sb.append(" (").append(name).append(")");
+        }
+        return sb.toString();
     }
 
     private String parseBackupMaster(byte[][] data) {
