@@ -27,7 +27,8 @@
             style="@style/TextViewAbout"
             android:textStyle="bold"
             android:text="Version"
-            android:textSize="@dimen/text_size_large"/>
+            android:textSize="@dimen/text_size_large"
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/text_view_description"
