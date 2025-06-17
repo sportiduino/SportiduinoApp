@@ -1,5 +1,12 @@
 # SportiduinoApp Changelog
 
+## v1.6
+
+* Ntag authentication support (BS FW >= v3.11.0)
+* Small improvements
+
+[All changes](https://github.com/sportiduino/sportiduinoapp/compare/v1.5.1...v1.6)
+
 ## v1.5.1
 
 * Bug fixes and small improvements
