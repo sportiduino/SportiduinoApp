@@ -2,6 +2,7 @@ package org.sportiduino.app;
 
 import android.app.DatePickerDialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Paint;
 import android.nfc.Tag;
@@ -58,6 +59,16 @@ public class FragmentStationSettings extends NfcFragment {
     private View currentView;
     private int countdownTimer;
     private View activeNumberMasterCardView;
+    private Context appContext;
+
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+
+        if (appContext == null) {
+            appContext = context.getApplicationContext();
+        }
+    }
 
     @Override
     public void onStop() {
@@ -219,7 +230,8 @@ public class FragmentStationSettings extends NfcFragment {
     }
 
     private void updateCountdownTimerFromSharedPreferences(SharedPreferences sharedPreferences) {
-        countdownTimer = sharedPreferences.getInt("countdown_timer", getResources().getInteger(R.integer.countdown_timer_default));
+        int defaultValue = appContext.getResources().getInteger(R.integer.countdown_timer_default);
+        this.countdownTimer = sharedPreferences.getInt("countdown_timer", defaultValue);
     }
 
     private void updateWakeupTime() {
