@@ -100,4 +100,6 @@
     <string name="number_255" translatable="false">255</string>
     <string name="number_1" translatable="false">1</string>
     <string name="number_0" translatable="false">0</string>
+    <string name="card_data_url">URL for sending card data</string>
+    <string name="not_specify">not specify</string>
 </resources>
