@@ -39,7 +39,8 @@ public class FragmentWriteCard extends NfcFragment {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.currentView = view;
+
+        currentView = view;
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
 

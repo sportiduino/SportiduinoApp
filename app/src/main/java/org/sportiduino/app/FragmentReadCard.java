@@ -10,7 +10,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
-
 import org.sportiduino.app.databinding.FragmentReadCardBinding;
 import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardAdapter;
@@ -19,7 +18,7 @@ import org.sportiduino.app.sportiduino.CardMifareUltralight;
 import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
-public class FragmentReadCard extends NfcFragment implements IntentReceiver {
+public class FragmentReadCard extends NfcFragment {
     private FragmentReadCardBinding binding;
     private View currentView;
 
@@ -35,7 +34,8 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.currentView = view;
+
+        currentView = view;
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
     }
