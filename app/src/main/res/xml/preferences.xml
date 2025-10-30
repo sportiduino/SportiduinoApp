@@ -19,6 +19,12 @@
         android:defaultValue="2"
         />
 
+    <org.sportiduino.app.CardDataUrlPreference
+        android:key="card_data_url"
+        android:title="@string/card_data_url"
+        android:summary="" />
+
+
     <SwitchPreferenceCompat
         android:key="night_mode"
         android:defaultValue="false"

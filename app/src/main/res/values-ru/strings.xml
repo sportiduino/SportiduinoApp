@@ -95,4 +95,6 @@
     <string name="ntag_read_protection">Защита от чтения</string>
     <string name="ntag_auth_key">Ключ защиты Ntag</string>
     <string name="button_ntag_auth_key_reset">Сбросить</string>
+    <string name="card_data_url">URL-адрес для отправки данных прочитанных с чипа</string>
+    <string name="not_specify">не установлено</string>
 </resources>

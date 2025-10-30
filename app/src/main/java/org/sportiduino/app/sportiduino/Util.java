@@ -9,6 +9,8 @@ import androidx.core.content.ContextCompat;
 import org.sportiduino.app.App;
 import org.sportiduino.app.R;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.nio.ByteBuffer;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
