@@ -390,6 +390,11 @@
         </RadioGroup>
 
         <TextView
+            android:id="@+id/text_view_nfc"
+            style="@style/TextViewNfcInfo"
+            android:text="@string/turn_nfc_on"/>
+
+        <TextView
             android:id="@+id/text_view_nfc_info"
             style="@style/TextViewNfcInfo"/>
 

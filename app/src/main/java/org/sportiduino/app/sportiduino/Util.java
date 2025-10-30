@@ -1,5 +1,6 @@
 package org.sportiduino.app.sportiduino;
 
+import android.nfc.NfcAdapter;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.BackgroundColorSpan;
@@ -17,6 +18,12 @@ import java.util.Calendar;
 import static org.sportiduino.app.sportiduino.Constants.OPERATED_YEAR_MIN;
 
 public class Util {
+    public static boolean isNfcEnabled(View view) {
+        NfcAdapter adapter = NfcAdapter.getDefaultAdapter(view.getContext());
+
+        return adapter != null && adapter.isEnabled();
+    }
+
     public static SimpleDateFormat dformat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     public static SimpleDateFormat dhmformat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 
