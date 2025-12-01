@@ -26,7 +26,7 @@
     <string name="button_start">Старт</string>
     <string name="button_finish">Финиш</string>
     <string name="button_clear">Очистка</string>
-    <string name="button_check">Пров-ка</string>
+    <string name="button_check">Проверка</string>
     <string name="reading_card_dont_remove_it">Чтение чипа, не убирайте его!</string>
     <string name="card_read_successfully">Чип прочитан</string>
     <string name="reading_card_failed">Чтение чипа не удалось!</string>
@@ -96,4 +96,6 @@
     <string name="ntag_read_protection">Защита от чтения</string>
     <string name="ntag_auth_key">Ключ защиты Ntag</string>
     <string name="button_ntag_auth_key_reset">Сбросить</string>
+    <string name="card_data_url">URL-адрес для отправки данных прочитанных с чипа</string>
+    <string name="not_specify">не установлено</string>
 </resources>
