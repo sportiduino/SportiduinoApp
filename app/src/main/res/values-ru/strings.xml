@@ -25,7 +25,7 @@
     <string name="button_start">Старт</string>
     <string name="button_finish">Финиш</string>
     <string name="button_clear">Очистка</string>
-    <string name="button_check">Пров-ка</string>
+    <string name="button_check">Проверка</string>
     <string name="reading_card_dont_remove_it">Чтение чипа, не убирайте его!</string>
     <string name="card_read_successfully">Чип прочитан</string>
     <string name="reading_card_failed">Чтение чипа не удалось!</string>

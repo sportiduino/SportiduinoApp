@@ -86,17 +86,21 @@
                         android:layout_margin="1dp"
                         android:textSize="@dimen/text_size_small"
                         android:text="@string/button_start"
-                        android:backgroundTint="@drawable/button" />
+                        android:backgroundTint="@drawable/button"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
 
                     <Button
                         android:id="@+id/button_finish"
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
-                        android:layout_margin="1dp"
                         android:layout_weight="1"
+                        android:layout_margin="1dp"
                         android:text="@string/button_finish"
                         android:textSize="@dimen/text_size_small"
-                        android:backgroundTint="@drawable/button" />
+                        android:backgroundTint="@drawable/button"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
 
                     <Button
                         android:id="@+id/button_check"
@@ -106,7 +110,9 @@
                         android:layout_margin="1dp"
                         android:text="@string/button_check"
                         android:textSize="@dimen/text_size_small"
-                        android:backgroundTint="@drawable/button" />
+                        android:backgroundTint="@drawable/button"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
 
                     <Button
                         android:id="@+id/button_clear"
@@ -116,7 +122,9 @@
                         android:layout_margin="1dp"
                         android:text="@string/button_clear"
                         android:textSize="@dimen/text_size_small"
-                        android:backgroundTint="@drawable/button" />
+                        android:backgroundTint="@drawable/button"
+                        android:singleLine="true"
+                        android:ellipsize="end" />
                 </LinearLayout>
             </LinearLayout>
 
