@@ -9,6 +9,7 @@
     <string name="settings_label">Настройки</string>
     <string name="password">Пароль</string>
     <string name="fragment_station_settings_label">Станция</string>
+    <string name="turn_nfc_on">Включите NFC</string>
     <string name="bring_card">Приложите чип…</string>
     <string name="tag_id_s">ID метки: %s</string>
     <string name="tag_type_s">Тип: %s</string>

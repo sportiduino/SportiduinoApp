@@ -26,7 +26,7 @@ import java.util.Objects;
 import java.util.LinkedList;
 import java.util.List;
 
-public class FragmentReadCard extends NfcFragment implements IntentReceiver {
+public class FragmentReadCard extends NfcFragment {
     private FragmentReadCardBinding binding;
     private View currentView;
     private String cardDataUrl;
@@ -43,7 +43,8 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        this.currentView = view;
+
+        currentView = view;
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext()));
         this.cardDataUrl = sharedPref.getString("card_data_url", "null");

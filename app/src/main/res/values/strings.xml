@@ -9,6 +9,7 @@
     <string name="settings_label">Settings</string>
     <string name="password">Password</string>
     <string name="fragment_station_settings_label">Station</string>
+    <string name="turn_nfc_on">Turn on NFC</string>
     <string name="bring_card">Bring card…</string>
     <string name="tag_id_s">Tag ID: %s</string>
     <string name="tag_type_s">Tag type: %s</string>
