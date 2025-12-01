@@ -19,6 +19,9 @@ import org.sportiduino.app.sportiduino.CardMifareUltralight;
 import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
+import java.util.LinkedList;
+import java.util.List;
+
 public class FragmentReadCard extends NfcFragment implements IntentReceiver {
     private FragmentReadCardBinding binding;
     private View currentView;
@@ -42,12 +45,12 @@ public class FragmentReadCard extends NfcFragment implements IntentReceiver {
 
     @Override
     public void onNewTagDetected(Tag tag) {
-        StringBuilder tagInfo = new StringBuilder();
+        List<String> strings = new LinkedList<>();
         byte[] tagId = tag.getId();
         for (byte b : tagId) {
-            tagInfo.append(Integer.toHexString(b & 0xFF)).append(" ");
+            strings.add(String.format("%02x", b));
         }
-        String tagIdStr = tagInfo.toString();
+        String tagIdStr = String.join(":", strings);
         binding.textViewTagId.setText(String.format(getString(R.string.tag_id_s), tagIdStr));
         binding.layoutTagInfo.setVisibility(View.VISIBLE);
 
