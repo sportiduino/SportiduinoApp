@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <color name="background">@android:color/background_dark</color>
     <color name="primary">#999999</color>
     <color name="secondary">#980b0b</color>
     <color name="error_text_bg">@color/red</color>

@@ -294,7 +294,6 @@ public class FragmentStationSettings extends NfcFragment {
         } else {
             cardType = CardType.UNKNOWN;
         }
-        binding.scrollView.post(() -> binding.scrollView.fullScroll(View.FOCUS_DOWN));
     }
 
     TextWatcher editTextStationNumberTextChangedLister = new TextWatcher() {
@@ -456,15 +455,19 @@ public class FragmentStationSettings extends NfcFragment {
         public void run() {
             requireActivity().runOnUiThread(() -> {
                 String timerStr = String.valueOf(timerCount);
-                if (timerCount == 0) {
-                    timerStr = getString(R.string.beep);
-                } else if (timerCount < 0) {
-                    timerStr = "";
+                if (timerCount < 0) {
                     timer.cancel();
                     timer = null;
+                    binding.textViewTimer.setVisibility(View.GONE);
+                    binding.textViewTimer.setText("");
+                } else {
+                    if (timerCount == 0) {
+                        timerStr = getString(R.string.beep);
+                    }
+                    binding.textViewTimer.setText(timerStr);
+                    binding.textViewTimer.setVisibility(View.VISIBLE);
+                    --timerCount;
                 }
-                binding.textViewTimer.setText(timerStr);
-                --timerCount;
             });
         }
 	}
