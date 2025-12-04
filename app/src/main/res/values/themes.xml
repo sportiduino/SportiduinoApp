@@ -14,12 +14,27 @@
     <style name="Theme.SportiduinoApp.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="TextViewNfcInfo">
-        <item name="android:padding">5dp</item>
-        <item name="android:layout_marginTop">5dp</item>
-        <item name="android:layout_marginBottom">5dp</item>
+        <item name="android:padding">16dp</item>
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">wrap_content</item>
         <item name="android:textAlignment">center</item>
+        <item name="android:layout_alignParentBottom">true</item>
+        <item name="android:background">@color/background</item>
+    </style>
+
+    <style name="TextViewTimer">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textAlignment">center</item>
+        <item name="android:textSize">@dimen/text_size_timer</item>
+        <item name="android:layout_centerInParent">true</item>
+    </style>
+
+    <style name="ProgressBar">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:layout_centerInParent">true</item>
+        <item name="android:indeterminate">true</item>
     </style>
 
     <style name="TextViewAbout">
@@ -28,5 +43,12 @@
         <item name="android:textAlignment">center</item>
         <item name="android:layout_margin">10dp</item>
         <item name="android:gravity">center</item>
+    </style>
+
+    <style name="ScrollView">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">match_parent</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:layout_marginBottom">40dp</item>
     </style>
 </resources>
