@@ -6,6 +6,8 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Html;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,9 +21,11 @@ import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardAdapter;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
+import org.sportiduino.app.sportiduino.CardType;
 import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.LinkedList;
 import java.util.List;
@@ -30,6 +34,7 @@ public class FragmentReadCard extends NfcFragment {
     private FragmentReadCardBinding binding;
     private View currentView;
     private String cardDataUrl;
+    private CourseValidator courseValidator;
 
     @Override
     public View onCreateView(
@@ -48,6 +53,9 @@ public class FragmentReadCard extends NfcFragment {
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext()));
         this.cardDataUrl = sharedPref.getString("card_data_url", "null");
+
+        String cardDataCourseValidation = sharedPref.getString("card_course_validation", "null");
+        this.courseValidator = new CourseValidator(cardDataCourseValidation);
 
         binding.textViewNfcInfo.setText(R.string.bring_card);
     }
@@ -91,6 +99,7 @@ public class FragmentReadCard extends NfcFragment {
         @Override
         protected void onPreExecute() {
             binding.textViewTagType.setText("");
+            binding.textViewCourseValidationInfo.setVisibility(View.GONE);
             binding.textViewInfo.setVisibility(View.GONE);
             binding.textViewInfo.setText("");
             binding.textViewNfcInfo.setText(R.string.reading_card_dont_remove_it);
@@ -112,6 +121,42 @@ public class FragmentReadCard extends NfcFragment {
                 cardAdapter.close();
             }
             return status;
+        }
+
+        private void handleCourseValidation(CharSequence data) {
+            if (courseValidator.getType() == Course.CourseType.UNKNOWN) {
+                binding.textViewCourseValidationInfo.setVisibility(View.GONE);
+
+                return;
+            }
+
+            courseValidator.parse(data.toString());
+
+            Boolean isCourseValid = courseValidator.isValid();
+
+            String validationText = App.str(isCourseValid ? R.string.course_validation_success : R.string.course_validation_failure);
+            Integer validationColor = isCourseValid ? R.color.green : R.color.red;
+
+            String validationInfo = App.str(R.string.course_validation) +
+                    ": " + Util.coloredHtmlString(validationText, Util.colorToHexCode(validationColor));
+
+            validationInfo += " (";
+
+            validationInfo += courseValidator.getScore() + " points scored";
+
+            if (!isCourseValid) {
+                ArrayList<Integer> missedCoursePoints = courseValidator.getMissedCoursePoints();
+
+                if (!missedCoursePoints.isEmpty()) {
+                    validationInfo += ", missed point" + (missedCoursePoints.size() > 1 ? "s" : "") +
+                            " " + TextUtils.join(", ", missedCoursePoints);
+                }
+            }
+
+            validationInfo += ")";
+
+            binding.textViewCourseValidationInfo.setText(Html.fromHtml(validationInfo));
+            binding.textViewCourseValidationInfo.setVisibility(View.VISIBLE);
         }
 
         private void handleCardDataUrl(CharSequence data) {
@@ -143,7 +188,10 @@ public class FragmentReadCard extends NfcFragment {
                 binding.textViewInfo.setText(data);
                 binding.textViewNfcInfo.setText(Util.ok(getString(R.string.card_read_successfully), currentView));
 
-                handleCardDataUrl(data);
+                if (card.type == CardType.ORDINARY) {
+                    handleCardDataUrl(data);
+                    handleCourseValidation(data);
+                }
             } else {
                 binding.textViewNfcInfo.setText(Util.error(getString(R.string.reading_card_failed), currentView));
             }

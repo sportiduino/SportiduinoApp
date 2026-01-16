@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/course_validation_type" />
+
+    <RadioGroup
+        android:id="@+id/course_validation_type"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/course_validation_type_unknown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/not_specified" />
+
+        <RadioButton
+            android:id="@+id/course_validation_type_orienteering"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_type_orienteering" />
+
+        <RadioButton
+            android:id="@+id/course_validation_type_rogaining"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_type_rogaining" />
+    </RadioGroup>
+
+    <LinearLayout
+        android:id="@+id/course_validation_points"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_points" />
+        <EditText
+            android:id="@+id/course_validation_points_text"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textMultiLine"
+            android:gravity="top"
+            android:minLines="1"
+            android:maxLines="10"
+            android:scrollbars="vertical"
+            android:text=""
+            android:autofillHints=""
+            android:hint="@string/course_validation_points_hint" />
+        <CheckBox
+            android:id="@+id/course_validation_points_strict_order"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_points_strict_order" />
+    </LinearLayout>
+</LinearLayout>
+

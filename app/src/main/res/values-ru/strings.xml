@@ -97,5 +97,14 @@
     <string name="ntag_auth_key">Ключ защиты Ntag</string>
     <string name="button_ntag_auth_key_reset">Сбросить</string>
     <string name="card_data_url">URL-адрес для отправки данных с чипа</string>
-    <string name="not_specify">не установлено</string>
+    <string name="not_specified">не установлено</string>
+    <string name="course_validation">Проверка пути</string>
+    <string name="course_validation_success">пройдена</string>
+    <string name="course_validation_failure">провалена</string>
+    <string name="course_validation_type">Тип валидации</string>
+    <string name="course_validation_type_orienteering">ориентирование</string>
+    <string name="course_validation_type_rogaining">рогейн</string>
+    <string name="course_validation_points">Контрольные пункты</string>
+    <string name="course_validation_points_hint">список через запятую</string>
+    <string name="course_validation_points_strict_order">Строгий порядок</string>
 </resources>

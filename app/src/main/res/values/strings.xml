@@ -102,5 +102,14 @@
     <string name="number_1" translatable="false">1</string>
     <string name="number_0" translatable="false">0</string>
     <string name="card_data_url">URL for sending card data</string>
-    <string name="not_specify">not specify</string>
+    <string name="not_specified">not specified</string>
+    <string name="course_validation">Card course validation</string>
+    <string name="course_validation_success">success</string>
+    <string name="course_validation_failure">failure</string>
+    <string name="course_validation_type">Validation type</string>
+    <string name="course_validation_type_orienteering">orienteering</string>
+    <string name="course_validation_type_rogaining">rogaining</string>
+    <string name="course_validation_points">Control points</string>
+    <string name="course_validation_points_hint">comma-separated list</string>
+    <string name="course_validation_points_strict_order">Strict order</string>
 </resources>

@@ -24,6 +24,10 @@
         android:title="@string/card_data_url"
         android:summary="" />
 
+    <org.sportiduino.app.CardCourseValidationPreference
+        android:key="card_course_validation"
+        android:title="@string/course_validation"
+        android:summary="" />
 
     <SwitchPreferenceCompat
         android:key="night_mode"
