@@ -43,6 +43,8 @@ public class SettingsFragment extends PreferenceFragmentCompat  implements Prefe
             dialogFragment = NumberPickerPreferenceDialog.newInstance(preference.getKey());
         } else if (preference instanceof CardDataUrlPreference) {
             dialogFragment = CardDataUrlPreferenceDialog.newInstance(preference.getKey());
+        } else if (preference instanceof CardCourseValidationPreference) {
+            dialogFragment = CardCourseValidationPreferenceDialog.newInstance(preference.getKey());
         }
 
         // If it was one of our custom Preferences, show its dialog

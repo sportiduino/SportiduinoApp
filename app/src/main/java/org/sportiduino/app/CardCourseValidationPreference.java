@@ -5,9 +5,10 @@ import android.util.AttributeSet;
 
 import androidx.preference.DialogPreference;
 
-public class CardDataUrlPreference extends DialogPreference {
+import org.sportiduino.app.Course.CourseType;
 
-    public CardDataUrlPreference(Context context, AttributeSet attrs) {
+public class CardCourseValidationPreference extends DialogPreference {
+    public CardCourseValidationPreference(Context context, AttributeSet attrs) {
         super(context, attrs);
 
         setSummary(getPlaceholderValue());
@@ -20,11 +21,19 @@ public class CardDataUrlPreference extends DialogPreference {
     private String getValueOrPlaceholderValue() {
         String value = getValue();
 
-        if (value.isEmpty()) {
-            value = getPlaceholderValue();
+        if (value != null) {
+            String[] pairs = value.split(":");
+
+            String typeValue = pairs[0];
+
+            if (CourseType.valueOf(typeValue) == CourseType.UNKNOWN) {
+                return getPlaceholderValue();
+            }
+
+            return typeValue;
         }
 
-        return value;
+        return null;
     }
 
     public String getValue() {
@@ -41,7 +50,7 @@ public class CardDataUrlPreference extends DialogPreference {
 
     @Override
     public int getDialogLayoutResource() {
-        return R.layout.preference_card_data_url;
+        return R.layout.preference_card_course_validation;
     }
 
     @Override
