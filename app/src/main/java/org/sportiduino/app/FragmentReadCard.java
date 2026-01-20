@@ -34,7 +34,7 @@ public class FragmentReadCard extends NfcFragment {
     private FragmentReadCardBinding binding;
     private View currentView;
     private String cardDataUrl;
-    private CourseValidator courseValidator;
+    private String cardDataCourseValidation;
 
     @Override
     public View onCreateView(
@@ -51,13 +51,21 @@ public class FragmentReadCard extends NfcFragment {
 
         currentView = view;
 
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext()));
-        this.cardDataUrl = sharedPref.getString("card_data_url", "null");
-
-        String cardDataCourseValidation = sharedPref.getString("card_course_validation", "null");
-        this.courseValidator = new CourseValidator(cardDataCourseValidation);
-
         binding.textViewNfcInfo.setText(R.string.bring_card);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        initDataFromSharedPreferences();
+    }
+
+    private void initDataFromSharedPreferences() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(Objects.requireNonNull(getContext()));
+
+        cardDataUrl = sharedPref.getString("card_data_url", "null");
+        cardDataCourseValidation = sharedPref.getString("card_course_validation", "null");
     }
 
     @Override
@@ -124,6 +132,8 @@ public class FragmentReadCard extends NfcFragment {
         }
 
         private void handleCourseValidation(CharSequence data) {
+            CourseValidator courseValidator = new CourseValidator(cardDataCourseValidation);
+
             if (courseValidator.getType() == Course.CourseType.UNKNOWN) {
                 binding.textViewCourseValidationInfo.setVisibility(View.GONE);
 
