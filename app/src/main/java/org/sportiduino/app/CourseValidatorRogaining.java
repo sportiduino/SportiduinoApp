@@ -1,5 +1,7 @@
 package org.sportiduino.app;
 
+import org.sportiduino.app.sportiduino.Config;
+
 import java.util.ArrayList;
 
 public class CourseValidatorRogaining extends CourseValidatorBase {
@@ -17,6 +19,11 @@ public class CourseValidatorRogaining extends CourseValidatorBase {
         ArrayList<Integer> cardPoints = validator.getCardPoints();
 
         for (int cardPoint : cardPoints) {
+            // ignore start and finish points
+            if (cardPoint == Config.START_STATION || cardPoint == Config.FINISH_STATION) {
+                continue;
+            }
+
             score += (int) Math.floor((double) cardPoint / 10);
         }
 
