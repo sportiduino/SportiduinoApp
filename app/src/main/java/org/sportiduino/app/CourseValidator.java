@@ -1,5 +1,8 @@
 package org.sportiduino.app;
 
+import static org.sportiduino.app.sportiduino.Config.FINISH_STATION;
+import static org.sportiduino.app.sportiduino.Config.START_STATION;
+
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -60,8 +63,9 @@ public class CourseValidator {
     private ArrayList<Integer> parsePoints(String cardData) {
         // 33 - 2025-04-01 10:44:12
         // 42 - 2025-04-01 10:59:40
+        // Finish - 2025-04-01 11:41:55
 
-        String regex = "(\\d+)\\s+?-\\s+?(\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d)";
+        String regex = "(\\d+|Start|Finish)\\s+?-\\s+?(\\d\\d\\d\\d-\\d\\d-\\d\\d \\d\\d:\\d\\d:\\d\\d)";
         Pattern pattern = Pattern.compile(regex, Pattern.MULTILINE);
 
         Matcher matcher = pattern.matcher(cardData);
@@ -69,7 +73,20 @@ public class CourseValidator {
         ArrayList<Integer> points = new ArrayList<>();
 
         while (matcher.find()) {
-            points.add(Integer.valueOf(Objects.requireNonNull(matcher.group(1))));
+            String point = matcher.group(1);
+
+            if (Objects.equals(point, "Start")) {
+                points.add(START_STATION);
+                continue;
+            }
+
+            if (Objects.equals(point, "Finish")) {
+                points.add(FINISH_STATION);
+                continue;
+            }
+
+            assert point != null;
+            points.add(Integer.valueOf(point));
         }
 
         return points;

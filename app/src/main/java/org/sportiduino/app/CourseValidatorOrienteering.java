@@ -44,15 +44,7 @@ public class CourseValidatorOrienteering extends CourseValidatorBase {
             Collections.sort(cardPoints);
         }
 
-        int i = 0;
-
-        for (int j = 0; j < cardPoints.size() && i < coursePoints.size(); j++) {
-            if (cardPoints.get(j).equals(coursePoints.get(i))) {
-                i++;
-            }
-        }
-
-        return i == coursePoints.size();
+        return Arrays.equals(coursePoints.toArray(), cardPoints.toArray());
     }
 
     public Boolean isValid() {
