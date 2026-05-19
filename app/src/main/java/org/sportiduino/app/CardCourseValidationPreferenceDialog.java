@@ -1,5 +1,9 @@
 package org.sportiduino.app;
 
+import static org.sportiduino.app.sportiduino.Constants.COLON;
+import static org.sportiduino.app.sportiduino.Util.decodeColon;
+import static org.sportiduino.app.sportiduino.Util.encodeColon;
+
 import android.content.Context;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,14 +26,22 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
     private static final String SAVE_STATE_TEXT = "CardCourseValidationPreferenceDialogFragment.text";
     private CourseType cardCourseValidationType = CourseType.UNKNOWN;
 
+    private final String delimiter = COLON;
+
     private String cardCoursePoints;
     private String cardCoursePointsStrictOrder;
+    private String cardCourseStartTime;
+    private String cardCourseDuration;
+    private String cardCoursePenalty;
 
     private ArrayList<RadioButton> radioButtons;
 
     private LinearLayout courseValidationPoints;
+    private LinearLayout courseValidationTiming;
     private TextView courseValidationPointsText;
-
+    private TextView courseValidationStartTime;
+    private TextView courseValidationDuration;
+    private TextView courseValidationPenalty;
     private CheckBox courseValidationPointsStrictOrder;
 
     public static CardCourseValidationPreferenceDialog newInstance(String key) {
@@ -60,18 +72,30 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
         CardCourseValidationPreference preference = getCardCourseValidationPreference();
 
         if (preference.getValue() != null) {
-            String[] pairs = preference.getValue().split(":");
+            String[] pairs = preference.getValue().split(delimiter);
 
             if (pairs.length > 0) {
                 cardCourseValidationType = CourseType.valueOf(pairs[0]);
             }
 
             if (pairs.length > 1) {
-                cardCoursePoints = pairs[1];
+                cardCoursePoints = decodeColon(pairs[1]);
             }
 
             if (pairs.length > 2) {
                 cardCoursePointsStrictOrder = pairs[2];
+            }
+
+            if (pairs.length > 3) {
+                cardCourseStartTime = decodeColon(pairs[3]);
+            }
+
+            if (pairs.length > 4) {
+                cardCourseDuration = pairs[4];
+            }
+
+            if (pairs.length > 5) {
+                cardCoursePenalty = pairs[5];
             }
 
             for (int i = 0; i < radioButtons.size(); ++i) {
@@ -81,7 +105,7 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
                 }
             }
 
-            processPoints();
+            processLayout();
         }
     }
 
@@ -89,7 +113,7 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
         RadioButton radioButton = (RadioButton) view;
         radioButtonChecked(radioButton);
 
-        processPoints();
+        processLayout();
     };
 
     private void radioButtonChecked(RadioButton radioButton) {
@@ -104,15 +128,24 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
         }
     }
 
-    private void processPoints() {
+    private void processLayout() {
         if (cardCourseValidationType == CourseType.ORIENTEERING) {
             courseValidationPoints.setVisibility(View.VISIBLE);
+            courseValidationTiming.setVisibility(View.GONE);
+        } else if (cardCourseValidationType == CourseType.ROGAINING) {
+            courseValidationPoints.setVisibility(View.GONE);
+            courseValidationTiming.setVisibility(View.VISIBLE);
         } else {
             courseValidationPoints.setVisibility(View.GONE);
+            courseValidationTiming.setVisibility(View.GONE);
         }
 
         courseValidationPointsText.setText(cardCoursePoints);
         courseValidationPointsStrictOrder.setChecked(Objects.equals(cardCoursePointsStrictOrder, "1"));
+
+        courseValidationStartTime.setText(cardCourseStartTime);
+        courseValidationDuration.setText(cardCourseDuration);
+        courseValidationPenalty.setText(cardCoursePenalty);
     }
 
     @Nullable
@@ -128,6 +161,10 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
         courseValidationPoints = view.findViewById(R.id.course_validation_points);
         courseValidationPointsText = view.findViewById(R.id.course_validation_points_text);
         courseValidationPointsStrictOrder = view.findViewById(R.id.course_validation_points_strict_order);
+        courseValidationTiming = view.findViewById(R.id.course_validation_timing);
+        courseValidationStartTime = view.findViewById(R.id.course_validation_start_time);
+        courseValidationDuration = view.findViewById(R.id.course_validation_duration);
+        courseValidationPenalty = view.findViewById(R.id.course_validation_penalty);
 
         radioButtons = new ArrayList<>();
 
@@ -148,10 +185,14 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
             String type = cardCourseValidationType.toString();
             String points = courseValidationPointsText.getText().toString();
             String strictOrder = courseValidationPointsStrictOrder.isChecked() ? "1" : "0";
+            String startTime = courseValidationStartTime.getText().toString();
+            String duration = courseValidationDuration.getText().toString();
+            String penalty = courseValidationPenalty.getText().toString();
 
             CardCourseValidationPreference preference = getCardCourseValidationPreference();
 
-            String newValue = type + ":" + points + ":" + strictOrder;
+            String newValue = type + delimiter + encodeColon(points) + delimiter + strictOrder + delimiter +
+                    encodeColon(startTime) + delimiter + duration + delimiter + penalty;
 
             if (preference.callChangeListener(newValue)) {
                 preference.setValue(newValue);

@@ -107,4 +107,8 @@
     <string name="course_validation_points">Контрольные пункты</string>
     <string name="course_validation_points_hint">список через запятую</string>
     <string name="course_validation_points_strict_order">Строгий порядок</string>
+    <string name="course_validation_start_time">Время старта</string>
+    <string name="course_validation_start_time_hint">чч:мм</string>
+    <string name="course_validation_duration">Продолжительность (мин)</string>
+    <string name="course_validation_penalty">Штрафное время (мин)</string>
 </resources>

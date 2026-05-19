@@ -18,6 +18,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 
 import static org.sportiduino.app.sportiduino.Constants.OPERATED_YEAR_MIN;
+import static org.sportiduino.app.sportiduino.Constants.COLON;
 
 public class Util {
     public static boolean isNfcEnabled(View view) {
@@ -111,6 +112,14 @@ public class Util {
         Calendar calendar = Calendar.getInstance();
 
         return calendar.get(Calendar.YEAR) >= OPERATED_YEAR_MIN;
+    }
+
+    public static String encodeColon(String value) {
+        return value.replaceAll(COLON, "__COLON__");
+    }
+
+    public static String decodeColon(String value) {
+        return value.replaceAll("__COLON__", COLON);
     }
 }
 
