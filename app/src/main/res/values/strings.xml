@@ -112,4 +112,8 @@
     <string name="course_validation_points">Control points</string>
     <string name="course_validation_points_hint">comma-separated list</string>
     <string name="course_validation_points_strict_order">Strict order</string>
+    <string name="course_validation_start_time">Start time</string>
+    <string name="course_validation_start_time_hint">hh:mm</string>
+    <string name="course_validation_duration">Duration (min)</string>
+    <string name="course_validation_penalty">Penalty (min)</string>
 </resources>

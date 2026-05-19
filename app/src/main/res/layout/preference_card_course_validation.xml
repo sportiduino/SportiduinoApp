@@ -63,5 +63,43 @@
             android:layout_height="wrap_content"
             android:text="@string/course_validation_points_strict_order" />
     </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/course_validation_timing"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:visibility="gone">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_start_time" />
+        <EditText
+            android:id="@+id/course_validation_start_time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="time"
+            android:hint="@string/course_validation_start_time_hint"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_duration"
+            android:layout_marginTop="28dp" />
+        <EditText
+            android:id="@+id/course_validation_duration"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/course_validation_penalty"
+            android:layout_marginTop="28dp" />
+        <EditText
+            android:id="@+id/course_validation_penalty"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:inputType="number" />
+    </LinearLayout>
 </LinearLayout>
 
