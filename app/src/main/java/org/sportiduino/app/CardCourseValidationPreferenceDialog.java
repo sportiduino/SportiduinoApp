@@ -79,7 +79,7 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
             }
 
             if (pairs.length > 1) {
-                cardCoursePoints = encodeColon(pairs[1]);
+                cardCoursePoints = decodeColon(pairs[1]);
             }
 
             if (pairs.length > 2) {
@@ -87,7 +87,7 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
             }
 
             if (pairs.length > 3) {
-                cardCourseStartTime = encodeColon(pairs[3]);
+                cardCourseStartTime = decodeColon(pairs[3]);
             }
 
             if (pairs.length > 4) {
@@ -191,8 +191,8 @@ public class CardCourseValidationPreferenceDialog extends PreferenceDialogFragme
 
             CardCourseValidationPreference preference = getCardCourseValidationPreference();
 
-            String newValue = type + delimiter + decodeColon(points) + delimiter + strictOrder + delimiter +
-                    decodeColon(startTime) + delimiter + duration + delimiter + penalty;
+            String newValue = type + delimiter + encodeColon(points) + delimiter + strictOrder + delimiter +
+                    encodeColon(startTime) + delimiter + duration + delimiter + penalty;
 
             if (preference.callChangeListener(newValue)) {
                 preference.setValue(newValue);

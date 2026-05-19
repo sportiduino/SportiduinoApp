@@ -114,12 +114,12 @@ public class Util {
         return calendar.get(Calendar.YEAR) >= OPERATED_YEAR_MIN;
     }
 
-    public static String decodeColon(String value) {
-        return value.replaceAll(COLON, "__COMMA__");
+    public static String encodeColon(String value) {
+        return value.replaceAll(COLON, "__COLON__");
     }
 
-    public static String encodeColon(String value) {
-        return value.replaceAll("__COMMA__", COLON);
+    public static String decodeColon(String value) {
+        return value.replaceAll("__COLON__", COLON);
     }
 }
 
