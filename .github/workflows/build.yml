@@ -14,15 +14,27 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
+
       - name: Set up JDK environment
-        uses: actions/setup-java@v2
+        uses: actions/setup-java@v4
         with:
           distribution: 'zulu'
-          java-version: 11
+          java-version: 17
           #cache: 'gradle'
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v4
+        with:
+          packages: 'platform-tools'
+
+      - name: Install Android Build Tools
+        run: |
+          sdkmanager --install "build-tools;30.0.2"
+
       - name: Build release APK
         run: |
           ./gradlew assembleRelease --no-daemon
+
       - name: Sign APK
         id: sign_app
         uses: r0adkll/sign-android-release@v1
@@ -35,6 +47,7 @@ jobs:
         env:
           # override default build-tools version (29.0.3) -- optional
           BUILD_TOOLS_VERSION: "30.0.2"
+
       - name: Rename APK
         id: rename_apk
         run: |
@@ -44,11 +57,13 @@ jobs:
           cp ${RELEASE_APK_PATH} ${ARTIFACT_APK_PATH}
           echo "RELEASE_APK_PATH=${RELEASE_APK_PATH}" >> $GITHUB_OUTPUT
           echo "ARTIFACT_APK_PATH=${ARTIFACT_APK_PATH}" >> $GITHUB_OUTPUT
+
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: SportiduinoApp
           path: ${{ steps.rename_apk.outputs.ARTIFACT_APK_PATH }}
+
       - name: Generate Changelog
         if: startsWith(github.ref, 'refs/tags/v')
         run: |
@@ -56,6 +71,7 @@ jobs:
           sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" CHANGELOG.md | sed -z "s/^\n*//g" - > ${{ github.workspace }}-CHANGELOG.txt
           printf "\n---\n" >> ${{ github.workspace }}-CHANGELOG.txt
           sed -n "/^##.*${{ github.ref_name }}$/,/^##/{/^##/d ; p}" CHANGELOG.ru.md | sed -z "s/^\n*//g" - >> ${{ github.workspace }}-CHANGELOG.txt
+
       - name: Create release
         uses: softprops/action-gh-release@v1
         if: startsWith(github.ref, 'refs/tags/v')
