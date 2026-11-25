@@ -15,6 +15,19 @@ import java.util.Date;
 import java.util.TimeZone;
 
 public class MasterCard extends Card {
+
+    public static class Data implements CardData {
+        public String description;
+
+        @Override
+        public CharSequence toCharSequence() {
+            return Html.fromHtml(
+                    description.replace("\n", "<br/>"),
+                    Html.FROM_HTML_MODE_LEGACY
+            );
+        }
+    }
+
     final private byte[] password;
     public byte[][] dataForWriting = null;
 
@@ -38,28 +51,40 @@ public class MasterCard extends Card {
     }
 
     @Override
-    public CharSequence parseData(byte[][] data) {
+    public Data parseData(byte[][] data) {
+        Data result = new Data();
+
         switch (type) {
             case MASTER_SET_TIME:
-                return App.str(R.string.time_master_card);
+                result.description = App.str(R.string.time_master_card);
+                break;
             case MASTER_SET_NUMBER:
-                return App.str(R.string.number_master_card) + "\n" + parseStationNumber(data);
+                result.description = App.str(R.string.number_master_card) + "\n" + parseStationNumber(data);
+                break;
             case MASTER_GET_STATE:
                 State state = new State(data);
-                return Html.fromHtml((App.str(R.string.state_master_card) + "\n" + state.toString()).replace("\n", "<br/>"));
+                result.description = App.str(R.string.state_master_card) + "\n" + state.toString();
+                break;
             case MASTER_SLEEP:
-                return App.str(R.string.sleep_master_card) + "\n" + parseWakeupTime(data);
+                result.description = App.str(R.string.sleep_master_card) + "\n" + parseWakeupTime(data);
+                break;
             case MASTER_READ_BACKUP:
-                return parseBackupMaster(data);
+                result.description = parseBackupMaster(data);
+                break;
             case MASTER_CONFIG:
-                return App.str(R.string.config_master_card);
+                result.description = App.str(R.string.config_master_card);
+                break;
             case MASTER_PASSWORD:
-                return App.str(R.string.password_master_card);
+                result.description = App.str(R.string.password_master_card);
+                break;
             case MASTER_AUTH_PASSWORD:
-                return App.str(R.string.auth_password_master_card);
+                result.description = App.str(R.string.auth_password_master_card);
+                break;
             default:
-                return App.str(R.string.unknown_card_type);
+                result.description = App.str(R.string.unknown_card_type);
+                break;
         }
+        return result;
     }
 
     @Override

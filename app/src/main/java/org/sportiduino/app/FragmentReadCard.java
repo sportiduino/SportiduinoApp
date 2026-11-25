@@ -6,6 +6,7 @@ import android.nfc.tech.MifareClassic;
 import android.nfc.tech.MifareUltralight;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,11 +18,14 @@ import org.json.JSONObject;
 import org.sportiduino.app.databinding.FragmentReadCardBinding;
 import org.sportiduino.app.sportiduino.Card;
 import org.sportiduino.app.sportiduino.CardAdapter;
+import org.sportiduino.app.sportiduino.CardData;
 import org.sportiduino.app.sportiduino.CardMifareClassic;
 import org.sportiduino.app.sportiduino.CardMifareUltralight;
+import org.sportiduino.app.sportiduino.ParticipantCard;
 import org.sportiduino.app.sportiduino.ReadWriteCardException;
 import org.sportiduino.app.sportiduino.Util;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.LinkedList;
 import java.util.List;
@@ -83,6 +87,9 @@ public class FragmentReadCard extends NfcFragment {
         CardAdapter cardAdapter;
         Card card;
         byte[][] buffer;
+        CardData parsedData;
+        Exception error;
+        IOException csvSaveError;
 
         ReadCardTask(CardAdapter adapter) {
             this.cardAdapter = adapter;
@@ -101,17 +108,39 @@ public class FragmentReadCard extends NfcFragment {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            boolean status = true;
             try {
                 cardAdapter.connect();
+
                 card = Card.detectCard(cardAdapter);
                 buffer = card.read();
+
+                parsedData = card.parseData(buffer);
+
+                if (parsedData instanceof ParticipantCard.Data) {
+                    try {
+                        ParticipantCard.Data participantData =
+                                (ParticipantCard.Data) parsedData;
+
+                        ParticipantCardCsvWriter csvWriter =
+                                new ParticipantCardCsvWriter(getContext());
+
+                        csvWriter.save(participantData);
+                    } catch (IOException e) {
+                        csvSaveError = e;
+                        Log.e("Sportiduino", "CSV save error", e);
+                    }
+                }
+
+                return true;
+
             } catch (ReadWriteCardException e) {
-                status = false;
+                error = e;
+                Log.e("Sportiduino", "Card read error", e);
+                return false;
+
             } finally {
                 cardAdapter.close();
             }
-            return status;
         }
 
         private void handleCardDataUrl(CharSequence data) {
@@ -135,15 +164,24 @@ public class FragmentReadCard extends NfcFragment {
         @Override
         protected void onPostExecute(Boolean result) {
             binding.progressBar.setVisibility(View.GONE);
+
             if (result && buffer != null) {
-                CharSequence data = card.parseData(buffer);
+                CharSequence text = parsedData.toCharSequence();
 
                 binding.textViewTagType.setText(String.format(getString(R.string.tag_type_s), card.adapter.tagType.name()));
                 binding.textViewInfo.setVisibility(View.VISIBLE);
-                binding.textViewInfo.setText(data);
+                binding.textViewInfo.setText(text);
                 binding.textViewNfcInfo.setText(Util.ok(getString(R.string.card_read_successfully), currentView));
 
-                handleCardDataUrl(data);
+                handleCardDataUrl(text); // FIXME: send data
+
+                if (csvSaveError != null) {
+                    binding.textViewCardWebServiceInfo.setVisibility(View.VISIBLE);
+                    binding.textViewCardWebServiceInfo.setText(
+                            "CSV save error: " + csvSaveError.getMessage()
+                    );
+                }
+
             } else {
                 binding.textViewNfcInfo.setText(Util.error(getString(R.string.reading_card_failed), currentView));
             }

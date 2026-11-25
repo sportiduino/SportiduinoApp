@@ -10,6 +10,14 @@ import java.util.Arrays;
 
 
 public class Card {
+
+    public static class UnknownCardData implements CardData {
+        @Override
+        public CharSequence toCharSequence() {
+            return App.str(R.string.unknown_card_type);
+        }
+    }
+
     public CardType type = CardType.UNKNOWN;
     public CardAdapter adapter;
     protected byte[] dataPage4;
@@ -25,8 +33,8 @@ public class Card {
         return new byte[0][0];
     }
 
-    public CharSequence parseData(byte[][] data) {
-        return App.str(R.string.unknown_card_type);
+    public CardData parseData(byte[][] data) {
+        return new UnknownCardData();
     }
 
     protected void writeImpl() throws ReadWriteCardException {}

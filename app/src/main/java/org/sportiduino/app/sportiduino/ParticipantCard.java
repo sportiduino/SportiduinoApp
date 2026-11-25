@@ -7,9 +7,78 @@ import android.text.Html;
 import org.sportiduino.app.App;
 import org.sportiduino.app.R;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class ParticipantCard extends Card {
+
+    public static class Data implements CardData {
+        public int cardNumber;
+        public boolean fastPunch;
+        public long clearTimestamp;
+        public List<Punch> punches = new ArrayList<>();
+
+        public static class Punch {
+            public int controlPoint;
+            public long timestamp;
+        }
+
+        @Override
+        public CharSequence toCharSequence() {
+            StringBuilder str = new StringBuilder();
+
+            str.append(App.str(R.string.participant_card_no_))
+                    .append(" <b>").append(cardNumber).append("</b>");
+
+            if (fastPunch) {
+                str.append(String.format(" (%s)", App.str(R.string.fast_punch)));
+            }
+
+            str.append("<br>")
+                    .append(App.str(R.string.clear_time_))
+                    .append(" ")
+                    .append(Util.dformat.format(new Date(clearTimestamp*1000)));
+
+            str.append("<br>")
+                    .append(App.str(R.string.record_count))
+                    .append(" ")
+                    .append(punches.size());
+
+            for (Data.Punch punch : punches) {
+                int cp = punch.controlPoint;
+
+                String cpStr = String.valueOf(cp);
+
+                switch (cp) {
+                    case Config.START_STATION:
+                        cpStr = App.str(R.string.start);
+                        break;
+
+                    case Config.FINISH_STATION:
+                        cpStr = App.str(R.string.finish);
+                        break;
+                }
+
+                String timestampString = Util.dformat.format(
+                        new Date(punch.timestamp * 1000));
+
+                if (punch.timestamp > System.currentTimeMillis() / 1000) {
+                    timestampString = Util.coloredHtmlString(
+                            timestampString,
+                            Util.colorToHexCode(R.color.red));
+                }
+
+                str.append("<br>")
+                        .append(String.format("%1$6s", cpStr).replace(" ", "&nbsp;"))
+                        .append(" - ")
+                        .append(timestampString);
+            }
+
+            return Html.fromHtml(str.toString(), Html.FROM_HTML_MODE_LEGACY);
+        }
+    }
+
     int cardNumber;
     long cardInitTimestamp;
     boolean fastPunch;
@@ -40,58 +109,37 @@ public class ParticipantCard extends Card {
     }
 
     @Override
-    public CharSequence parseData(byte[][] data) {
-        StringBuilder str = new StringBuilder();
+    public Data parseData(byte[][] data) {
+        Data result = new Data();
 
-        str.append(App.str(R.string.participant_card_no_)).append(" <b>").append(cardNumber).append("</b>");
+        result.cardNumber = cardNumber;
+        result.fastPunch = fastPunch;
+        result.clearTimestamp = cardInitTimestamp;
 
-        if (fastPunch) {
-            str.append(String.format(" (%s)", App.str(R.string.fast_punch)));
-        }
-
-        str.append("<br>").append(App.str(R.string.clear_time_)).append(" ").append(Util.dformat.format(new Date(cardInitTimestamp*1000)));
-        str.append("<br>").append(App.str(R.string.record_count)).append(" %d");
-
-        int recordCount = 0;
-        long timeHighPart = cardInitTimestamp & 0xFF000000;
+        long timeHighPart = cardInitTimestamp & 0xFF000000L;
 
         for (byte[] datum : data) {
             int cp = datum[0] & 0xFF;
+
             if (cp == 0) {
                 break;
             }
 
-            long punchTimestamp = (Util.toUint32(datum) & 0xFFFFFF) + timeHighPart;
-            if (punchTimestamp < cardInitTimestamp) {
-                punchTimestamp += 0x1000000;
+            long timestamp = (Util.toUint32(datum) & 0xFFFFFFL)
+                    + timeHighPart;
+
+            if (timestamp < cardInitTimestamp) {
+                timestamp += 0x1000000L;
             }
 
-            String cpStr = String.valueOf(cp);
-            switch (cp) {
-                case Config.START_STATION:
-                    cpStr = App.str(R.string.start);
-                    break;
-                case Config.FINISH_STATION:
-                    cpStr = App.str(R.string.finish);
-                    break;
-            }
+            Data.Punch punch = new Data.Punch();
+            punch.controlPoint = cp;
+            punch.timestamp = timestamp;
 
-            String timestampString = Util.dformat.format(new Date(punchTimestamp*1000));
-            if (punchTimestamp > System.currentTimeMillis()/1000) {
-                timestampString = Util.coloredHtmlString(timestampString, Util.colorToHexCode(R.color.red));
-            }
-
-            str.append("<br>")
-                .append(String.format("%1$6s", cpStr).replace(" ", "&nbsp;"))
-                .append(" - ")
-                .append(timestampString);
-
-            ++recordCount;
+            result.punches.add(punch);
         }
 
-        String formattedStr = str.toString().replace("%d", String.valueOf(recordCount));
-
-        return Html.fromHtml(formattedStr);
+        return result;
     }
 
     @Override
